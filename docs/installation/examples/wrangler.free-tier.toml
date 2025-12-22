@@ -1,0 +1,70 @@
+# PACKAGE.broker - Free Tier Configuration Template
+# This configuration uses only Cloudflare's free tier services
+# Perfect for getting started with zero infrastructure costs
+
+name = "composer-proxy"
+main = "packages/main/src/index.ts"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+# Static Assets - UI is built and served from packages/ui/dist
+[assets]
+directory = "./packages/ui/dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+# Routes that should hit the Worker first (API and Composer endpoints)
+run_worker_first = [
+  "/api/*",           # Admin API
+  "/health",          # Health check
+  "/packages.json",   # Composer root
+  "/p2/*",            # Composer p2 provider
+  "/dist/*"           # Artifact downloads
+]
+
+[vars]
+# Generate with: openssl rand -base64 32
+ENCRYPTION_KEY = "REPLACE_WITH_YOUR_32_BYTE_KEY_BASE64"
+
+# Initial admin credentials (used to seed first admin user)
+INITIAL_ADMIN_EMAIL = "admin@example.com"
+INITIAL_ADMIN_PASSWORD = "Password123!"
+
+# Logging configuration (optional)
+# LOG_LEVEL can be: debug, info, warn, error (default: info)
+LOG_LEVEL = "info"
+
+# Observability - Enable Workers Logs (free tier: 200k events/day, 3-day retention)
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+# D1 Database (FREE TIER: 5GB storage, 5M reads/day)
+[[d1_databases]]
+binding = "DB"
+database_name = "composer-proxy-db"
+database_id = "REPLACE_WITH_YOUR_DATABASE_ID"
+
+# KV Namespace for caching (FREE TIER: 100k reads/day, 1k writes/day)
+[[kv_namespaces]]
+binding = "KV"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+
+# R2 Bucket for artifacts (FREE TIER: 10GB storage, 10M reads/month)
+[[r2_buckets]]
+binding = "R2_BUCKET"
+bucket_name = "composer-proxy-artifacts"
+
+# Analytics Engine (FREE TIER: 100k events/day)
+# Analytics Engine datasets are automatically created on first write.
+# To enable Analytics Engine:
+# 1. Uncomment the lines below
+# 2. Deploy: npx wrangler deploy
+# 3. The dataset will be created automatically when first event is written
+#
+# [[analytics_engine_datasets]]
+# binding = "ANALYTICS"
+# dataset = "composer-proxy-analytics"
+
+# NOTE: Queues and Workflows require Workers Paid plan ($5/month)
+# For free tier, download counts and token usage updates happen synchronously
+# (minimal performance impact for most use cases)
