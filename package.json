@@ -1,5 +1,5 @@
 {
-  "name": "@lbajsarowicz/cloudflare-composer-proxy-website",
+  "name": "@package-broker/docs",
   "version": "0.0.0",
   "private": true,
   "scripts": {
