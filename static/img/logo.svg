@@ -1,0 +1,44 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Glow filters -->
+  <defs>
+    <filter id="glow-blue" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glow-orange" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Bottom Stem (Orange) -->
+  <g filter="url(#glow-orange)">
+    <!-- Bottom Node -->
+    <circle cx="100" cy="180" r="6" stroke="#FF8C42" stroke-width="3" fill="none" />
+    <!-- Stem Line -->
+    <path d="M100 174 L100 110" stroke="#FF8C42" stroke-width="4" stroke-linecap="round" />
+    <!-- Junction Node -->
+    <circle cx="100" cy="110" r="6" stroke="#FF8C42" stroke-width="3" fill="#1b1b1d" /> 
+  </g>
+
+  <!-- Top Fork (Blue) -->
+  <g filter="url(#glow-blue)">
+    <!-- Center Prong -->
+    <path d="M100 104 L100 40" stroke="#4DA6FF" stroke-width="4" stroke-linecap="round" />
+    <circle cx="100" cy="34" r="6" stroke="#4DA6FF" stroke-width="3" fill="none" />
+
+    <!-- Left Prong -->
+    <path d="M100 110 C70 110 60 100 60 70 L60 40" stroke="#4DA6FF" stroke-width="4" stroke-linecap="round" fill="none" />
+    <circle cx="60" cy="34" r="6" stroke="#4DA6FF" stroke-width="3" fill="none" />
+
+    <!-- Right Prong -->
+    <path d="M100 110 C130 110 140 100 140 70 L140 40" stroke="#4DA6FF" stroke-width="4" stroke-linecap="round" fill="none" />
+    <circle cx="140" cy="34" r="6" stroke="#4DA6FF" stroke-width="3" fill="none" />
+  </g>
+</svg>

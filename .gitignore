@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Build output
+build/
+.docusaurus/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Lock files (when not using npm)
+yarn.lock
+pnpm-lock.yaml
+
+# Temporary
+*.log
+*.tmp
