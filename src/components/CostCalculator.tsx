@@ -69,7 +69,7 @@ export default function CostCalculator() {
             onChange={(e) => setCurrentSolution(e.target.value)}
             className={styles.select}
           >
-            <option value="packagist">Private Packagist</option>
+            <option value="packagist">Private Packagist™</option>
             <option value="satis">Satis (Self-hosted)</option>
             <option value="other">Other Commercial</option>
           </select>
