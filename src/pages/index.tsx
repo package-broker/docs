@@ -20,6 +20,9 @@ import PlatformGrid from '../components/PlatformGrid';
 import SponsorShowcase from '../components/SponsorShowcase';
 import ComparisonTable from '../components/ComparisonTable';
 import InteractiveArchitecture from '../components/InteractiveArchitecture';
+import ScreenshotGallery from '../components/ScreenshotGallery';
+import AgencyUseCases from '../components/AgencyUseCases';
+import FAQ from '../components/FAQ';
 
 function GitHubStarButton() {
   const [stars, setStars] = useState<number | null>(null);
@@ -254,6 +257,11 @@ export default function Home(): ReactNode {
 
       <main>
 
+        {/* Proof Bar - Screenshots */}
+        <div className="container padding-vert--xl">
+          <ScreenshotGallery />
+        </div>
+
         {/* Value Proposition / Terminal Section */}
         <div className="container padding-vert--xl">
           <div className="row row--align-center">
@@ -301,6 +309,11 @@ export default function Home(): ReactNode {
           </div>
         </div>
 
+        {/* Agency Use Cases */}
+        <div className="container padding-vert--xl">
+          <AgencyUseCases />
+        </div>
+
         {/* Platform Deployment Showcase */}
         <div className="container padding-vert--xl">
           <div className="text--center margin-bottom--xl">
@@ -326,6 +339,11 @@ export default function Home(): ReactNode {
             <p>See how PACKAGE.broker compares to other solutions</p>
           </div>
           <ComparisonTable summaryOnly={true} />
+        </div>
+
+        {/* FAQ Section */}
+        <div className="container padding-vert--xl">
+          <FAQ />
         </div>
 
         {/* Community / Sponsor Section */}
