@@ -1,0 +1,381 @@
+.architectureContainer {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  height: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: linear-gradient(135deg, #0f1117 0%, #1a1b26 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: visible;
+}
+
+/* Client Box (Left) */
+.clientBox {
+  position: absolute;
+  left: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 160px;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.clientBox:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(77, 166, 255, 0.3);
+  transform: translateY(-50%) translateX(5px);
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(77, 166, 255, 0.1) 0%, rgba(77, 166, 255, 0.05) 100%);
+  color: #4DA6FF;
+}
+
+.boxTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: #fff;
+}
+
+.boxSubtitle {
+  font-size: 0.85rem;
+  color: #a9b1d6;
+  margin: 0;
+}
+
+/* Center Box (PACKAGE.broker) */
+.centerBox {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 240px;
+  padding: 2rem;
+  background: linear-gradient(135deg, #FF8C42 0%, #e67e3b 100%);
+  border: 2px solid #FF8C42;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(255, 140, 66, 0.3);
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.centerBox:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow: 0 15px 50px rgba(255, 140, 66, 0.4);
+}
+
+.centerIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.centerTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem;
+  color: #fff;
+}
+
+.centerBadge {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Sources Box (Top) */
+.sourcesBox {
+  position: absolute;
+  left: 50%;
+  top: 5%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+}
+
+.sourceItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.sourceItem:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sourceIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(77, 166, 255, 0.1);
+  color: #4DA6FF;
+}
+
+.sourceText {
+  display: flex;
+  flex-direction: column;
+}
+
+.sourceName {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.sourceSubtitle {
+  font-size: 0.75rem;
+  color: #a9b1d6;
+}
+
+/* Storage Box (Right) */
+.storageBox {
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 160px;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.storageBox:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(74, 222, 128, 0.3);
+  transform: translateY(-50%) translateX(-5px);
+}
+
+/* Connection Lines */
+.connectionLine {
+  position: absolute;
+  background: linear-gradient(90deg, transparent, currentColor, transparent);
+  opacity: 0.6;
+  animation: flow 3s ease-in-out infinite;
+}
+
+.connectionLine::before {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: currentColor;
+  border-radius: 50%;
+  animation: moveAlong 3s ease-in-out infinite;
+}
+
+.toCenter {
+  right: -20px;
+  top: 50%;
+  width: 60px;
+  height: 2px;
+  transform: translateY(-50%);
+  color: #4DA6FF;
+}
+
+.fromClient {
+  left: -60px;
+  top: 50%;
+  width: 60px;
+  height: 2px;
+  transform: translateY(-50%);
+  color: #4DA6FF;
+}
+
+.toStorage {
+  right: -60px;
+  top: 50%;
+  width: 60px;
+  height: 2px;
+  transform: translateY(-50%);
+  color: #4ADE80;
+}
+
+.fromCenter {
+  left: -20px;
+  top: 50%;
+  width: 60px;
+  height: 2px;
+  transform: translateY(-50%);
+  color: #4ADE80;
+}
+
+.fromSourcesToCenter {
+  left: 50%;
+  top: 100%;
+  width: 2px;
+  height: 80px;
+  transform: translateX(-50%);
+  color: #FF8C42;
+}
+
+.fromSources {
+  left: 50%;
+  top: -80px;
+  width: 2px;
+  height: 80px;
+  transform: translateX(-50%);
+  color: #FF8C42;
+}
+
+/* Flow Labels */
+.flowLabel {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: #fff;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.flowArrow {
+  color: #4DA6FF;
+  font-weight: bold;
+}
+
+.flowText {
+  color: #a9b1d6;
+}
+
+/* Animations */
+@keyframes flow {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes moveAlong {
+  0% {
+    left: 0;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+/* Light theme adjustments */
+[data-theme='light'] .architectureContainer {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='light'] .clientBox,
+[data-theme='light'] .storageBox,
+[data-theme='light'] .sourcesBox {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='light'] .clientBox:hover,
+[data-theme='light'] .storageBox:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 102, 204, 0.3);
+}
+
+[data-theme='light'] .boxTitle {
+  color: #1a1b26;
+}
+
+[data-theme='light'] .boxSubtitle {
+  color: #495057;
+}
+
+[data-theme='light'] .sourceName {
+  color: #1a1b26;
+}
+
+[data-theme='light'] .sourceSubtitle {
+  color: #495057;
+}
+
+[data-theme='light'] .flowLabel {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='light'] .flowText {
+  color: #495057;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .architectureContainer {
+    height: 500px;
+    padding: 1rem;
+  }
+
+  .clientBox,
+  .storageBox {
+    width: 140px;
+    padding: 1rem;
+  }
+
+  .centerBox {
+    width: 200px;
+    padding: 1.5rem;
+  }
+
+  .sourcesBox {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .flowLabel {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+

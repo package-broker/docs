@@ -24,6 +24,7 @@ import CostCalculator from '../components/CostCalculator';
 import PlatformGrid from '../components/PlatformGrid';
 import SponsorShowcase from '../components/SponsorShowcase';
 import ComparisonTable from '../components/ComparisonTable';
+import InteractiveArchitecture from '../components/InteractiveArchitecture';
 
 function GitHubStarButton() {
   const [stars, setStars] = useState<number | null>(null);
@@ -89,16 +90,7 @@ function HomepageHeader() {
           </div>
           <div className="col col--6">
             <div className="text--center">
-              <img
-                src="img/architecture-diagram.svg"
-                alt="Architecture Diagram"
-                className={styles.heroImage}
-                style={{
-                  width: '100%',
-                  maxWidth: '550px',
-                  filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.3))'
-                }}
-              />
+              <InteractiveArchitecture />
             </div>
           </div>
         </div>
