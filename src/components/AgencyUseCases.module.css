@@ -1,0 +1,145 @@
+.useCasesContainer {
+  padding: 2rem 0;
+}
+
+.useCasesHeader {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.useCasesTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--ifm-heading-color);
+}
+
+.useCasesSubtitle {
+  font-size: 1.1rem;
+  color: var(--ifm-color-emphasis-600);
+  margin: 0;
+}
+
+.useCasesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.useCaseCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+[data-theme='light'] .useCaseCard {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.useCaseCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  border-color: rgba(77, 166, 255, 0.3);
+}
+
+.useCaseIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(77, 166, 255, 0.15) 0%, rgba(77, 166, 255, 0.08) 100%);
+  color: #4DA6FF;
+  margin-bottom: 1.5rem;
+}
+
+.useCaseTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+  color: var(--ifm-heading-color);
+}
+
+.useCaseContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  flex: 1;
+}
+
+.problemSection,
+.solutionSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sectionLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--ifm-color-emphasis-500);
+}
+
+.problemText,
+.solutionText {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ifm-color-emphasis-700);
+  margin: 0;
+}
+
+.problemText {
+  color: var(--ifm-color-emphasis-600);
+}
+
+.outcomeSection {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='light'] .outcomeSection {
+  border-top-color: rgba(0, 0, 0, 0.1);
+}
+
+.outcomeLabel {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #4DA6FF;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.outcomeText {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--ifm-color-content);
+  font-weight: 500;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .useCasesGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .useCaseCard {
+    padding: 1.5rem;
+  }
+
+  .useCasesTitle {
+    font-size: 1.75rem;
+  }
+}
+
