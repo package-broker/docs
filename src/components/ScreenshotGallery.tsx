@@ -26,9 +26,9 @@ const screenshots: Screenshot[] = [
     caption: 'Secure token-based authentication for CI/CD pipelines',
   },
   {
-    src: '/img/screenshots/audit-logs.png',
-    alt: 'Audit Logs',
-    caption: 'Complete audit trail for compliance and security',
+    src: '/img/screenshots/packages-view.png',
+    alt: 'Packages View',
+    caption: 'Browse and manage cached Composer packages',
   },
 ];
 
