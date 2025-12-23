@@ -1,0 +1,836 @@
+{
+  "lastVerified": "2025-12-23",
+  "products": [
+    {
+      "id": "package-broker",
+      "name": "PACKAGE.broker",
+      "trademarkSuffix": "",
+      "category": "self-hosted"
+    },
+    {
+      "id": "private-packagist",
+      "name": "Private Packagist",
+      "trademarkSuffix": "™",
+      "category": "saas"
+    },
+    {
+      "id": "satis",
+      "name": "Satis",
+      "trademarkSuffix": "",
+      "category": "self-hosted"
+    },
+    {
+      "id": "packeton",
+      "name": "Packeton",
+      "trademarkSuffix": "",
+      "category": "self-hosted"
+    },
+    {
+      "id": "repman",
+      "name": "Repman",
+      "trademarkSuffix": "",
+      "category": "self-hosted"
+    },
+    {
+      "id": "gitlab",
+      "name": "GitLab",
+      "trademarkSuffix": "",
+      "category": "platform-integrated"
+    }
+  ],
+  "featureGroups": [
+    {
+      "id": "deployment",
+      "label": "Deployment"
+    },
+    {
+      "id": "features",
+      "label": "Features"
+    },
+    {
+      "id": "integrations",
+      "label": "Integrations"
+    },
+    {
+      "id": "security",
+      "label": "Security & Compliance"
+    }
+  ],
+  "features": [
+    {
+      "id": "deployment-model",
+      "label": "Deployment Model",
+      "group": "deployment",
+      "type": "text",
+      "summary": true
+    },
+    {
+      "id": "private-packages",
+      "label": "Private Packages",
+      "group": "features",
+      "type": "boolean",
+      "summary": true
+    },
+    {
+      "id": "ui-dashboard",
+      "label": "Web UI / Dashboard",
+      "group": "features",
+      "type": "text",
+      "summary": true
+    },
+    {
+      "id": "webhook-sync",
+      "label": "Webhook Sync",
+      "group": "features",
+      "type": "boolean",
+      "summary": true
+    },
+    {
+      "id": "artifact-caching",
+      "label": "Artifact Caching",
+      "group": "features",
+      "type": "text",
+      "summary": true
+    },
+    {
+      "id": "github-integration",
+      "label": "GitHub Integration",
+      "group": "integrations",
+      "type": "boolean",
+      "summary": false
+    },
+    {
+      "id": "gitlab-integration",
+      "label": "GitLab Integration",
+      "group": "integrations",
+      "type": "boolean",
+      "summary": false
+    },
+    {
+      "id": "bitbucket-integration",
+      "label": "Bitbucket Integration",
+      "group": "integrations",
+      "type": "boolean",
+      "summary": false
+    },
+    {
+      "id": "docker-support",
+      "label": "Docker Support",
+      "group": "deployment",
+      "type": "text",
+      "summary": false
+    },
+    {
+      "id": "auth-methods",
+      "label": "Authentication Methods",
+      "group": "security",
+      "type": "text",
+      "summary": false
+    },
+    {
+      "id": "audit-logging",
+      "label": "Audit Logging",
+      "group": "security",
+      "type": "boolean",
+      "summary": false
+    },
+    {
+      "id": "access-control",
+      "label": "Access Control",
+      "group": "security",
+      "type": "text",
+      "summary": false
+    }
+  ],
+  "values": [
+    {
+      "featureId": "deployment-model",
+      "package-broker": {
+        "value": "Self-hosted (Cloudflare Workers, Docker, Kubernetes)",
+        "citations": [
+          {
+            "label": "PACKAGE.broker Documentation",
+            "url": "https://package.broker/docs"
+          }
+        ]
+      },
+      "private-packagist": {
+        "value": "SaaS (hosted) or Self-hosted (on-premise)",
+        "citations": [
+          {
+            "label": "Composer Documentation",
+            "url": "https://getcomposer.org/doc/articles/handling-private-packages.md"
+          }
+        ]
+      },
+      "satis": {
+        "value": "Self-hosted (static generator)",
+        "citations": [
+          {
+            "label": "Composer Documentation - Satis",
+            "url": "https://getcomposer.org/doc/articles/handling-private-packages.md#satis"
+          }
+        ]
+      },
+      "packeton": {
+        "value": "Self-hosted",
+        "citations": [
+          {
+            "label": "Packeton GitHub Repository",
+            "url": "https://github.com/vtsykun/packeton"
+          }
+        ]
+      },
+      "repman": {
+        "value": "Self-hosted",
+        "citations": [
+          {
+            "label": "Repman GitHub Repository",
+            "url": "https://github.com/repman-io/repman"
+          }
+        ]
+      },
+      "gitlab": {
+        "value": "SaaS (GitLab.com) or Self-hosted (GitLab EE/CE)",
+        "citations": [
+          {
+            "label": "GitLab Composer Registry Documentation",
+            "url": "https://docs.gitlab.com/ee/user/packages/composer_repository/"
+          }
+        ]
+      }
+    },
+    {
+      "featureId": "private-packages",
+      "package-broker": {
+        "value": true,
+        "citations": [
+          {
+            "label": "PACKAGE.broker Documentation",
+            "url": "https://package.broker/docs"
+          }
+        ]
+      },
+      "private-packagist": {
+        "value": true,
+        "citations": [
+          {
+            "label": "Private Packagist Features",
+            "url": "https://packagist.com"
+          }
+        ]
+      },
+      "satis": {
+        "value": true,
+        "citations": [
+          {
+            "label": "Composer Documentation - Satis",
+            "url": "https://getcomposer.org/doc/articles/handling-private-packages.md#satis"
+          }
+        ]
+      },
+      "packeton": {
+        "value": true,
+        "citations": [
+          {
+            "label": "Packeton GitHub Repository",
+            "url": "https://github.com/vtsykun/packeton"
+          }
+        ]
+      },
+      "repman": {
+        "value": true,
+        "citations": [
+          {
+            "label": "Repman GitHub Repository",
+            "url": "https://github.com/repman-io/repman"
+          }
+        ]
+      },
+      "gitlab": {
+        "value": true,
+        "citations": [
+          {
+            "label": "GitLab Composer Registry Documentation",
+            "url": "https://docs.gitlab.com/ee/user/packages/composer_repository/"
+          }
+        ]
+      }
+    },
+    {
+      "featureId": "ui-dashboard",
+      "package-broker": {
+        "value": "Modern web dashboard",
+        "citations": [
+          {
+            "label": "PACKAGE.broker Documentation",
+            "url": "https://package.broker/docs"
+          }
+        ]
+      },
+      "private-packagist": {
+        "value": "Web-based management",
+        "citations": [
+          {
+            "label": "Composer Documentation",
+            "url": "https://getcomposer.org/doc/articles/handling-private-packages.md#private-packagist"
+          }
+        ]
+      },
+      "satis": {
+        "value": "None (static HTML only)",
+        "citations": [
+          {
+            "label": "Composer Documentation - Satis",
+            "url": "https://getcomposer.org/doc/articles/handling-private-packages.md#satis"
+          }
+        ]
+      },
+      "packeton": {
+        "value": "Web UI",
+        "citations": [
+          {
+            "label": "Packeton GitHub Repository",
+            "url": "https://github.com/vtsykun/packeton"
+          }
+        ]
+      },
+      "repman": {
+        "value": "Web UI",
+        "citations": [
+          {
+            "label": "Repman GitHub Repository",
+            "url": "https://github.com/repman-io/repman"
+          }
+        ]
+      },
+      "gitlab": {
+        "value": "Integrated in GitLab UI",
+        "citations": [
+          {
+            "label": "GitLab Composer Registry Documentation",
+            "url": "https://docs.gitlab.com/ee/user/packages/composer_repository/"
+          }
+        ]
+      }
+    },
+    {
+      "featureId": "webhook-sync",
+      "package-broker": {
+        "value": true,
+        "citations": [
+          {
+            "label": "PACKAGE.broker Documentation",
+            "url": "https://package.broker/docs"
+          }
+        ]
+      },
+      "private-packagist": {
+        "value": true,
+        "citations": [
+          {
+            "label": "Private Packagist Features",
+            "url": "https://packagist.com"
+          }
+        ]
+      },
+      "satis": {
+        "value": false,
+        "citations": [
+          {
+            "label": "Composer Documentation - Satis",
+            "url": "https://getcomposer.org/doc/articles/handling-private-packages.md#satis"
+          },
+          {
+            "label": "Satis requires manual rebuild",
+            "url": "https://getcomposer.org/doc/articles/handling-private-packages.md#setup"
+          }
+        ]
+      },
+      "packeton": {
+        "value": true,
+        "citations": [
+          {
+            "label": "Packeton GitHub Repository",
+            "url": "https://github.com/vtsykun/packeton"
+          }
+        ]
+      },
+      "repman": {
+        "value": true,
+        "citations": [
+          {
+            "label": "Repman GitHub Repository",
+            "url": "https://github.com/repman-io/repman"
+          }
+        ]
+      },
+      "gitlab": {
+        "value": true,
+        "citations": [
+          {
+            "label": "GitLab Composer Registry Documentation",
+            "url": "https://docs.gitlab.com/ee/user/packages/composer_repository/"
+          }
+        ]
+      }
+    },
+    {
+      "featureId": "artifact-caching",
+      "package-broker": {
+        "value": "Edge caching (Cloudflare) + Storage backend",
+        "citations": [
+          {
+            "label": "PACKAGE.broker Documentation",
+            "url": "https://package.broker/docs"
+          }
+        ]
+      },
+      "private-packagist": {
+        "value": "Vendor-managed",
+        "citations": [
+          {
+            "label": "Private Packagist Features",
+            "url": "https://packagist.com"
+          }
+        ]
+      },
+      "satis": {
+        "value": "Static mirror (optional)",
+        "citations": [
+          {
+            "label": "Composer Documentation - Satis Downloads",
+            "url": "https://getcomposer.org/doc/articles/handling-private-packages.md#download"
+          }
+        ]
+      },
+      "packeton": {
+        "value": "Unknown",
+        "citations": [
+          {
+            "label": "Packeton GitHub Repository",
+            "url": "https://github.com/vtsykun/packeton"
+          }
+        ]
+      },
+      "repman": {
+        "value": "Proxy cache",
+        "citations": [
+          {
+            "label": "Repman GitHub Repository",
+            "url": "https://github.com/repman-io/repman"
+          }
+        ]
+      },
+      "gitlab": {
+        "value": "Integrated storage",
+        "citations": [
+          {
+            "label": "GitLab Composer Registry Documentation",
+            "url": "https://docs.gitlab.com/ee/user/packages/composer_repository/"
+          }
+        ]
+      }
+    },
+    {
+      "featureId": "github-integration",
+      "package-broker": {
+        "value": true,
+        "citations": [
+          {
+            "label": "PACKAGE.broker Documentation",
+            "url": "https://package.broker/docs"
+          }
+        ]
+      },
+      "private-packagist": {
+        "value": true,
+        "citations": [
+          {
+            "label": "Private Packagist Features",
+            "url": "https://packagist.com"
+          }
+        ]
+      },
+      "satis": {
+        "value": true,
+        "citations": [
+          {
+            "label": "Composer Documentation - Satis",
+            "url": "https://getcomposer.org/doc/articles/handling-private-packages.md#satis"
+          }
+        ]
+      },
+      "packeton": {
+        "value": true,
+        "citations": [
+          {
+            "label": "Packeton GitHub Repository",
+            "url": "https://github.com/vtsykun/packeton"
+          }
+        ]
+      },
+      "repman": {
+        "value": true,
+        "citations": [
+          {
+            "label": "Repman GitHub Repository",
+            "url": "https://github.com/repman-io/repman"
+          }
+        ]
+      },
+      "gitlab": {
+        "value": false,
+        "citations": [
+          {
+            "label": "GitLab Composer Registry Documentation",
+            "url": "https://docs.gitlab.com/ee/user/packages/composer_repository/"
+          }
+        ]
+      }
+    },
+    {
+      "featureId": "gitlab-integration",
+      "package-broker": {
+        "value": true,
+        "citations": [
+          {
+            "label": "PACKAGE.broker Documentation",
+            "url": "https://package.broker/docs"
+          }
+        ]
+      },
+      "private-packagist": {
+        "value": true,
+        "citations": [
+          {
+            "label": "Private Packagist Features",
+            "url": "https://packagist.com"
+          }
+        ]
+      },
+      "satis": {
+        "value": true,
+        "citations": [
+          {
+            "label": "Composer Documentation - Satis",
+            "url": "https://getcomposer.org/doc/articles/handling-private-packages.md#satis"
+          }
+        ]
+      },
+      "packeton": {
+        "value": true,
+        "citations": [
+          {
+            "label": "Packeton GitHub Repository",
+            "url": "https://github.com/vtsykun/packeton"
+          }
+        ]
+      },
+      "repman": {
+        "value": true,
+        "citations": [
+          {
+            "label": "Repman GitHub Repository",
+            "url": "https://github.com/repman-io/repman"
+          }
+        ]
+      },
+      "gitlab": {
+        "value": true,
+        "citations": [
+          {
+            "label": "GitLab Composer Registry Documentation",
+            "url": "https://docs.gitlab.com/ee/user/packages/composer_repository/"
+          }
+        ]
+      }
+    },
+    {
+      "featureId": "bitbucket-integration",
+      "package-broker": {
+        "value": true,
+        "citations": [
+          {
+            "label": "PACKAGE.broker Documentation",
+            "url": "https://package.broker/docs"
+          }
+        ]
+      },
+      "private-packagist": {
+        "value": true,
+        "citations": [
+          {
+            "label": "Private Packagist Features",
+            "url": "https://packagist.com"
+          }
+        ]
+      },
+      "satis": {
+        "value": true,
+        "citations": [
+          {
+            "label": "Composer Documentation - Satis",
+            "url": "https://getcomposer.org/doc/articles/handling-private-packages.md#satis"
+          }
+        ]
+      },
+      "packeton": {
+        "value": "Unknown",
+        "citations": [
+          {
+            "label": "Packeton GitHub Repository",
+            "url": "https://github.com/vtsykun/packeton"
+          }
+        ]
+      },
+      "repman": {
+        "value": "Unknown",
+        "citations": [
+          {
+            "label": "Repman GitHub Repository",
+            "url": "https://github.com/repman-io/repman"
+          }
+        ]
+      },
+      "gitlab": {
+        "value": false,
+        "citations": [
+          {
+            "label": "GitLab Composer Registry Documentation",
+            "url": "https://docs.gitlab.com/ee/user/packages/composer_repository/"
+          }
+        ]
+      }
+    },
+    {
+      "featureId": "docker-support",
+      "package-broker": {
+        "value": "Planned (in development)",
+        "citations": [
+          {
+            "label": "PACKAGE.broker Documentation",
+            "url": "https://package.broker/docs"
+          }
+        ]
+      },
+      "private-packagist": {
+        "value": "N/A (SaaS)",
+        "citations": [
+          {
+            "label": "Private Packagist",
+            "url": "https://packagist.com"
+          }
+        ]
+      },
+      "satis": {
+        "value": "Community Docker images available",
+        "citations": [
+          {
+            "label": "Composer Documentation - Satis",
+            "url": "https://getcomposer.org/doc/articles/handling-private-packages.md#satis"
+          }
+        ]
+      },
+      "packeton": {
+        "value": "Docker support available",
+        "citations": [
+          {
+            "label": "Packeton GitHub Repository",
+            "url": "https://github.com/vtsykun/packeton"
+          }
+        ]
+      },
+      "repman": {
+        "value": "Docker support available",
+        "citations": [
+          {
+            "label": "Repman GitHub Repository",
+            "url": "https://github.com/repman-io/repman"
+          }
+        ]
+      },
+      "gitlab": {
+        "value": "Docker support (GitLab Runner)",
+        "citations": [
+          {
+            "label": "GitLab Documentation",
+            "url": "https://docs.gitlab.com"
+          }
+        ]
+      }
+    },
+    {
+      "featureId": "auth-methods",
+      "package-broker": {
+        "value": "Token-based, HTTP Basic",
+        "citations": [
+          {
+            "label": "PACKAGE.broker Documentation",
+            "url": "https://package.broker/docs"
+          }
+        ]
+      },
+      "private-packagist": {
+        "value": "Token-based, HTTP Basic",
+        "citations": [
+          {
+            "label": "Private Packagist Features",
+            "url": "https://packagist.com"
+          }
+        ]
+      },
+      "satis": {
+        "value": "HTTP Basic, SSH, SSL/TLS",
+        "citations": [
+          {
+            "label": "Composer Documentation - Satis Security",
+            "url": "https://getcomposer.org/doc/articles/handling-private-packages.md#security"
+          }
+        ]
+      },
+      "packeton": {
+        "value": "Unknown",
+        "citations": [
+          {
+            "label": "Packeton GitHub Repository",
+            "url": "https://github.com/vtsykun/packeton"
+          }
+        ]
+      },
+      "repman": {
+        "value": "Token-based",
+        "citations": [
+          {
+            "label": "Repman GitHub Repository",
+            "url": "https://github.com/repman-io/repman"
+          }
+        ]
+      },
+      "gitlab": {
+        "value": "Personal access tokens, Deploy tokens",
+        "citations": [
+          {
+            "label": "GitLab Composer Registry Documentation",
+            "url": "https://docs.gitlab.com/ee/user/packages/composer_repository/"
+          }
+        ]
+      }
+    },
+    {
+      "featureId": "audit-logging",
+      "package-broker": {
+        "value": true,
+        "citations": [
+          {
+            "label": "PACKAGE.broker Documentation",
+            "url": "https://package.broker/docs"
+          }
+        ]
+      },
+      "private-packagist": {
+        "value": "Unknown",
+        "citations": [
+          {
+            "label": "Private Packagist Features",
+            "url": "https://packagist.com"
+          }
+        ]
+      },
+      "satis": {
+        "value": false,
+        "citations": [
+          {
+            "label": "Composer Documentation - Satis",
+            "url": "https://getcomposer.org/doc/articles/handling-private-packages.md#satis"
+          }
+        ]
+      },
+      "packeton": {
+        "value": "Unknown",
+        "citations": [
+          {
+            "label": "Packeton GitHub Repository",
+            "url": "https://github.com/vtsykun/packeton"
+          }
+        ]
+      },
+      "repman": {
+        "value": "Unknown",
+        "citations": [
+          {
+            "label": "Repman GitHub Repository",
+            "url": "https://github.com/repman-io/repman"
+          }
+        ]
+      },
+      "gitlab": {
+        "value": true,
+        "citations": [
+          {
+            "label": "GitLab Audit Logs",
+            "url": "https://docs.gitlab.com/ee/administration/audit_events.html"
+          }
+        ]
+      }
+    },
+    {
+      "featureId": "access-control",
+      "package-broker": {
+        "value": "Token-based with scoped permissions",
+        "citations": [
+          {
+            "label": "PACKAGE.broker Documentation",
+            "url": "https://package.broker/docs"
+          }
+        ]
+      },
+      "private-packagist": {
+        "value": "Team-based permissions, suborganizations",
+        "citations": [
+          {
+            "label": "Private Packagist Pricing",
+            "url": "https://packagist.com/pricing"
+          }
+        ]
+      },
+      "satis": {
+        "value": "Basic HTTP authentication",
+        "citations": [
+          {
+            "label": "Composer Documentation - Satis Security",
+            "url": "https://getcomposer.org/doc/articles/handling-private-packages.md#security"
+          }
+        ]
+      },
+      "packeton": {
+        "value": "Unknown",
+        "citations": [
+          {
+            "label": "Packeton GitHub Repository",
+            "url": "https://github.com/vtsykun/packeton"
+          }
+        ]
+      },
+      "repman": {
+        "value": "Unknown",
+        "citations": [
+          {
+            "label": "Repman GitHub Repository",
+            "url": "https://github.com/repman-io/repman"
+          }
+        ]
+      },
+      "gitlab": {
+        "value": "GitLab project/group permissions",
+        "citations": [
+          {
+            "label": "GitLab Composer Registry Documentation",
+            "url": "https://docs.gitlab.com/ee/user/packages/composer_repository/"
+          }
+        ]
+      }
+    }
+  ]
+}
+
