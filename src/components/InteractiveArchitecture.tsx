@@ -1,81 +1,132 @@
 import React from 'react';
-import { Terminal, Cloud, Database, Package, GitBranch, Server } from 'lucide-react';
+import { Terminal, Database, Package, GitBranch, Box } from 'lucide-react';
 import styles from './InteractiveArchitecture.module.css';
 
 export default function InteractiveArchitecture() {
   return (
-    <div className={styles.architectureContainer}>
-      {/* Composer Client */}
-      <div className={styles.clientBox}>
-        <div className={styles.iconWrapper}>
-          <Terminal size={32} />
-        </div>
-        <h3 className={styles.boxTitle}>Composer Client</h3>
-        <p className={styles.boxSubtitle}>PHP • CI/CD • Local Dev</p>
-        <div className={`${styles.connectionLine} ${styles.toCenter}`} />
-      </div>
-
-      {/* PACKAGE.broker (Center) */}
-      <div className={styles.centerBox}>
-        <div className={styles.centerIconWrapper}>
-          <Package size={40} />
-        </div>
-        <h2 className={styles.centerTitle}>PACKAGE.broker</h2>
-        <span className={styles.centerBadge}>Edge Proxy & Cache</span>
-        <div className={styles.connections}>
-          <div className={`${styles.connectionLine} ${styles.fromClient}`} />
-          <div className={`${styles.connectionLine} ${styles.toStorage}`} />
-          <div className={`${styles.connectionLine} ${styles.fromSources}`} />
-        </div>
-      </div>
-
-      {/* Source Repositories */}
-      <div className={styles.sourcesBox}>
-        <div className={styles.sourceItem}>
-          <div className={styles.sourceIcon}>
-            <GitBranch size={24} />
+    <div className={styles.container}>
+      {/* Main Row (horizontal on desktop, vertical on mobile) */}
+      <div className={styles.mainRow}>
+        {/* Composer Client */}
+        <div className={styles.clientCard}>
+          <div className={styles.clientIcon}>
+            <Terminal size={24} />
           </div>
-          <div className={styles.sourceText}>
-            <span className={styles.sourceName}>GitHub</span>
-            <span className={styles.sourceSubtitle}>Private Repos</span>
+          <div className={styles.clientContent}>
+            <span className={styles.clientTitle}>Composer</span>
+            <span className={styles.clientSubtitle}>CLI • CI/CD</span>
           </div>
         </div>
-        <div className={styles.sourceItem}>
-          <div className={styles.sourceIcon}>
-            <GitBranch size={24} />
+
+        {/* Flow: Composer → System */}
+        <div className={styles.flowConnection}>
+          <div className={styles.flowTrack}>
+            <div className={`${styles.flowDot} ${styles.dotRequest}`} />
+            <div className={`${styles.flowDot} ${styles.dotResponse}`} />
+            <div className={`${styles.flowDot} ${styles.dotResponse2}`} />
           </div>
-          <div className={styles.sourceText}>
-            <span className={styles.sourceName}>GitLab</span>
-            <span className={styles.sourceSubtitle}>Bitbucket</span>
+          <span className={styles.flowLabel}>①③</span>
+        </div>
+
+        {/* System Container (PACKAGE.broker + Storage) */}
+        <div className={styles.systemContainer}>
+          <div className={styles.systemInner}>
+            {/* PACKAGE.broker */}
+            <div className={styles.brokerCard}>
+              <div className={styles.brokerIcon}>
+                <Package size={28} />
+              </div>
+              <span className={styles.brokerTitle}>PACKAGE.broker</span>
+              <span className={styles.brokerSubtitle}>Gateway & Cache</span>
+            </div>
+
+            {/* Internal Flow: Broker ↔ Storage */}
+            <div className={styles.internalFlow}>
+              <div className={styles.internalTrack}>
+                <div className={`${styles.flowDot} ${styles.dotCacheStore}`} />
+                <div className={`${styles.flowDot} ${styles.dotCacheRead}`} />
+              </div>
+            </div>
+
+            {/* Storage */}
+            <div className={styles.storageCard}>
+              <div className={styles.storageIcon}>
+                <Database size={20} />
+              </div>
+              <div className={styles.storageContent}>
+                <span className={styles.storageTitle}>Storage</span>
+                <span className={styles.storageSubtitle}>S3 • R2 • MinIO</span>
+              </div>
+            </div>
           </div>
         </div>
-        <div className={`${styles.connectionLine} ${styles.fromSourcesToCenter}`} />
-      </div>
 
-      {/* Storage */}
-      <div className={styles.storageBox}>
-        <div className={styles.iconWrapper}>
-          <Database size={32} />
+        {/* Flow: System → Sources */}
+        <div className={styles.flowConnection}>
+          <div className={styles.flowTrack}>
+            <div className={`${styles.flowDot} ${styles.dotFetch}`} />
+            <div className={`${styles.flowDot} ${styles.dotFetchReturn}`} />
+          </div>
+          <span className={styles.flowLabel}>②</span>
         </div>
-        <h3 className={styles.boxTitle}>Storage</h3>
-        <p className={styles.boxSubtitle}>S3 • R2 • MinIO</p>
-        <div className={`${styles.connectionLine} ${styles.fromCenter}`} />
+
+        {/* Package Sources */}
+        <div className={styles.sourcesContainer}>
+          <span className={styles.sourcesLabel}>Package Sources</span>
+          <div className={styles.sourcesGrid}>
+            <div className={styles.sourceGroup}>
+              <span className={styles.sourceGroupLabel}>Git Repos</span>
+              <div className={styles.sourceItems}>
+                <div className={styles.sourceItem}>
+                  <GitBranch size={14} />
+                  <span>GitHub</span>
+                </div>
+                <div className={styles.sourceItem}>
+                  <GitBranch size={14} />
+                  <span>GitLab</span>
+                </div>
+                <div className={styles.sourceItem}>
+                  <GitBranch size={14} />
+                  <span>Bitbucket</span>
+                </div>
+              </div>
+            </div>
+            <div className={styles.sourceGroup}>
+              <span className={styles.sourceGroupLabel}>Composer Repos</span>
+              <div className={styles.sourceItems}>
+                <div className={styles.sourceItem}>
+                  <Box size={14} />
+                  <span>Packagist</span>
+                </div>
+                <div className={styles.sourceItem}>
+                  <Box size={14} />
+                  <span>Private</span>
+                </div>
+                <div className={styles.sourceItem}>
+                  <Box size={14} />
+                  <span>Satis</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Flow Labels */}
-      <div className={styles.flowLabel} style={{ top: '45%', left: '25%' }}>
-        <span className={styles.flowArrow}>→</span>
-        <span className={styles.flowText}>Request Package</span>
-      </div>
-      <div className={styles.flowLabel} style={{ top: '45%', right: '25%' }}>
-        <span className={styles.flowArrow}>→</span>
-        <span className={styles.flowText}>Cache & Serve</span>
-      </div>
-      <div className={styles.flowLabel} style={{ top: '15%', left: '50%', transform: 'translateX(-50%)' }}>
-        <span className={styles.flowArrow}>↓</span>
-        <span className={styles.flowText}>Fetch on Miss</span>
+      {/* Legend */}
+      <div className={styles.legend}>
+        <div className={styles.legendItem}>
+          <span className={`${styles.legendDot} ${styles.legendBlue}`} />
+          <span>① Request</span>
+        </div>
+        <div className={styles.legendItem}>
+          <span className={`${styles.legendDot} ${styles.legendOrange}`} />
+          <span>② Fetch (miss)</span>
+        </div>
+        <div className={styles.legendItem}>
+          <span className={`${styles.legendDot} ${styles.legendGreen}`} />
+          <span>③ Serve (fast)</span>
+        </div>
       </div>
     </div>
   );
 }
-

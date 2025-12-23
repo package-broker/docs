@@ -1,381 +1,548 @@
-.architectureContainer {
-  position: relative;
-  width: 100%;
-  max-width: 900px;
-  height: 400px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: linear-gradient(135deg, #0f1117 0%, #1a1b26 100%);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  overflow: visible;
-}
-
-/* Client Box (Left) */
-.clientBox {
-  position: absolute;
-  left: 5%;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 160px;
+/* Container */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
   padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Main Row - Horizontal on desktop */
+.mainRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+  justify-content: center;
+}
+
+/* Client Card (Composer) */
+.clientCard {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.25rem;
+  background: rgba(77, 166, 255, 0.08);
+  border: 1px solid rgba(77, 166, 255, 0.3);
   border-radius: 12px;
-  text-align: center;
   transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
-.clientBox:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(77, 166, 255, 0.3);
-  transform: translateY(-50%) translateX(5px);
+[data-theme='light'] .clientCard {
+  background: rgba(77, 166, 255, 0.05);
+  border-color: rgba(77, 166, 255, 0.25);
 }
 
-.iconWrapper {
+.clientCard:hover {
+  background: rgba(77, 166, 255, 0.12);
+  border-color: rgba(77, 166, 255, 0.5);
+}
+
+.clientIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 64px;
-  height: 64px;
-  margin: 0 auto 1rem;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(77, 166, 255, 0.1) 0%, rgba(77, 166, 255, 0.05) 100%);
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(77, 166, 255, 0.15);
   color: #4DA6FF;
 }
 
-.boxTitle {
+.clientContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.clientTitle {
   font-size: 1rem;
   font-weight: 700;
-  margin: 0 0 0.5rem;
   color: #fff;
 }
 
-.boxSubtitle {
-  font-size: 0.85rem;
-  color: #a9b1d6;
-  margin: 0;
+[data-theme='light'] .clientTitle {
+  color: #1a1b26;
 }
 
-/* Center Box (PACKAGE.broker) */
-.centerBox {
+.clientSubtitle {
+  font-size: 0.7rem;
+  color: #6b7280;
+}
+
+/* Flow Connection Lines - HORIZONTAL (desktop) */
+.flowConnection {
+  position: relative;
+  width: 80px;
+  height: 4px;
+  flex-shrink: 0;
+}
+
+.flowTrack {
   position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+[data-theme='light'] .flowTrack {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.flowLabel {
+  position: absolute;
+  top: -18px;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 240px;
-  padding: 2rem;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #6b7280;
+  white-space: nowrap;
+}
+
+/* Animated Dots */
+.flowDot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  top: -3px;
+  box-shadow: 0 0 10px currentColor;
+}
+
+/* ① Blue: Fast request */
+.dotRequest {
+  background: #4DA6FF;
+  color: #4DA6FF;
+  animation: flowForward 1s infinite ease-out;
+}
+
+/* ③ Green: Fast response */
+.dotResponse {
+  background: #22c55e;
+  color: #22c55e;
+  animation: flowBackward 0.6s infinite ease-out;
+  animation-delay: 0.15s;
+}
+
+.dotResponse2 {
+  background: #22c55e;
+  color: #22c55e;
+  animation: flowBackward 0.6s infinite ease-out;
+  animation-delay: 0.45s;
+}
+
+/* ② Orange: Slow fetch */
+.dotFetch {
+  background: #FF8C42;
+  color: #FF8C42;
+  animation: flowForward 2.2s infinite ease-in-out;
+}
+
+.dotFetchReturn {
+  background: #FF8C42;
+  color: #FF8C42;
+  animation: flowBackward 2.2s infinite ease-in-out;
+  animation-delay: 1.1s;
+}
+
+/* ② Orange: Store in cache (internal) */
+.dotCacheStore {
+  background: #FF8C42;
+  color: #FF8C42;
+  animation: flowDown 1.4s infinite ease-in-out;
+}
+
+/* ③ Green: Fast read from cache (internal) */
+.dotCacheRead {
+  background: #22c55e;
+  color: #22c55e;
+  animation: flowUp 0.5s infinite ease-out;
+  animation-delay: 0.2s;
+}
+
+/* Horizontal animations */
+@keyframes flowForward {
+  0% { left: 0; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { left: calc(100% - 10px); opacity: 0; }
+}
+
+@keyframes flowBackward {
+  0% { left: calc(100% - 10px); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { left: 0; opacity: 0; }
+}
+
+/* Vertical animations */
+@keyframes flowDown {
+  0% { top: -3px; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: calc(100% - 7px); opacity: 0; }
+}
+
+@keyframes flowUp {
+  0% { top: calc(100% - 7px); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: -3px; opacity: 0; }
+}
+
+/* System Container (Broker + Storage) */
+.systemContainer {
+  padding: 3px;
+  background: linear-gradient(135deg, rgba(255, 140, 66, 0.4) 0%, rgba(255, 140, 66, 0.2) 100%);
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+
+.systemInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 1rem;
+  background: linear-gradient(135deg, #1a1b26 0%, #0f1117 100%);
+  border-radius: 18px;
+}
+
+[data-theme='light'] .systemInner {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+/* PACKAGE.broker Card */
+.brokerCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1rem 1.5rem;
   background: linear-gradient(135deg, #FF8C42 0%, #e67e3b 100%);
   border: 2px solid #FF8C42;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: 0 10px 40px rgba(255, 140, 66, 0.3);
-  z-index: 10;
+  border-radius: 14px;
   transition: all 0.3s ease;
 }
 
-.centerBox:hover {
-  transform: translate(-50%, -50%) scale(1.05);
-  box-shadow: 0 15px 50px rgba(255, 140, 66, 0.4);
+.brokerCard:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 24px rgba(255, 140, 66, 0.35);
 }
 
-.centerIconWrapper {
+.brokerIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 1rem;
-  border-radius: 16px;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
 }
 
-.centerTitle {
-  font-size: 1.5rem;
+.brokerTitle {
+  font-size: 1rem;
   font-weight: 800;
-  margin: 0 0 0.5rem;
   color: #fff;
+  white-space: nowrap;
 }
 
-.centerBadge {
-  display: inline-block;
-  padding: 0.4rem 0.8rem;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #fff;
+.brokerSubtitle {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-/* Sources Box (Top) */
-.sourcesBox {
-  position: absolute;
-  left: 50%;
-  top: 5%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 1rem;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+/* Internal Flow (Broker ↔ Storage) - Always Vertical */
+.internalFlow {
+  position: relative;
+  width: 4px;
+  height: 24px;
 }
 
-.sourceItem {
+.internalTrack {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+/* Storage Card */
+.storageCard {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 8px;
+  gap: 0.5rem;
+  padding: 0.6rem 0.9rem;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: 10px;
   transition: all 0.2s ease;
 }
 
-.sourceItem:hover {
-  background: rgba(255, 255, 255, 0.05);
+.storageCard:hover {
+  background: rgba(34, 197, 94, 0.15);
+  border-color: rgba(34, 197, 94, 0.5);
 }
 
-.sourceIcon {
+.storageIcon {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  background: rgba(77, 166, 255, 0.1);
-  color: #4DA6FF;
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
 }
 
-.sourceText {
+.storageContent {
   display: flex;
   flex-direction: column;
 }
 
-.sourceName {
-  font-size: 0.9rem;
+.storageTitle {
+  font-size: 0.85rem;
   font-weight: 600;
   color: #fff;
 }
 
-.sourceSubtitle {
-  font-size: 0.75rem;
-  color: #a9b1d6;
+[data-theme='light'] .storageTitle {
+  color: #1a1b26;
 }
 
-/* Storage Box (Right) */
-.storageBox {
-  position: absolute;
-  right: 5%;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 160px;
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  text-align: center;
-  transition: all 0.3s ease;
+.storageSubtitle {
+  font-size: 0.65rem;
+  color: #6b7280;
 }
 
-.storageBox:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(74, 222, 128, 0.3);
-  transform: translateY(-50%) translateX(-5px);
-}
-
-/* Connection Lines */
-.connectionLine {
-  position: absolute;
-  background: linear-gradient(90deg, transparent, currentColor, transparent);
-  opacity: 0.6;
-  animation: flow 3s ease-in-out infinite;
-}
-
-.connectionLine::before {
-  content: '';
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: currentColor;
-  border-radius: 50%;
-  animation: moveAlong 3s ease-in-out infinite;
-}
-
-.toCenter {
-  right: -20px;
-  top: 50%;
-  width: 60px;
-  height: 2px;
-  transform: translateY(-50%);
-  color: #4DA6FF;
-}
-
-.fromClient {
-  left: -60px;
-  top: 50%;
-  width: 60px;
-  height: 2px;
-  transform: translateY(-50%);
-  color: #4DA6FF;
-}
-
-.toStorage {
-  right: -60px;
-  top: 50%;
-  width: 60px;
-  height: 2px;
-  transform: translateY(-50%);
-  color: #4ADE80;
-}
-
-.fromCenter {
-  left: -20px;
-  top: 50%;
-  width: 60px;
-  height: 2px;
-  transform: translateY(-50%);
-  color: #4ADE80;
-}
-
-.fromSourcesToCenter {
-  left: 50%;
-  top: 100%;
-  width: 2px;
-  height: 80px;
-  transform: translateX(-50%);
-  color: #FF8C42;
-}
-
-.fromSources {
-  left: 50%;
-  top: -80px;
-  width: 2px;
-  height: 80px;
-  transform: translateX(-50%);
-  color: #FF8C42;
-}
-
-/* Flow Labels */
-.flowLabel {
-  position: absolute;
+/* Sources Container */
+.sourcesContainer {
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 20px;
-  font-size: 0.85rem;
-  color: #fff;
-  pointer-events: none;
-  z-index: 20;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  flex-shrink: 0;
 }
 
-.flowArrow {
-  color: #4DA6FF;
-  font-weight: bold;
+[data-theme='light'] .sourcesContainer {
+  background: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.08);
 }
 
-.flowText {
+.sourcesLabel {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sourcesGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sourceGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sourceGroupLabel {
+  font-size: 0.6rem;
+  font-weight: 500;
+  color: #9ca3af;
+  padding-left: 0.25rem;
+}
+
+.sourceItems {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.sourceItem {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.6rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 500;
   color: #a9b1d6;
+  transition: all 0.2s ease;
 }
 
-/* Animations */
-@keyframes flow {
-  0%, 100% {
-    opacity: 0.3;
-  }
-  50% {
-    opacity: 0.8;
-  }
-}
-
-@keyframes moveAlong {
-  0% {
-    left: 0;
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    left: 100%;
-    opacity: 0;
-  }
-}
-
-/* Light theme adjustments */
-[data-theme='light'] .architectureContainer {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-color: rgba(0, 0, 0, 0.1);
-}
-
-[data-theme='light'] .clientBox,
-[data-theme='light'] .storageBox,
-[data-theme='light'] .sourcesBox {
+[data-theme='light'] .sourceItem {
   background: rgba(0, 0, 0, 0.03);
   border-color: rgba(0, 0, 0, 0.1);
-}
-
-[data-theme='light'] .clientBox:hover,
-[data-theme='light'] .storageBox:hover {
-  background: rgba(0, 0, 0, 0.05);
-  border-color: rgba(0, 102, 204, 0.3);
-}
-
-[data-theme='light'] .boxTitle {
-  color: #1a1b26;
-}
-
-[data-theme='light'] .boxSubtitle {
   color: #495057;
 }
 
-[data-theme='light'] .sourceName {
-  color: #1a1b26;
+.sourceItem:hover {
+  background: rgba(255, 140, 66, 0.1);
+  border-color: rgba(255, 140, 66, 0.3);
+  color: #FF8C42;
 }
 
-[data-theme='light'] .sourceSubtitle {
-  color: #495057;
+.sourceItem svg {
+  color: #FF8C42;
 }
 
-[data-theme='light'] .flowLabel {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+/* Legend */
+.legend {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-[data-theme='light'] .flowText {
-  color: #495057;
+[data-theme='light'] .legend {
+  border-top-color: rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .architectureContainer {
-    height: 500px;
-    padding: 1rem;
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.7rem;
+  color: #9ca3af;
+}
+
+.legendDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.legendBlue {
+  background: #4DA6FF;
+  box-shadow: 0 0 6px #4DA6FF;
+}
+
+.legendOrange {
+  background: #FF8C42;
+  box-shadow: 0 0 6px #FF8C42;
+}
+
+.legendGreen {
+  background: #22c55e;
+  box-shadow: 0 0 6px #22c55e;
+}
+
+/* ========== MOBILE: Vertical Layout ========== */
+@media screen and (max-width: 768px) {
+  .mainRow {
+    flex-direction: column !important;
+    gap: 0 !important;
+    align-items: center !important;
   }
 
-  .clientBox,
-  .storageBox {
-    width: 140px;
-    padding: 1rem;
+  /* Flow connections become vertical */
+  .flowConnection {
+    width: 4px !important;
+    height: 50px !important;
   }
 
-  .centerBox {
-    width: 200px;
-    padding: 1.5rem;
-  }
-
-  .sourcesBox {
-    flex-direction: column;
-    gap: 0.5rem;
+  .flowTrack {
+    width: 4px !important;
+    height: 100% !important;
   }
 
   .flowLabel {
-    font-size: 0.75rem;
-    padding: 0.4rem 0.8rem;
+    top: 50% !important;
+    left: 20px !important;
+    transform: translateY(-50%) !important;
+  }
+
+  .flowDot {
+    left: -3px !important;
+    top: 0 !important;
+  }
+
+  /* Override animations for vertical flow */
+  .dotRequest {
+    animation: flowDown 1s infinite ease-out !important;
+  }
+
+  .dotResponse {
+    animation: flowUp 0.6s infinite ease-out !important;
+    animation-delay: 0.15s !important;
+  }
+
+  .dotResponse2 {
+    animation: flowUp 0.6s infinite ease-out !important;
+    animation-delay: 0.45s !important;
+  }
+
+  .dotFetch {
+    animation: flowDown 2.2s infinite ease-in-out !important;
+  }
+
+  .dotFetchReturn {
+    animation: flowUp 2.2s infinite ease-in-out !important;
+    animation-delay: 1.1s !important;
+  }
+
+  /* Source items stack better */
+  .sourceItems {
+    justify-content: center !important;
+  }
+
+  .sourcesContainer {
+    width: 100% !important;
+    max-width: 300px !important;
+  }
+
+  .legend {
+    gap: 1rem !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
   }
 }
 
+@media (max-width: 400px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .clientCard {
+    padding: 0.75rem 1rem;
+  }
+
+  .brokerCard {
+    padding: 0.875rem 1.25rem;
+  }
+
+  .sourceItem {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.65rem;
+  }
+
+  .legendItem {
+    font-size: 0.65rem;
+  }
+}
