@@ -102,11 +102,31 @@ const config: Config = {
           position: 'left',
           label: 'Documentation',
         },
-        { to: '/blog', label: 'Blog', position: 'left' },
+        {
+          to: '/docs/installation/cloudflare-workers',
+          label: 'Deploy',
+          position: 'left',
+        },
+        {
+          to: '/docs/compliance/soc2-compliance',
+          label: 'Security',
+          position: 'left',
+        },
+        {
+          to: '#calculate-savings',
+          label: 'Savings',
+          position: 'left',
+        },
         {
           type: 'html',
           position: 'right',
-          value: '<a href="https://github.com/package-broker/server" target="_blank" rel="noopener noreferrer" class="navbar__link" style="display:flex;align-items:center;"><img src="https://img.shields.io/github/stars/package-broker/server?style=social&label=Stars" alt="GitHub Stars" height="20" /></a>',
+          value: '<a href="https://github.com/package-broker/server" target="_blank" rel="noopener noreferrer" class="navbar__link navbar__stars" style="display:flex;align-items:center;margin-right:1rem;"><img src="https://img.shields.io/github/stars/package-broker/server?style=social&label=Stars" alt="GitHub Stars" height="20" /></a>',
+        },
+        {
+          to: '/docs/',
+          label: 'Get Started',
+          position: 'right',
+          className: 'navbar__cta-button',
         },
       ],
     },

@@ -62,32 +62,80 @@ function HomepageHeader() {
   return (
     <header className={clsx('hero', styles.heroBanner)}>
       <div className={styles.heroGlow} />
+      <div className={styles.heroNoise} />
       <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-        <div className="text--center">
-          <h1 className="hero__title">
+        {/* Layer 1: Headline Block */}
+        <div className={styles.heroContent}>
+          <h1 className={clsx('hero__title', styles.heroTitle)}>
             <span className={styles.heroTitleText}>
-              Ship Private Composer Packages Without Per-Seat Pricing
+              Private Composer Packages.<br />
+              Zero Per-Seat Pricing.
             </span>
           </h1>
-          <p className="hero__subtitle">
-            Stop paying €50-700/month for private package hosting. PACKAGE.broker runs on your infrastructure—or free Cloudflare Workers—with zero per-seat fees.
+          <p className={styles.heroSubtitle}>
+            Stop paying €50-700/month. Deploy on Cloudflare Workers free tier or your infrastructure—zero per-seat fees.
           </p>
-          <div className={styles.buttons}>
+          <div className={styles.heroButtons}>
             <Link
               className="button button--primary button--lg"
               to="/docs/">
               Get Started
               <ArrowRight className="margin-left--sm" size={18} />
             </Link>
-            <GitHubStarButton />
+            <Link
+              className="button button--secondary button--lg"
+              to="/docs/installation/cloudflare-workers">
+              Deploy on Cloudflare
+            </Link>
           </div>
-          <p className={styles.heroSubCta}>
-            Runs on Cloudflare Workers free tier for small teams
-          </p>
-          <div className="margin-top--lg">
-            <span className="badge badge--secondary margin-right--sm">Zero Cost</span>
-            <span className="badge badge--secondary margin-right--sm">Serverless</span>
-            <span className="badge badge--secondary">SOC-2 Ready</span>
+          <div className={styles.heroProofChips}>
+            <span className={styles.proofChip}>
+              <Check size={14} className={styles.proofIcon} />
+              Free tier
+            </span>
+            <span className={styles.proofChip}>
+              <Check size={14} className={styles.proofIcon} />
+              Token auth
+            </span>
+            <span className={styles.proofChip}>
+              <Check size={14} className={styles.proofIcon} />
+              Edge cache
+            </span>
+            <span className={styles.proofChip}>
+              <Check size={14} className={styles.proofIcon} />
+              Audit logs
+            </span>
+          </div>
+        </div>
+
+        {/* Layer 2: Visual Strip - Architecture Diagram in Glass Panel */}
+        <div className={styles.heroVisualStrip}>
+          <div className={styles.glassPanel}>
+            <InteractiveArchitecture />
+          </div>
+          {/* Big Colorful Step Circles */}
+          <div className={styles.heroStepsExplanation}>
+            <div className={styles.heroStepItem}>
+              <div className={styles.heroStepNumber}>①</div>
+              <div className={styles.heroStepContent}>
+                <h4 className={styles.heroStepTitle}>Request</h4>
+                <p className={styles.heroStepDescription}>Composer requests a package from PACKAGE.broker</p>
+              </div>
+            </div>
+            <div className={styles.heroStepItem}>
+              <div className={styles.heroStepNumber}>②</div>
+              <div className={styles.heroStepContent}>
+                <h4 className={styles.heroStepTitle}>Cache Miss: Fetch & Store</h4>
+                <p className={styles.heroStepDescription}>If not cached, fetch from source and store for future requests</p>
+              </div>
+            </div>
+            <div className={styles.heroStepItem}>
+              <div className={styles.heroStepNumber}>③</div>
+              <div className={styles.heroStepContent}>
+                <h4 className={styles.heroStepTitle}>Cache Hit: Serve Fast</h4>
+                <p className={styles.heroStepDescription}>Serve from cache for instant package delivery</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -208,44 +256,10 @@ export default function Home(): ReactNode {
       <HomepageHeader />
 
       <main>
+
         {/* Proof Bar - Screenshots */}
         <div className="container padding-vert--xl">
           <ScreenshotGallery />
-        </div>
-
-        {/* How It Works - Architecture Diagram */}
-        <div className={clsx('padding-vert--xl', styles.architectureSection)}>
-          <div className="container">
-            <div className="text--center margin-bottom--lg">
-              <h2 className={styles.sectionTitle}>How It Works</h2>
-              <p>PACKAGE.broker sits between your Composer clients and package sources, caching artifacts for blazing-fast installs.</p>
-            </div>
-            <InteractiveArchitecture />
-            {/* 3-Step Explanation */}
-            <div className={styles.stepsExplanation}>
-              <div className={styles.stepItem}>
-                <div className={styles.stepNumber}>①</div>
-                <div className={styles.stepContent}>
-                  <h4 className={styles.stepTitle}>Request</h4>
-                  <p className={styles.stepDescription}>Composer requests a package from PACKAGE.broker</p>
-                </div>
-              </div>
-              <div className={styles.stepItem}>
-                <div className={styles.stepNumber}>②</div>
-                <div className={styles.stepContent}>
-                  <h4 className={styles.stepTitle}>Cache Miss: Fetch & Store</h4>
-                  <p className={styles.stepDescription}>If not cached, fetch from source and store for future requests</p>
-                </div>
-              </div>
-              <div className={styles.stepItem}>
-                <div className={styles.stepNumber}>③</div>
-                <div className={styles.stepContent}>
-                  <h4 className={styles.stepTitle}>Cache Hit: Serve Fast</h4>
-                  <p className={styles.stepDescription}>Serve from cache for instant package delivery</p>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Value Proposition / Terminal Section */}
@@ -310,7 +324,7 @@ export default function Home(): ReactNode {
         </div>
 
         {/* ROI Calculator Section */}
-        <div className="container padding-vert--xl">
+        <div id="calculate-savings" className="container padding-vert--xl">
           <div className="text--center margin-bottom--xl">
             <h2 className={styles.sectionTitle}>Calculate Your Savings</h2>
             <p>See how much you can save by switching to PACKAGE.broker</p>

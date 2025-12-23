@@ -111,22 +111,6 @@ export default function InteractiveArchitecture() {
           </div>
         </div>
       </div>
-
-      {/* Legend */}
-      <div className={styles.legend}>
-        <div className={styles.legendItem}>
-          <span className={`${styles.legendDot} ${styles.legendBlue}`} />
-          <span>① Request</span>
-        </div>
-        <div className={styles.legendItem}>
-          <span className={`${styles.legendDot} ${styles.legendOrange}`} />
-          <span>② Fetch (miss)</span>
-        </div>
-        <div className={styles.legendItem}>
-          <span className={`${styles.legendDot} ${styles.legendGreen}`} />
-          <span>③ Serve (fast)</span>
-        </div>
-      </div>
     </div>
   );
 }
