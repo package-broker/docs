@@ -1,10 +1,22 @@
-# Migration from Private Packagist
+---
+sidebar_position: 2
+title: Migration from Private Packagist™
+description: Guide to migrating from Private Packagist™ to PACKAGE.broker
+---
 
-This guide will help you migrate from Private Packagist to PACKAGE.broker.
+# Migration from Private Packagist™
+
+This guide will help you migrate from Private Packagist™ to PACKAGE.broker.
+
+:::info Legal Notice
+
+Private Packagist™ is a trademark of its respective owner. This guide is provided for informational purposes only. PACKAGE.broker is not affiliated with, endorsed by, or sponsored by Private Packagist™. See [Legal Notice](./legal-notice.md) for details.
+
+:::
 
 ## Overview
 
-Private Packagist is a commercial SaaS solution for hosting private Composer packages. PACKAGE.broker offers similar functionality as a self-hosted, open-source alternative that can save you hundreds of euros per year.
+Private Packagist™ is a commercial SaaS solution for hosting private Composer packages. PACKAGE.broker is a self-hosted, open-source Composer repository proxy and cache that provides similar functionality.
 
 ## Prerequisites
 
@@ -132,14 +144,14 @@ Once testing is complete:
 4. **Monitor for 24-48 hours** to ensure smooth transition
 5. **Cancel Private Packagist subscription** after successful migration
 
-## Cost Comparison
+## Deployment Comparison
 
-| Item | Private Packagist | PACKAGE.broker |
+| Item | Private Packagist™ | PACKAGE.broker |
 |------|-------------------|----------------|
-| Annual Cost | €700-3500 | €0-60 |
+| Deployment Model | SaaS (hosted) | Self-hosted (Cloudflare Workers or Docker) |
 | Setup Time | Instant | 10-15 minutes |
-| Maintenance | Zero (SaaS) | Minimal |
-| Data Control | Limited | Full |
+| Maintenance | Managed by vendor | Self-managed |
+| Data Control | Vendor-managed | Full control |
 
 ## Troubleshooting
 

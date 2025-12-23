@@ -1,10 +1,22 @@
+---
+sidebar_position: 1
+title: Migration from Satis
+description: Guide to migrating from Satis to PACKAGE.broker
+---
+
 # Migration from Satis
 
 This guide will help you migrate from Satis to PACKAGE.broker.
 
+:::info Legal Notice
+
+Satis is an open-source project maintained by the Composer team. This guide is provided for informational purposes only. PACKAGE.broker is not affiliated with, endorsed by, or sponsored by the Composer project or Satis maintainers. See [Legal Notice](./legal-notice.md) for details.
+
+:::
+
 ## Overview
 
-Satis is a static Composer repository generator. PACKAGE.broker provides a dynamic, web-based alternative with a modern UI, webhook support, and better performance.
+Satis is a static Composer repository generator. PACKAGE.broker is a dynamic, web-based Composer repository proxy and cache with a modern UI, webhook support, and edge caching capabilities.
 
 ## Prerequisites
 
@@ -175,23 +187,23 @@ Once everything is working:
 3. **Update all documentation** with new URLs
 4. **Remove Satis** after successful transition
 
-## Advantages of Migration
+## Feature Differences
 
 ### Automatic Updates
 - **Satis**: Requires manual `satis build` after each package update
 - **PACKAGE.broker**: Automatic updates via webhooks
 
-### Better Performance
+### Performance
 - **Satis**: Static files, no caching
 - **PACKAGE.broker**: Edge caching, CDN distribution
 
-### Modern UI
+### User Interface
 - **Satis**: No UI, command-line only
 - **PACKAGE.broker**: Web dashboard for management
 
-### Reduced Maintenance
+### Maintenance
 - **Satis**: Manual rebuilds, server management
-- **PACKAGE.broker**: Serverless or Docker, minimal maintenance
+- **PACKAGE.broker**: Serverless or Docker deployment options
 
 ## Troubleshooting
 
@@ -222,14 +234,14 @@ If authentication fails:
 3. Verify `auth.json` format
 4. Test with `composer config --list`
 
-## Cost Comparison
+## Deployment Comparison
 
 | Item | Satis | PACKAGE.broker |
 |------|-------|----------------|
-| Server Costs | €240+/year | €0-60/year |
-| Setup Time | 30 minutes | 10-15 minutes |
-| Maintenance | High (manual rebuilds) | Low (automatic) |
-| Features | Basic | Advanced (UI, webhooks, caching) |
+| Deployment Model | Self-hosted (server required) | Self-hosted (Cloudflare Workers or Docker) |
+| Setup Time | ~30 minutes | ~10-15 minutes |
+| Update Method | Manual rebuilds | Automatic via webhooks |
+| User Interface | Command-line only | Web dashboard |
 
 ## Support
 
