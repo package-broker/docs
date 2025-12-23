@@ -28,8 +28,6 @@ npx package-broker-cloudflare init --interactive
 - Auto-generated `wrangler.toml` with all IDs populated
 - One-command deployment
 
-See [FUTURE.md](https://github.com/package-broker/server/blob/main/FUTURE.md#87-enhanced-cli-onboarding-cloudflare) for detailed specification.
-
 ### Kubernetes/Helm Chart
 
 **Status**: Planned  
