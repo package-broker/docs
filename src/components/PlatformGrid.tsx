@@ -18,8 +18,8 @@ const platforms: Platform[] = [
     name: 'Docker',
     description: '1-Click Setup',
     icon: <Box size={32} />,
-    status: 'coming-soon',
-    link: '/docs/installation/docker',
+    status: 'available',
+    link: '/docs/getting-started/quickstart-docker',
     bestFor: 'Self-hosted deployments',
   },
   {
@@ -27,7 +27,7 @@ const platforms: Platform[] = [
     description: 'Workers',
     icon: <Cloud size={32} />,
     status: 'available',
-    link: '/docs/installation/cloudflare',
+    link: '/docs/getting-started/quickstart-cloudflare',
     bestFor: 'Free tier + edge cache',
     recommended: true,
   },
@@ -51,7 +51,7 @@ const platforms: Platform[] = [
     description: 'Helm Chart',
     icon: <Layers size={32} />,
     status: 'planned',
-    link: '/docs/installation/kubernetes',
+    link: '/docs/getting-started/quickstart-kubernetes',
     bestFor: 'K8s clusters',
   },
   {
@@ -100,7 +100,7 @@ export default function PlatformGrid() {
       </div>
       <div className={styles.roadmapFooter}>
         <p className={styles.roadmapText}>
-          <strong>Roadmap:</strong> Docker and Kubernetes deployments are in active development as part of our architectural refactor. Cloudflare Workers is available now with a free tier for small teams.
+          <strong>Roadmap:</strong> Kubernetes deployment is planned for Q2 2025. Docker and Cloudflare Workers are available now.
         </p>
       </div>
     </div>

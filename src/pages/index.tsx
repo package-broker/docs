@@ -84,7 +84,7 @@ function HomepageHeader() {
             </Link>
             <Link
               className="button button--secondary button--lg"
-              to="/docs/installation/cloudflare">
+              to="/docs/getting-started/quickstart-cloudflare">
               Deploy on Cloudflare
             </Link>
           </div>
