@@ -174,7 +174,6 @@ If downloads are slow:
 
 If you encounter issues during migration:
 
-- Check the [troubleshooting guide](../operations/troubleshooting.md)
 - Open an issue on [GitHub](https://github.com/package-broker/server/issues)
 - Join [GitHub Discussions](https://github.com/package-broker/server/discussions)
 
@@ -182,7 +181,6 @@ If you encounter issues during migration:
 
 After successful migration:
 
-- [Configure caching strategies](../configuration/caching-strategies.md)
-- [Set up monitoring](../operations/monitoring.md)
-- [Review compliance settings](../compliance/soc2-compliance.md)
+- Review [compliance settings](../soc2-compliance.md)
+- Check the [getting started guide](../intro.md)
 

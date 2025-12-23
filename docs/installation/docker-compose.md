@@ -98,10 +98,9 @@ docker-compose up -d
 
 ## Next Steps
 
-1. [Configure authentication](../configuration/authentication.md)
-2. [Add repository sources](../configuration/repository-sources.md)
-3. [Set up monitoring](../operations/monitoring.md)
-4. [Configure backups](../operations/backup-restore.md)
+1. Review the [getting started guide](../intro.md)
+2. Check the [Cloudflare installation guide](./cloudflare.md) for current deployment options
+3. Review [compliance documentation](../soc2-compliance.md)
 
 ## Support
 

@@ -215,13 +215,11 @@ Before an ISO 27001 audit, verify:
 For ISO 27001 compliance questions:
 
 - Review [audit logging guide](./audit-logging.md)
-- Check [security documentation](../operations/monitoring.md)
+- Check [SOC 2 compliance guide](../soc2-compliance.md)
 - Open an issue on [GitHub](https://github.com/package-broker/server/issues)
 
 ## Related Documentation
 
-- [SOC 2 Compliance Guide](./soc2-compliance.md)
+- [SOC 2 Compliance Guide](../soc2-compliance.md)
 - [Audit Logging Guide](./audit-logging.md)
-- [Encryption Key Rotation](./encryption-key-rotation.md)
-- [GDPR Considerations](./gdpr-considerations.md)
 

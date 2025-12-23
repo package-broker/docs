@@ -235,7 +235,6 @@ If authentication fails:
 
 If you encounter issues:
 
-- Check the [troubleshooting guide](../operations/troubleshooting.md)
 - Open an issue on [GitHub](https://github.com/package-broker/server/issues)
 - Join [GitHub Discussions](https://github.com/package-broker/server/discussions)
 
@@ -243,7 +242,6 @@ If you encounter issues:
 
 After successful migration:
 
-- [Configure webhooks](../configuration/webhooks.md)
-- [Set up monitoring](../operations/monitoring.md)
-- [Review caching strategies](../configuration/caching-strategies.md)
+- Review the [getting started guide](../intro.md)
+- Check [compliance documentation](../soc2-compliance.md)
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
-import { Docker, Cloud, Server, Kubernetes, Aws, DigitalOcean } from 'lucide-react';
+import { Box, Cloud, Server, Layers, Database, Globe } from 'lucide-react';
 import styles from './PlatformGrid.module.css';
 
 interface Platform {
@@ -15,7 +15,7 @@ const platforms: Platform[] = [
   {
     name: 'Docker',
     description: '1-Click Setup',
-    icon: <Docker size={32} />,
+    icon: <Box size={32} />,
     status: 'coming-soon',
     link: '/docs/installation/docker',
   },
@@ -29,7 +29,7 @@ const platforms: Platform[] = [
   {
     name: 'AWS',
     description: 'App Runner',
-    icon: <Aws size={32} />,
+    icon: <Database size={32} />,
     status: 'planned',
   },
   {
@@ -42,14 +42,14 @@ const platforms: Platform[] = [
   {
     name: 'Kubernetes',
     description: 'Helm Chart',
-    icon: <Kubernetes size={32} />,
+    icon: <Layers size={32} />,
     status: 'planned',
     link: '/docs/installation/kubernetes',
   },
   {
     name: 'DigitalOcean',
     description: 'Apps Platform',
-    icon: <DigitalOcean size={32} />,
+    icon: <Globe size={32} />,
     status: 'planned',
   },
 ];

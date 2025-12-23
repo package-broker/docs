@@ -349,6 +349,6 @@ Set up alerts for:
 For audit logging questions:
 
 - Review [ISO 27001 Compliance Guide](./iso-27001-compliance.md)
-- Check [SOC 2 Compliance Guide](./soc2-compliance.md)
+- Check [SOC 2 Compliance Guide](../soc2-compliance.md)
 - Open an issue on [GitHub](https://github.com/package-broker/server/issues)
 

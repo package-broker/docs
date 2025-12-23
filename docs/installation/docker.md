@@ -41,9 +41,8 @@ After starting the container:
 
 ## Next Steps
 
-1. [Add your first repository source](../configuration/repository-sources.md)
-2. [Create access tokens](../configuration/authentication.md)
-3. [Configure webhooks](../configuration/webhooks.md)
+1. Review the [getting started guide](../intro.md)
+2. Check the [Cloudflare installation guide](./cloudflare.md) for current deployment options
 
 ## Production Considerations
 
