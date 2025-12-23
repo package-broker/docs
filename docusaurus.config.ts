@@ -72,9 +72,22 @@ const config: Config = {
     },
     // SEO metadata
     metadata: [
-      { name: 'keywords', content: 'composer, php, private packages, packagist, mirror, proxy, soc2, security' },
-      { name: 'twitter:card', content: 'summary_large_image' },
+      { 
+        name: 'description', 
+        content: 'Open source Composer repository proxy for small agencies and enterprises. Self-hosted private package management with SOC2 compliance. Alternative to commercial SaaS - zero cost with Docker, Cloudflare Workers, or VPS.' 
+      },
+      { 
+        name: 'keywords', 
+        content: 'composer proxy, private packagist alternative, php package management, self-hosted composer, magento composer cache, soc2 compliance, docker composer mirror, composer repository hosting, php package mirror security, composer private packages small teams' 
+      },
+      { property: 'og:title', content: 'PACKAGE.broker - Private Composer Repository Hosting' },
+      { property: 'og:description', content: 'Open source, SOC2-compliant Composer proxy for small agencies and enterprises. Self-hosted with Docker, Cloudflare Workers, or Kubernetes.' },
+      { property: 'og:image', content: 'https://package.broker/img/logo.png' },
       { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: 'https://package.broker' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: 'PACKAGE.broker - Private Composer Repository Hosting' },
+      { name: 'twitter:description', content: 'Open source, SOC2-compliant Composer proxy for small agencies and enterprises.' },
     ],
     navbar: {
       title: 'PACKAGE.broker',
