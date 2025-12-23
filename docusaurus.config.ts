@@ -106,7 +106,7 @@ const config: Config = {
           label: 'Documentation',
         },
         {
-          to: '/docs/installation/cloudflare',
+          to: '/docs/getting-started/quickstart-docker',
           label: 'Deploy',
           position: 'left',
         },
@@ -116,8 +116,8 @@ const config: Config = {
           position: 'left',
         },
         {
-          to: '#calculate-savings',
-          label: 'Savings',
+          href: 'https://github.com/orgs/package-broker/discussions',
+          label: 'Discussions',
           position: 'left',
         },
         {
@@ -150,7 +150,7 @@ const config: Config = {
           items: [
             {
               label: 'GitHub Discussions',
-              href: 'https://github.com/package-broker/server/discussions',
+              href: 'https://github.com/orgs/package-broker/discussions',
             },
           ],
         },
