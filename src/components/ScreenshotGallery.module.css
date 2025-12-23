@@ -22,10 +22,17 @@
 /* Desktop Grid View */
 .desktopGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  max-width: 1200px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  max-width: 1400px;
   margin: 0 auto;
+}
+
+@media (min-width: 1600px) {
+  .desktopGrid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 1600px;
+  }
 }
 
 .screenshotCard {
@@ -56,7 +63,7 @@
 .imageWrapper {
   position: relative;
   width: 100%;
-  padding-top: 60%; /* 16:10 aspect ratio */
+  padding-top: 75%; /* Taller aspect ratio for larger screenshots */
   overflow: hidden;
   background: rgba(0, 0, 0, 0.2);
 }
@@ -68,6 +75,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: top center; /* Crop from top to show important content */
   transition: transform 0.3s ease;
 }
 
@@ -174,6 +182,13 @@
 }
 
 /* Responsive */
+@media (max-width: 996px) {
+  .desktopGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
 @media (max-width: 768px) {
   .desktopGrid {
     display: none;
