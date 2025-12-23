@@ -26,6 +26,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Cache optimized images
+        uses: actions/cache@v4
+        with:
+          path: |
+            .docusaurus/image-manifest.json
+            static/img/generated
+            .docusaurus/cache
+          key: ${{ runner.os }}-images-${{ hashFiles('static/img/**/*.png', 'static/img/**/*.jpg', 'static/img/**/*.jpeg', 'scripts/optimize-images.mjs', 'src/remark/responsive-images.ts', 'docusaurus.config.ts', 'package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-images-
+
       - name: Build
         run: npm run build
 

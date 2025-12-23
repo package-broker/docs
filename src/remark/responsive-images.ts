@@ -1,0 +1,196 @@
+/**
+ * Remark plugin to transform Markdown images into responsive <picture> elements
+ * with AVIF/WebP srcset support
+ */
+
+import type { Transformer } from 'unified';
+import type { Root } from 'mdast';
+import { visit } from 'unist-util-visit';
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+// Type definitions for MDX JSX nodes
+interface MdxJsxAttribute {
+  type: 'mdxJsxAttribute';
+  name: string;
+  value: string | number;
+}
+
+interface MdxJsxFlowElement {
+  type: 'mdxJsxFlowElement';
+  name: string;
+  attributes: MdxJsxAttribute[];
+  children: MdxJsxFlowElement[];
+}
+
+interface ImageManifest {
+  [url: string]: {
+    original: {
+      url: string;
+      width: number;
+      height: number;
+    };
+    avifSrcSet: string;
+    webpSrcSet: string;
+    width: number;
+    height: number;
+  };
+}
+
+let manifestCache: ImageManifest | null = null;
+
+function loadManifest(manifestPath: string): ImageManifest {
+  if (manifestCache) {
+    return manifestCache;
+  }
+
+  try {
+    const content = readFileSync(manifestPath, 'utf-8');
+    manifestCache = JSON.parse(content);
+    return manifestCache || {};
+  } catch (error) {
+    console.warn(`Failed to load image manifest from ${manifestPath}:`, error);
+    return {};
+  }
+}
+
+interface ImageNode {
+  type: 'image';
+  url: string;
+  alt?: string;
+  title?: string;
+}
+
+export default function responsiveImages(): Transformer<Root> {
+  return (tree, file) => {
+    // Determine the manifest path relative to the docs root
+    // file.cwd is typically the site directory (docs/)
+    const manifestPath = join(file.cwd || process.cwd(), '.docusaurus', 'image-manifest.json');
+    const manifest = loadManifest(manifestPath);
+
+    visit(tree, 'image', (node: ImageNode, index, parent) => {
+      // Only process images that start with /img/ (our static assets)
+      if (!node.url.startsWith('/img/')) {
+        return;
+      }
+
+      const imageData = manifest[node.url];
+      if (!imageData) {
+        // Image not in manifest (maybe SVG or not processed), skip
+        return;
+      }
+
+      // Transform the image node into a JSX element
+      // We'll use MDX's JSX syntax
+      const pictureElement: MdxJsxFlowElement = {
+        type: 'mdxJsxFlowElement',
+        name: 'picture',
+        children: [
+          // AVIF source
+          {
+            type: 'mdxJsxFlowElement',
+            name: 'source',
+            attributes: [
+              {
+                type: 'mdxJsxAttribute',
+                name: 'type',
+                value: 'image/avif',
+              },
+              {
+                type: 'mdxJsxAttribute',
+                name: 'srcSet',
+                value: imageData.avifSrcSet,
+              },
+              {
+                type: 'mdxJsxAttribute',
+                name: 'sizes',
+                value: '100vw',
+              },
+            ],
+            children: [],
+          } as MdxJsxFlowElement,
+          // WebP source
+          {
+            type: 'mdxJsxFlowElement',
+            name: 'source',
+            attributes: [
+              {
+                type: 'mdxJsxAttribute',
+                name: 'type',
+                value: 'image/webp',
+              },
+              {
+                type: 'mdxJsxAttribute',
+                name: 'srcSet',
+                value: imageData.webpSrcSet,
+              },
+              {
+                type: 'mdxJsxAttribute',
+                name: 'sizes',
+                value: '100vw',
+              },
+            ],
+            children: [],
+          } as MdxJsxFlowElement,
+          // Fallback img
+          {
+            type: 'mdxJsxFlowElement',
+            name: 'img',
+            attributes: [
+              {
+                type: 'mdxJsxAttribute',
+                name: 'src',
+                value: imageData.original.url,
+              },
+              {
+                type: 'mdxJsxAttribute',
+                name: 'width',
+                value: imageData.width,
+              },
+              {
+                type: 'mdxJsxAttribute',
+                name: 'height',
+                value: imageData.height,
+              },
+              {
+                type: 'mdxJsxAttribute',
+                name: 'loading',
+                value: 'lazy',
+              },
+              {
+                type: 'mdxJsxAttribute',
+                name: 'decoding',
+                value: 'async',
+              },
+              ...(node.alt
+                ? [
+                    {
+                      type: 'mdxJsxAttribute',
+                      name: 'alt',
+                      value: node.alt,
+                    } as MdxJsxAttribute,
+                  ]
+                : []),
+              ...(node.title
+                ? [
+                    {
+                      type: 'mdxJsxAttribute',
+                      name: 'title',
+                      value: node.title,
+                    } as MdxJsxAttribute,
+                  ]
+                : []),
+            ],
+            children: [],
+          } as MdxJsxFlowElement,
+        ],
+      };
+
+      // Replace the image node with the picture element
+      if (parent && typeof index === 'number') {
+        parent.children[index] = pictureElement;
+      }
+    });
+  };
+}
+

@@ -1,6 +1,7 @@
 import { themes as prismThemes } from 'prism-react-renderer';
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import responsiveImages from './src/remark/responsive-images';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -38,6 +39,7 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           editUrl: 'https://github.com/package-broker/docs/tree/main/',
+          remarkPlugins: [responsiveImages],
         },
         blog: {
           showReadingTime: true,
@@ -49,6 +51,7 @@ const config: Config = {
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn',
+          remarkPlugins: [responsiveImages],
         },
         theme: {
           customCss: './src/css/custom.css',
