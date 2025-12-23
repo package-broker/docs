@@ -1,0 +1,121 @@
+.codeTabsContainer {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #1a1b26;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  margin: 1.5rem 0;
+}
+
+.tabHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0;
+}
+
+.tabs {
+  display: flex;
+  gap: 0;
+}
+
+.tab {
+  padding: 12px 20px;
+  background: transparent;
+  border: none;
+  color: #a9b1d6;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  border-bottom: 2px solid transparent;
+  font-family: 'Inter', sans-serif;
+}
+
+.tab:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tab.activeTab {
+  color: #4DA6FF;
+  border-bottom-color: #4DA6FF;
+  background: rgba(77, 166, 255, 0.05);
+}
+
+.copyButton {
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  color: #a9b1d6;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  margin-right: 8px;
+  border-radius: 6px;
+}
+
+.copyButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.codeBlock {
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.pre {
+  margin: 0;
+  font-family: 'Fira Code', 'Monaco', 'Courier New', monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #a9b1d6;
+}
+
+.code {
+  color: inherit;
+}
+
+[data-theme='light'] .codeTabsContainer {
+  background: #f8f9fa;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='light'] .tabHeader {
+  background: rgba(0, 0, 0, 0.03);
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='light'] .tab {
+  color: #495057;
+}
+
+[data-theme='light'] .tab:hover {
+  color: #1a1b26;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='light'] .tab.activeTab {
+  color: #0066cc;
+  border-bottom-color: #0066cc;
+  background: rgba(0, 102, 204, 0.05);
+}
+
+[data-theme='light'] .copyButton {
+  color: #495057;
+}
+
+[data-theme='light'] .copyButton:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #1a1b26;
+}
+
+[data-theme='light'] .pre {
+  color: #1a1b26;
+}
+

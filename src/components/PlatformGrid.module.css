@@ -1,0 +1,129 @@
+.platformGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.platformCard {
+  padding: 2rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: center;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+[data-theme='light'] .platformCard {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+.platformCard:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+}
+
+.platformCard.available {
+  border-color: rgba(77, 166, 255, 0.3);
+}
+
+.platformCard.available:hover {
+  border-color: #4DA6FF;
+  box-shadow: 0 10px 30px -10px rgba(77, 166, 255, 0.3);
+}
+
+.platformCard.coming-soon {
+  opacity: 0.7;
+  border-style: dashed;
+}
+
+.platformCard.planned {
+  opacity: 0.5;
+}
+
+.platformIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(77, 166, 255, 0.1) 0%, rgba(77, 166, 255, 0.05) 100%);
+  color: #4DA6FF;
+  margin-bottom: 0.5rem;
+}
+
+.platformName {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+  color: #fff;
+}
+
+[data-theme='light'] .platformName {
+  color: #1a1b26;
+}
+
+.platformDescription {
+  font-size: 0.9rem;
+  color: #a9b1d6;
+  margin: 0;
+}
+
+[data-theme='light'] .platformDescription {
+  color: #495057;
+}
+
+.platformButton {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  background: #4DA6FF;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  margin-top: auto;
+}
+
+.platformButton:hover {
+  background: #2E75CC;
+  text-decoration: none;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(77, 166, 255, 0.3);
+}
+
+.comingSoonBadge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  background: rgba(255, 140, 66, 0.15);
+  color: #FF8C42;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: auto;
+}
+
+.plannedBadge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #a9b1d6;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: auto;
+}
+
+[data-theme='light'] .plannedBadge {
+  background: rgba(0, 0, 0, 0.05);
+  color: #495057;
+}
+
