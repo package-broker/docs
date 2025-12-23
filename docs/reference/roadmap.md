@@ -127,7 +127,7 @@ Session storage adapters for:
 If you'd like to contribute to any of these features, please:
 1. Check [GitHub Issues](https://github.com/package-broker/server/issues) for existing discussions
 2. Open a new issue to discuss the feature
-3. See [Contributing Guide](../contributing/index) for development setup
+3. See [Contributing Guide](../contributing/) for development setup
 
 ## Feature Requests
 

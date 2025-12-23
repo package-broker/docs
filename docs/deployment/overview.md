@@ -169,5 +169,5 @@ cp database.sqlite backup.sqlite
 
 - Choose deployment method: [Docker](../getting-started/quickstart-docker) or [Cloudflare Workers](../getting-started/quickstart-cloudflare)
 - Review [Configuration Reference](../reference/configuration) for all options
-- See [Troubleshooting](../troubleshooting/index) for common issues
+- See [Troubleshooting](../troubleshooting/) for common issues
 

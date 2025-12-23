@@ -138,9 +138,23 @@ export default function SponsorShowcase() {
           Your team’s coffee budget → Sustainable open source
         </p>
         <p className={styles.ctaLinks}>
-          <Link to="#calculate-savings" className={styles.inlineLink}>
+          <button
+            type="button"
+            className={styles.inlineLink}
+            onClick={() => {
+              // Avoid href="#..." to prevent Docusaurus broken-anchor warnings during build.
+              // Still provides the same UX on the homepage.
+              if (typeof document === 'undefined') return;
+              const el = document.getElementById('calculate-savings');
+              if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              } else if (typeof window !== 'undefined') {
+                window.location.hash = 'calculate-savings';
+              }
+            }}
+          >
             Calculate your savings
-          </Link>
+          </button>
           <span className={styles.ctaLinkDivider} aria-hidden="true">·</span>
           <Link
             to="https://github.com/package-broker/server/discussions"

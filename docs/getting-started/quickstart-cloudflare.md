@@ -162,15 +162,7 @@ Edit `wrangler.toml` and update the following:
    bucket_name = "package-broker-artifacts"
    ```
 
-## Step 8: Initialize Database
-
-Apply migrations to your D1 database:
-
-```bash
-$ npx wrangler d1 migrations apply package-broker-db --remote
-```
-
-## Step 9: Deploy
+## Step 8: Deploy
 
 Deploy the Worker to Cloudflare's edge:
 
@@ -178,9 +170,11 @@ Deploy the Worker to Cloudflare's edge:
 $ npx wrangler deploy
 ```
 
+**Note**: Migrations are automatically applied during deployment. The `migrations/` directory (copied by the CLI) contains all migration files, and `wrangler deploy` will apply them automatically.
+
 Your proxy is now live! The deployment will show your Worker URL (e.g., `package-broker.your-subdomain.workers.dev`).
 
-## Step 10: Initial Setup
+## Step 9: Initial Setup
 
 Open your Worker URL in a browser:
 
@@ -194,7 +188,7 @@ Complete the initial setup:
 2. Set a secure password
 3. Click "Complete Setup"
 
-## Step 11: Create an Access Token
+## Step 10: Create an Access Token
 
 1. Navigate to **Access Tokens** in the dashboard
 2. Click **Create Token**
@@ -203,7 +197,7 @@ Complete the initial setup:
 5. Click **Create**
 6. **Copy the token immediately**
 
-## Step 12: Configure Custom Domain (Optional)
+## Step 11: Configure Custom Domain (Optional)
 
 To use your own domain:
 
@@ -261,17 +255,17 @@ Check for errors in the deployment output. Common issues:
 
 ### Database Migration Errors
 
-If migrations fail:
+Migrations are automatically applied during `wrangler deploy`. If migrations fail:
 
 ```bash
 # Check migration status
 $ npx wrangler d1 migrations list package-broker-db --remote
 
-# Re-run migrations
+# Manually re-run migrations if needed
 $ npx wrangler d1 migrations apply package-broker-db --remote
 ```
 
-**Note**: Make sure the migrations directory is in the correct location. The CLI tool copies migrations to your project root, so the command should work from there.
+**Note**: The CLI tool copies migrations to your project root `migrations/` directory. Wrangler automatically detects and applies migrations from this directory during deployment.
 
 ## Upgrading PACKAGE.broker
 

@@ -9,7 +9,7 @@ PACKAGE.broker provides structured logging and optional analytics tracking to he
 - Optional Analytics Engine events (Cloudflare Workers)
 - Request/response logging with correlation IDs
 
-**Planned** (see [Roadmap](../../reference/roadmap)):
+**Planned** (see [Roadmap](../reference/roadmap)):
 - Persistent audit log database table
 - Configurable retention policies
 - Export capabilities for compliance
@@ -128,7 +128,7 @@ The following audit logging features are planned for future releases:
 - **Export API**: Programmatic log export for compliance
 - **Search Interface**: Dashboard-based log search and filtering
 
-See [Roadmap](../../reference/roadmap) for implementation timeline.
+See [Roadmap](../reference/roadmap) for implementation timeline.
 
 :::
 
@@ -144,7 +144,7 @@ For SOC-2 and ISO 27001 compliance, consider:
 ## Next Steps
 
 - Review [SOC-2 Compliance](../soc2-compliance) for compliance requirements
-- Check [Roadmap](../../reference/roadmap) for audit logging improvements
+- Check [Roadmap](../reference/roadmap) for audit logging improvements
 - Configure log aggregation for your deployment environment
    ```bash
    docker exec package-broker-db \

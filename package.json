@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "docusaurus start",
+    "start": "npm run images:build && docusaurus start",
     "images:build": "node scripts/optimize-images.mjs",
     "build": "npm run images:build && docusaurus build",
     "swizzle": "docusaurus swizzle",

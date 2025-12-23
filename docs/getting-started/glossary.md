@@ -70,3 +70,4 @@ description: Key terms and concepts used in PACKAGE.broker documentation
 
 **Vendor Namespace**: The first part of a package name (e.g., `vendor` in `vendor/package`). Used for access control scoping.
 
+

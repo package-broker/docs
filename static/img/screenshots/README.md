@@ -9,3 +9,4 @@ Place your real screenshots here:
 
 The ScreenshotGallery component will automatically fall back to placeholder SVGs if images are missing.
 
+

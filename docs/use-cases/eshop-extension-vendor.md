@@ -35,7 +35,7 @@ This guide shows how to integrate PACKAGE.broker with an e-shop platform to auto
 
 :::info Planned Feature
 
-The Management API authentication and customer token provisioning features described in this guide are planned but not yet implemented. See [Roadmap](../../reference/roadmap) for implementation status.
+The Management API authentication and customer token provisioning features described in this guide are planned but not yet implemented. See [Roadmap](../reference/roadmap) for implementation status.
 
 :::
 

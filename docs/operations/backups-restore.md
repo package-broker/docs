@@ -242,5 +242,6 @@ Test restore procedures monthly:
 
 - Review [Deployment Overview](../deployment/overview) for production setup
 - See [Configuration Reference](../reference/configuration) for backup-related settings
-- Check [Troubleshooting](../troubleshooting/index) for restore issues
+- Check [Troubleshooting](../troubleshooting/) for restore issues
+
 

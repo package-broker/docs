@@ -160,3 +160,4 @@ Tokens are rate-limited to prevent abuse:
 - See [E-shop Integration](../use-cases/eshop-extension-vendor) for automated token provisioning
 - Check [API Reference](../reference/api) for programmatic token management (planned)
 
+

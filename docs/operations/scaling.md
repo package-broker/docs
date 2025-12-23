@@ -244,5 +244,5 @@ Set up alerts for:
 
 - Review [Deployment Overview](../deployment/overview) for platform-specific guidance
 - See [Configuration Reference](../reference/configuration) for scaling-related settings
-- Check [Troubleshooting](../troubleshooting/index) for performance issues
+- Check [Troubleshooting](../troubleshooting/) for performance issues
 
