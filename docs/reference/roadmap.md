@@ -13,7 +13,7 @@ This page outlines planned features and improvements for PACKAGE.broker. Feature
 ### Enhanced CLI Onboarding (Cloudflare)
 
 **Status**: Planned  
-**Target**: Q2 2025
+**Target**: Q1 2026
 
 Interactive CLI that simplifies Cloudflare deployment to a single command:
 
@@ -33,7 +33,7 @@ See [FUTURE.md](https://github.com/package-broker/server/blob/main/FUTURE.md#87-
 ### Kubernetes/Helm Chart
 
 **Status**: Planned  
-**Target**: Q2 2025
+**Target**: Q1 2026
 
 Official Helm chart for Kubernetes deployments with:
 - Production-ready defaults
@@ -44,7 +44,7 @@ Official Helm chart for Kubernetes deployments with:
 ### Management API for Token Provisioning
 
 **Status**: Planned  
-**Target**: Q1 2025
+**Target**: Q1 2026
 
 API endpoints for programmatic token management:
 - `POST /api/tokens/generate` - Create customer tokens
@@ -59,7 +59,7 @@ See [E-shop Extension Vendor Integration](../use-cases/eshop-extension-vendor) f
 ### Fine-Grained Package Permissions
 
 **Status**: Planned  
-**Target**: Q1 2025
+**Target**: Q1 2026
 
 Token scoping to specific vendor namespaces:
 - Restrict tokens to `vendor-name/*` packages
@@ -71,7 +71,7 @@ Token scoping to specific vendor namespaces:
 ### Persistent Audit Logging
 
 **Status**: Planned  
-**Target**: Q2 2025
+**Target**: Q1 2026
 
 Durable audit log storage with:
 - Database-backed audit log table
@@ -84,7 +84,7 @@ Durable audit log storage with:
 ### Webhook-Triggered Repository Sync
 
 **Status**: Planned  
-**Target**: Q2 2025
+**Target**: Q1 2026
 
 Automatic repository synchronization via webhooks:
 - GitHub webhook integration
@@ -95,7 +95,7 @@ Automatic repository synchronization via webhooks:
 ### Key Rotation Tool
 
 **Status**: Planned  
-**Target**: Q3 2025
+**Target**: Q1 2026
 
 CLI tool for rotating encryption keys:
 - Generate new encryption key
@@ -107,7 +107,7 @@ CLI tool for rotating encryption keys:
 ### Config Export/Import
 
 **Status**: Planned  
-**Target**: Q3 2025
+**Target**: Q1 2026
 
 Export and import configuration:
 - Backup repository sources
@@ -117,7 +117,7 @@ Export and import configuration:
 ### Platform-Agnostic Session Storage
 
 **Status**: Planned  
-**Target**: Q3 2025
+**Target**: Q1 2026
 
 Session storage adapters for:
 - Redis (already supported for cache)

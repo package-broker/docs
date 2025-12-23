@@ -33,7 +33,7 @@ PACKAGE.broker will support deployment on Kubernetes using an official Helm char
 
 ## Timeline
 
-**Target**: Q2 2025
+**Target**: Q1 2026
 
 See [Roadmap](../reference/roadmap) for detailed timeline and updates.
 

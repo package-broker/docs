@@ -38,7 +38,7 @@ PACKAGE.broker supports multiple deployment platforms, each optimized for differ
 
 :::info Planned Feature
 
-Kubernetes/Helm chart support is planned for Q2 2025. See [Roadmap](../reference/roadmap) for timeline.
+Kubernetes/Helm chart support is planned for Q1 2026. See [Roadmap](../reference/roadmap) for timeline.
 
 :::
 
