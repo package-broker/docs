@@ -78,7 +78,7 @@ const config: Config = {
       },
       { 
         name: 'keywords', 
-        content: 'composer proxy, private packagist alternative, php package management, self-hosted composer, magento composer cache, soc2 compliance, docker composer mirror, composer repository hosting, php package mirror security, composer private packages small teams' 
+        content: 'composer proxy, php package management, self-hosted composer, magento composer cache, soc2 compliance, docker composer mirror, composer repository hosting, php package mirror security, composer private packages, self-hosted package repository' 
       },
       { property: 'og:title', content: 'PACKAGE.broker - Private Composer Repository Hosting' },
       { property: 'og:description', content: 'Open source, SOC2-compliant Composer proxy for small agencies and enterprises. Self-hosted with Docker, Cloudflare Workers, or Kubernetes.' },
@@ -103,12 +103,12 @@ const config: Config = {
           label: 'Documentation',
         },
         {
-          to: '/docs/installation/cloudflare-workers',
+          to: '/docs/installation/cloudflare',
           label: 'Deploy',
           position: 'left',
         },
         {
-          to: '/docs/compliance/soc2-compliance',
+          to: '/docs/soc2-compliance',
           label: 'Security',
           position: 'left',
         },
