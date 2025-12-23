@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import styles from './ScreenshotGallery.module.css';
 
 interface Screenshot {
@@ -34,6 +34,7 @@ const screenshots: Screenshot[] = [
 
 export default function ScreenshotGallery() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev + 1) % screenshots.length);
@@ -46,6 +47,34 @@ export default function ScreenshotGallery() {
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
   };
+
+  const openModal = (index: number) => {
+    setCurrentIndex(index);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  // Handle ESC key to close modal
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isModalOpen) {
+        closeModal();
+      }
+    };
+
+    if (isModalOpen) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = '';
+    };
+  }, [isModalOpen]);
 
   return (
     <div className={styles.galleryContainer}>
@@ -64,7 +93,7 @@ export default function ScreenshotGallery() {
             className={clsx(styles.screenshotCard, {
               [styles.active]: index === currentIndex,
             })}
-            onClick={() => goToSlide(index)}
+            onClick={() => openModal(index)}
           >
             <div className={styles.imageWrapper}>
               <img
@@ -94,7 +123,7 @@ export default function ScreenshotGallery() {
             <ChevronLeft size={24} />
           </button>
 
-          <div className={styles.carouselSlide}>
+          <div className={styles.carouselSlide} onClick={() => openModal(currentIndex)}>
             <div className={styles.imageWrapper}>
               <img
                 src={screenshots[currentIndex].src}
@@ -131,6 +160,53 @@ export default function ScreenshotGallery() {
           ))}
         </div>
       </div>
+
+      {/* Modal/Lightbox */}
+      {isModalOpen && (
+        <div className={styles.modalOverlay} onClick={closeModal}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <button
+              className={styles.modalClose}
+              onClick={closeModal}
+              aria-label="Close modal"
+            >
+              <X size={24} />
+            </button>
+
+            <button
+              className={styles.modalNavButton}
+              onClick={prevSlide}
+              aria-label="Previous screenshot"
+              style={{ left: '1rem' }}
+            >
+              <ChevronLeft size={32} />
+            </button>
+
+            <div className={styles.modalImageContainer}>
+              <img
+                src={screenshots[currentIndex].src}
+                alt={screenshots[currentIndex].alt}
+                className={styles.modalImage}
+              />
+              <div className={styles.modalCaption}>
+                <p>{screenshots[currentIndex].caption}</p>
+                <span className={styles.modalCounter}>
+                  {currentIndex + 1} / {screenshots.length}
+                </span>
+              </div>
+            </div>
+
+            <button
+              className={styles.modalNavButton}
+              onClick={nextSlide}
+              aria-label="Next screenshot"
+              style={{ right: '1rem' }}
+            >
+              <ChevronRight size={32} />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
