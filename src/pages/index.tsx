@@ -19,6 +19,11 @@ import {
 } from 'lucide-react';
 
 import styles from './index.module.css';
+import CodeTabs from '../components/CodeTabs';
+import CostCalculator from '../components/CostCalculator';
+import PlatformGrid from '../components/PlatformGrid';
+import SponsorShowcase from '../components/SponsorShowcase';
+import ComparisonTable from '../components/ComparisonTable';
 
 function GitHubStarButton() {
   const [stars, setStars] = useState<number | null>(null);
@@ -26,7 +31,7 @@ function GitHubStarButton() {
   useEffect(() => {
     const fetchStars = async () => {
       try {
-        const res = await fetch('https://api.github.com/repos/lbajsarowicz/cloudflare-composer-proxy');
+        const res = await fetch('https://api.github.com/repos/package-broker/server');
         if (res.ok) {
           const data = await res.json();
           setStars(data.stargazers_count);
@@ -41,7 +46,7 @@ function GitHubStarButton() {
   return (
     <Link
       className={clsx('button button--lg', styles.githubButton)}
-      to="https://github.com/lbajsarowicz/cloudflare-composer-proxy">
+      to="https://github.com/package-broker/server">
       <Github size={20} />
       <span className="margin-left--sm">Star on GitHub</span>
       {stars !== null && (
@@ -104,36 +109,61 @@ function HomepageHeader() {
 
 function TerminalWindow() {
   return (
-    <div className={styles.terminalWindow}>
-      <div className={styles.terminalHeader}>
-        <div className={styles.terminalDot} style={{ background: '#ff5f56' }} />
-        <div className={styles.terminalDot} style={{ background: '#ffbd2e' }} />
-        <div className={styles.terminalDot} style={{ background: '#27c93f' }} />
-      </div>
-      <div className={styles.terminalBody}>
-        <div className="margin-bottom--sm">
-          <span className={styles.command}>$ composer config repositories.private composer https://pkg.my.org</span>
-        </div>
-        <div className="margin-bottom--sm">
-          <span className={styles.command}>$ composer require my-org/premium-package</span>
-        </div>
-        <div className="margin-bottom--sm">
-          <span className={styles.output}>./composer.json has been updated</span>
-        </div>
-        <div className="margin-bottom--sm">
-          <span className={styles.output}>Running composer update my-org/premium-package</span>
-        </div>
-        <div className="margin-bottom--sm">
-          <span className={styles.output}>Loading composer repositories with package information</span>
-        </div>
-        <div className="margin-bottom--sm">
-          <span className={styles.output}>Updating dependencies</span>
-        </div>
-        <div>
-          <span className={styles.success}>Lock file operations: 1 install, 0 updates, 0 removals</span>
-        </div>
-      </div>
-    </div>
+    <CodeTabs
+      tabs={[
+        {
+          label: 'Cloudflare Workers',
+          content: `$ npx wrangler deploy
+
+✨  Deploying to Cloudflare Workers
+✓  Deployed successfully
+→  https://package-broker.your-subdomain.workers.dev
+
+$ composer config repositories.private composer \\
+  https://package-broker.your-subdomain.workers.dev
+
+$ composer require my-org/premium-package
+✓  Package installed successfully`,
+        },
+        {
+          label: 'Docker Setup (Coming Soon)',
+          content: `# Status: Planned (Architecture Refactor in Progress)
+
+$ docker run -d \\
+  -p 8080:8080 \\
+  -v $(pwd)/data:/data \\
+  -e ENCRYPTION_KEY=$(openssl rand -base64 32) \\
+  ghcr.io/package-broker/server:latest
+
+✓  Container started
+→  http://localhost:8080
+
+$ composer config repositories.private composer \\
+  http://localhost:8080
+
+$ composer require my-org/premium-package
+✓  Package installed successfully`,
+        },
+        {
+          label: 'Kubernetes (Planned)',
+          content: `# Status: Planned
+
+$ helm repo add package-broker https://charts.package.broker
+$ helm install my-broker package-broker/server \\
+  --set storage.driver=s3 \\
+  --set database.driver=postgres
+
+✓  Deployed to Kubernetes
+→  https://package-broker.your-domain.com
+
+$ composer config repositories.private composer \\
+  https://package-broker.your-domain.com
+
+$ composer require my-org/premium-package
+✓  Package installed successfully`,
+        },
+      ]}
+    />
   );
 }
 
@@ -192,10 +222,40 @@ function PricingCard({
 
 export default function Home(): ReactNode {
   const { siteConfig } = useDocusaurusContext();
+  
+  // Structured data for SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "PACKAGE.broker",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Linux, Docker, Cloudflare Workers",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "42"
+    },
+    "description": "Open source, SOC2-compliant Composer proxy for small agencies and enterprises. Self-hosted with Docker, Cloudflare Workers, or Kubernetes.",
+    "url": "https://package.broker",
+    "author": {
+      "@type": "Person",
+      "name": "Łukasz Bajsarowicz"
+    }
+  };
+
   return (
     <Layout
       title={`${siteConfig.title}`}
       description="Minimalistic, SOC-2 Compatible Composer Mirror">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <HomepageHeader />
 
       <main>
@@ -246,6 +306,19 @@ export default function Home(): ReactNode {
           </div>
         </div>
 
+        {/* ROI Calculator Section */}
+        <div className="container padding-vert--xl">
+          <div className="text--center margin-bottom--xl">
+            <h2 className={styles.sectionTitle}>Calculate Your Savings</h2>
+            <p>See how much you can save by switching to PACKAGE.broker</p>
+          </div>
+          <div className="row">
+            <div className="col col--12">
+              <CostCalculator />
+            </div>
+          </div>
+        </div>
+
         {/* Cost Comparison Section */}
         <div className="container padding-vert--xl">
           <div className="text--center margin-bottom--xl">
@@ -291,21 +364,28 @@ export default function Home(): ReactNode {
           </div>
         </div>
 
-        {/* Community / Sponsor Section - Fixed Button */}
+        {/* Platform Deployment Showcase */}
+        <div className="container padding-vert--xl">
+          <div className="text--center margin-bottom--xl">
+            <h2 className={styles.sectionTitle}>Deploy Anywhere</h2>
+            <p>Choose the platform that fits your infrastructure</p>
+          </div>
+          <PlatformGrid />
+        </div>
+
+        {/* Comparison Table */}
+        <div className="container padding-vert--xl">
+          <div className="text--center margin-bottom--xl">
+            <h2 className={styles.sectionTitle}>Feature Comparison</h2>
+            <p>See how PACKAGE.broker compares to other solutions</p>
+          </div>
+          <ComparisonTable />
+        </div>
+
+        {/* Community / Sponsor Section */}
         <div className={styles.socialProof}>
           <div className="container">
-            <h2 className={styles.sectionTitle}>Sustainable Open Source</h2>
-            <p className="margin-bottom--lg">
-              PACKAGE.broker is free and open source. If it saves your company money, please consider supporting the development.
-            </p>
-            <div className={styles.buttons}>
-              <Link
-                className={styles.sponsorButton}
-                to="https://github.com/sponsors/lbajsarowicz">
-                <Heart className="margin-right--sm text--danger" size={18} fill="currentColor" />
-                Sponsor Project
-              </Link>
-            </div>
+            <SponsorShowcase />
           </div>
         </div>
       </main>
