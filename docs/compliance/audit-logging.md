@@ -1,84 +1,68 @@
 # Audit Logging Guide
 
-PACKAGE.broker provides comprehensive audit logging to help you meet compliance requirements and track system activity.
+PACKAGE.broker provides structured logging and optional analytics tracking to help you monitor system activity.
 
 ## Overview
 
-Audit logs record all significant events in PACKAGE.broker, including:
-- User authentication and authorization
-- Package access and downloads
-- Configuration changes
-- Administrative actions
-- Security events
+**Currently Implemented**:
+- Structured JSON logging (all deployments)
+- Optional Analytics Engine events (Cloudflare Workers)
+- Request/response logging with correlation IDs
+
+**Planned** (see [Roadmap](../../reference/roadmap)):
+- Persistent audit log database table
+- Configurable retention policies
+- Export capabilities for compliance
+- Search and filtering interface
+
+## Current Logging Capabilities
+
+### Structured Logging
+
+All deployments emit structured JSON logs for:
+- Request/response events
+- Authentication attempts
+- Package downloads
+- Repository sync operations
+- Error conditions
 
 ## What Events Are Logged
 
-### Authentication Events
+### Request Logging
 
-- Login attempts (successful and failed)
-- Token creation and revocation
-- Password changes
-- Session management
+All HTTP requests are logged with:
+- Request ID (for correlation)
+- Timestamp
+- Method and path
+- Response status
+- Duration
 
 **Example log entry:**
 ```json
 {
+  "level": "info",
+  "message": "Request completed",
   "timestamp": "2025-01-15T10:30:00Z",
-  "event": "authentication",
-  "action": "login_success",
-  "user": "admin@example.com",
-  "ip_address": "192.168.1.100",
-  "user_agent": "Mozilla/5.0..."
-}
-```
-
-### Package Access Events
-
-- Package downloads
-- Repository access
-- Package metadata requests
-- Composer API calls
-
-**Example log entry:**
-```json
-{
-  "timestamp": "2025-01-15T10:31:00Z",
-  "event": "package_access",
-  "action": "download",
-  "package": "vendor/package",
-  "version": "1.2.3",
-  "user": "token:ci-cd-token",
-  "ip_address": "10.0.0.50"
-}
-```
-
-### Configuration Changes
-
-- Repository source additions/removals
-- Access token modifications
-- Settings updates
-- User permission changes
-
-**Example log entry:**
-```json
-{
-  "timestamp": "2025-01-15T10:32:00Z",
-  "event": "configuration",
-  "action": "add_source",
-  "user": "admin@example.com",
-  "details": {
-    "source_url": "https://github.com/org/repo",
-    "source_type": "github"
+  "requestId": "req_abc123",
+  "context": {
+    "method": "GET",
+    "path": "/packages.json",
+    "status": 200,
+    "duration": 45
   }
 }
 ```
 
-### Administrative Actions
+### Analytics Events (Cloudflare Workers)
 
-- User creation and deletion
-- Permission changes
-- System configuration updates
-- Backup and restore operations
+When Analytics Engine is configured, the following events are tracked:
+- Package downloads
+- Package metadata requests
+- Repository sync operations
+- Authentication events
+- Token usage
+
+**Note**: Analytics Engine is optional and requires paid Cloudflare Workers plan.
 
 ## Log Format and Structure
 
@@ -107,47 +91,61 @@ All audit logs follow a consistent JSON structure:
 - **Warning**: Unusual but non-critical events
 - **Error**: Error conditions requiring attention
 
-## Log Retention Policies
+## Accessing Logs
 
-### Recommended Retention Periods
+### Cloudflare Workers
 
-| Log Type | Retention Period | Rationale |
-|----------|-----------------|-----------|
-| Authentication | 1 year | Security investigations |
-| Package Access | 90 days | Performance analysis |
-| Configuration | 2 years | Compliance requirements |
-| Administrative | 2 years | Audit trail |
+**Workers Logs** (Free Tier):
+- Automatic structured JSON logging
+- 3-day retention
+- Access via `npx wrangler tail` or Cloudflare dashboard
 
-### Configuring Retention
+**Analytics Engine** (Paid Tier):
+- Optional event tracking
+- Query via Analytics Engine API
+- Longer retention available
 
-Retention policies can be configured in your deployment:
+### Docker Deployment
 
-**Cloudflare Workers:**
-- Logs stored in Cloudflare Analytics
-- Retention: 30 days (free tier)
-- Export for longer retention
+**Container Logs**:
+```bash
+docker logs package-broker --tail 100
+```
 
-**Docker Deployment:**
-- Configure log rotation
-- Use external log aggregation
-- Set retention in logging driver
+**Log Aggregation**:
+- Configure logging driver for external aggregation
+- Use Docker logging plugins (e.g., fluentd, loki)
+- Forward to centralized logging system
 
-## Exporting Logs
+## Planned Features
 
-### Export Methods
+:::info Planned Feature
 
-1. **Dashboard Export**:
-   - Navigate to "Audit Logs" in dashboard
-   - Select date range
-   - Export as JSON or CSV
+The following audit logging features are planned for future releases:
 
-2. **API Export**:
-   ```bash
-   curl -H "Authorization: Bearer YOUR_TOKEN" \
-     https://package-broker.your-domain.com/api/audit-logs?from=2025-01-01&to=2025-01-31
-   ```
+- **Persistent Audit Log Table**: Database-backed audit log storage
+- **Retention Policies**: Configurable log retention periods
+- **Export API**: Programmatic log export for compliance
+- **Search Interface**: Dashboard-based log search and filtering
 
-3. **Database Export** (Docker):
+See [Roadmap](../../reference/roadmap) for implementation timeline.
+
+:::
+
+## Compliance Considerations
+
+For SOC-2 and ISO 27001 compliance, consider:
+
+1. **Log Aggregation**: Forward logs to external SIEM/logging system
+2. **Retention**: Configure retention policies in your logging infrastructure
+3. **Access Control**: Restrict log access to authorized personnel
+4. **Monitoring**: Set up alerts for security events
+
+## Next Steps
+
+- Review [SOC-2 Compliance](../soc2-compliance) for compliance requirements
+- Check [Roadmap](../../reference/roadmap) for audit logging improvements
+- Configure log aggregation for your deployment environment
    ```bash
    docker exec package-broker-db \
      psql -U postgres -d package_broker \
