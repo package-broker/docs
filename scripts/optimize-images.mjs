@@ -6,7 +6,7 @@
  */
 
 import sharp from 'sharp';
-import { readdir, mkdir, writeFile } from 'fs/promises';
+import { readdir, mkdir, writeFile, stat } from 'fs/promises';
 import { join, dirname, relative, extname, basename } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -20,6 +20,19 @@ const docusaurusDir = join(docsRoot, '.docusaurus');
 
 // Responsive breakpoints (widths in pixels)
 const BREAKPOINTS = [320, 640, 960, 1280];
+
+async function isOutputUpToDate(sourceStat, outputPath) {
+  try {
+    const outStat = await stat(outputPath);
+    // If output is newer than (or same as) source, assume it's fresh.
+    return outStat.mtimeMs >= sourceStat.mtimeMs;
+  } catch (err) {
+    if (err?.code === 'ENOENT') {
+      return false;
+    }
+    throw err;
+  }
+}
 
 /**
  * Get all image files recursively
@@ -51,10 +64,14 @@ async function findImageFiles(dir, baseDir = dir) {
 /**
  * Generate optimized image variants
  */
-async function optimizeImage(inputPath, outputBasePath) {
+async function optimizeImage(inputPath) {
+  const sourceStat = await stat(inputPath);
   const image = sharp(inputPath);
   const metadata = await image.metadata();
   const { width: originalWidth, height: originalHeight } = metadata;
+
+  let generatedCount = 0;
+  let reusedCount = 0;
 
   // Determine which breakpoints to generate (don't upscale)
   const breakpoints = BREAKPOINTS.filter(w => w <= originalWidth);
@@ -85,32 +102,49 @@ async function optimizeImage(inputPath, outputBasePath) {
     const avifPath = join(variantDir, `${baseName}-${width}.avif`);
     const webpPath = join(variantDir, `${baseName}-${width}.webp`);
 
-    // Generate AVIF
-    await image
-      .clone()
-      .resize(width, height, { withoutEnlargement: true })
-      .avif({ effort: 4, quality: 80 })
-      .toFile(avifPath);
+    const avifUpToDate = await isOutputUpToDate(sourceStat, avifPath);
+    const webpUpToDate = await isOutputUpToDate(sourceStat, webpPath);
 
-    // Generate WebP
-    await image
-      .clone()
-      .resize(width, height, { withoutEnlargement: true })
-      .webp({ effort: 6, quality: 80 })
-      .toFile(webpPath);
+    // Only (re)generate formats that are missing/outdated.
+    if (!avifUpToDate) {
+      await image
+        .clone()
+        .resize(width, height, { withoutEnlargement: true })
+        .avif({ effort: 4, quality: 80 })
+        .toFile(avifPath);
+      generatedCount += 1;
+    } else {
+      reusedCount += 1;
+    }
+
+    if (!webpUpToDate) {
+      await image
+        .clone()
+        .resize(width, height, { withoutEnlargement: true })
+        .webp({ effort: 6, quality: 80 })
+        .toFile(webpPath);
+      generatedCount += 1;
+    } else {
+      reusedCount += 1;
+    }
 
     const avifUrl = `/img/generated${relative(staticDir, avifPath).replace(/\\/g, '/')}`;
     const webpUrl = `/img/generated${relative(staticDir, webpPath).replace(/\\/g, '/')}`;
 
-    variants.avif.push({ url: avifUrl, width });
-    variants.webp.push({ url: webpUrl, width });
+    // Only include variants that actually exist (either freshly generated or restored from cache).
+    if (await isOutputUpToDate(sourceStat, avifPath)) {
+      variants.avif.push({ url: avifUrl, width });
+    }
+    if (await isOutputUpToDate(sourceStat, webpPath)) {
+      variants.webp.push({ url: webpUrl, width });
+    }
   }
 
   // Sort by width for proper srcset ordering
   variants.avif.sort((a, b) => a.width - b.width);
   variants.webp.sort((a, b) => a.width - b.width);
 
-  return variants;
+  return { variants, generatedCount, reusedCount };
 }
 
 /**
@@ -140,6 +174,8 @@ async function main() {
   }
 
   const manifest = {};
+  let totalGenerated = 0;
+  let totalReused = 0;
 
   // Process each image
   for (const imagePath of imageFiles) {
@@ -149,14 +185,16 @@ async function main() {
     console.log(`Processing: ${relPath}`);
 
     try {
-      const variants = await optimizeImage(imagePath, imagePath);
+      const result = await optimizeImage(imagePath);
+      totalGenerated += result.generatedCount;
+      totalReused += result.reusedCount;
       
       manifest[urlPath] = {
-        original: variants.original,
-        avifSrcSet: buildSrcSet(variants.avif),
-        webpSrcSet: buildSrcSet(variants.webp),
-        width: variants.original.width,
-        height: variants.original.height,
+        original: result.variants.original,
+        avifSrcSet: buildSrcSet(result.variants.avif),
+        webpSrcSet: buildSrcSet(result.variants.webp),
+        width: result.variants.original.width,
+        height: result.variants.original.height,
       };
     } catch (error) {
       console.error(`Error processing ${relPath}:`, error.message);
@@ -168,6 +206,7 @@ async function main() {
   await writeFile(manifestPath, JSON.stringify(manifest, null, 2));
   console.log(`✅ Image optimization complete! Manifest written to ${manifestPath}`);
   console.log(`   Generated ${Object.keys(manifest).length} optimized image sets`);
+  console.log(`   Variants: generated ${totalGenerated}, reused ${totalReused}`);
 }
 
 main().catch((error) => {
