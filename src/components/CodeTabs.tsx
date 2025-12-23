@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { Copy, Check } from 'lucide-react';
 import styles from './CodeTabs.module.css';

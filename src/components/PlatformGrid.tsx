@@ -1,3 +1,4 @@
+import React from 'react';
 import Link from '@docusaurus/Link';
 import { Docker, Cloud, Server, Kubernetes, Aws, DigitalOcean } from 'lucide-react';
 import styles from './PlatformGrid.module.css';

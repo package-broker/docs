@@ -1,3 +1,4 @@
+import React from 'react';
 import { Check, X, AlertCircle } from 'lucide-react';
 import styles from './ComparisonTable.module.css';
 
