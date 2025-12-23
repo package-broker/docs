@@ -47,6 +47,13 @@
   gap: 1rem;
 }
 
+.heroSubCta {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-600);
+  font-weight: 500;
+}
+
 /* Features Section */
 .featureCard {
   padding: 2rem;
@@ -256,6 +263,99 @@
   padding: 2rem;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
   text-align: center;
+}
+
+/* Architecture Section */
+.architectureSection {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, transparent 100%);
+}
+
+[data-theme='light'] .architectureSection {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.03) 0%, transparent 100%);
+}
+
+/* Steps Explanation */
+.stepsExplanation {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.stepItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex: 1;
+  min-width: 250px;
+  max-width: 300px;
+}
+
+.stepNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.25rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Step 1: Blue (Request) */
+.stepItem:nth-child(1) .stepNumber {
+  background: rgba(77, 166, 255, 0.2);
+  color: #4DA6FF;
+  box-shadow: 0 0 12px rgba(77, 166, 255, 0.3);
+}
+
+/* Step 2: Orange (Cache Miss) */
+.stepItem:nth-child(2) .stepNumber {
+  background: rgba(255, 140, 66, 0.2);
+  color: #FF8C42;
+  box-shadow: 0 0 12px rgba(255, 140, 66, 0.3);
+}
+
+/* Step 3: Green (Cache Hit) */
+.stepItem:nth-child(3) .stepNumber {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.3);
+}
+
+.stepContent {
+  flex: 1;
+}
+
+.stepTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--ifm-heading-color);
+}
+
+.stepDescription {
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-600);
+  margin: 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .stepsExplanation {
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .stepItem {
+    max-width: 100%;
+  }
 }
 
 /* Hero Title Gradient */

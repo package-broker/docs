@@ -7,15 +7,10 @@ import Heading from '@theme/Heading';
 import {
   ShieldCheck,
   Zap,
-  Cloud,
   Check,
   Server,
   ArrowRight,
-  TrendingDown,
   Github,
-  Heart,
-  Terminal,
-  Copy
 } from 'lucide-react';
 
 import styles from './index.module.css';
@@ -25,6 +20,9 @@ import PlatformGrid from '../components/PlatformGrid';
 import SponsorShowcase from '../components/SponsorShowcase';
 import ComparisonTable from '../components/ComparisonTable';
 import InteractiveArchitecture from '../components/InteractiveArchitecture';
+import ScreenshotGallery from '../components/ScreenshotGallery';
+import AgencyUseCases from '../components/AgencyUseCases';
+import FAQ from '../components/FAQ';
 
 function GitHubStarButton() {
   const [stars, setStars] = useState<number | null>(null);
@@ -65,33 +63,31 @@ function HomepageHeader() {
     <header className={clsx('hero', styles.heroBanner)}>
       <div className={styles.heroGlow} />
       <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-        <div className="row row--align-center">
-          <div className="col col--6 text--left">
-            <h1 className="hero__title">
-              <span className={styles.heroTitleText}>
-                {siteConfig.title}
-              </span>
-            </h1>
-            <p className="hero__subtitle">{siteConfig.tagline}</p>
-            <div className={styles.buttons}>
-              <Link
-                className="button button--primary button--lg"
-                to="/docs/">
-                Get Started
-                <ArrowRight className="margin-left--sm" size={18} />
-              </Link>
-              <GitHubStarButton />
-            </div>
-            <div className="margin-top--lg">
-              <span className="badge badge--secondary margin-right--sm">Zero Cost</span>
-              <span className="badge badge--secondary margin-right--sm">Serverless</span>
-              <span className="badge badge--secondary">SOC-2 Ready</span>
-            </div>
+        <div className="text--center">
+          <h1 className="hero__title">
+            <span className={styles.heroTitleText}>
+              Ship Private Composer Packages Without Per-Seat Pricing
+            </span>
+          </h1>
+          <p className="hero__subtitle">
+            Stop paying €50-700/month for private package hosting. PACKAGE.broker runs on your infrastructure—or free Cloudflare Workers—with zero per-seat fees.
+          </p>
+          <div className={styles.buttons}>
+            <Link
+              className="button button--primary button--lg"
+              to="/docs/">
+              Get Started
+              <ArrowRight className="margin-left--sm" size={18} />
+            </Link>
+            <GitHubStarButton />
           </div>
-          <div className="col col--6">
-            <div className="text--center">
-              <InteractiveArchitecture />
-            </div>
+          <p className={styles.heroSubCta}>
+            Runs on Cloudflare Workers free tier for small teams
+          </p>
+          <div className="margin-top--lg">
+            <span className="badge badge--secondary margin-right--sm">Zero Cost</span>
+            <span className="badge badge--secondary margin-right--sm">Serverless</span>
+            <span className="badge badge--secondary">SOC-2 Ready</span>
           </div>
         </div>
       </div>
@@ -173,45 +169,6 @@ function Feature({ title, description, icon }: { title: string, description: str
   );
 }
 
-function PricingCard({
-  title,
-  price,
-  comparison,
-  savings,
-  features,
-  highlight = false
-}: {
-  title: string,
-  price: string,
-  comparison?: string,
-  savings?: string,
-  features: string[],
-  highlight?: boolean
-}) {
-  return (
-    <div className={clsx('col col--4')}>
-      <div className={clsx(styles.pricingCard, highlight && styles.highlight)}>
-        <Heading as="h3">{title}</Heading>
-        <div className={styles.priceTag}>{price}</div>
-        {comparison && (
-          <div className="margin-bottom--sm">
-            <span className={styles.priceComparison}>{comparison}</span>
-            {savings && <span className={styles.savingsTag}>Save {savings}</span>}
-          </div>
-        )}
-        <ul className={styles.checkList}>
-          {features.map((feature, idx) => (
-            <li key={idx} className={styles.checkItem}>
-              <Check className={styles.checkIcon} size={18} />
-              {feature}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-}
-
 export default function Home(): ReactNode {
   const { siteConfig } = useDocusaurusContext();
   
@@ -251,6 +208,46 @@ export default function Home(): ReactNode {
       <HomepageHeader />
 
       <main>
+        {/* Proof Bar - Screenshots */}
+        <div className="container padding-vert--xl">
+          <ScreenshotGallery />
+        </div>
+
+        {/* How It Works - Architecture Diagram */}
+        <div className={clsx('padding-vert--xl', styles.architectureSection)}>
+          <div className="container">
+            <div className="text--center margin-bottom--lg">
+              <h2 className={styles.sectionTitle}>How It Works</h2>
+              <p>PACKAGE.broker sits between your Composer clients and package sources, caching artifacts for blazing-fast installs.</p>
+            </div>
+            <InteractiveArchitecture />
+            {/* 3-Step Explanation */}
+            <div className={styles.stepsExplanation}>
+              <div className={styles.stepItem}>
+                <div className={styles.stepNumber}>①</div>
+                <div className={styles.stepContent}>
+                  <h4 className={styles.stepTitle}>Request</h4>
+                  <p className={styles.stepDescription}>Composer requests a package from PACKAGE.broker</p>
+                </div>
+              </div>
+              <div className={styles.stepItem}>
+                <div className={styles.stepNumber}>②</div>
+                <div className={styles.stepContent}>
+                  <h4 className={styles.stepTitle}>Cache Miss: Fetch & Store</h4>
+                  <p className={styles.stepDescription}>If not cached, fetch from source and store for future requests</p>
+                </div>
+              </div>
+              <div className={styles.stepItem}>
+                <div className={styles.stepNumber}>③</div>
+                <div className={styles.stepContent}>
+                  <h4 className={styles.stepTitle}>Cache Hit: Serve Fast</h4>
+                  <p className={styles.stepDescription}>Serve from cache for instant package delivery</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Value Proposition / Terminal Section */}
         <div className="container padding-vert--xl">
           <div className="row row--align-center">
@@ -269,6 +266,11 @@ export default function Home(): ReactNode {
               <TerminalWindow />
             </div>
           </div>
+        </div>
+
+        {/* Agency Use Cases */}
+        <div className="container padding-vert--xl">
+          <AgencyUseCases />
         </div>
 
         {/* Features Section - Reordered */}
@@ -298,64 +300,6 @@ export default function Home(): ReactNode {
           </div>
         </div>
 
-        {/* ROI Calculator Section */}
-        <div className="container padding-vert--xl">
-          <div className="text--center margin-bottom--xl">
-            <h2 className={styles.sectionTitle}>Calculate Your Savings</h2>
-            <p>See how much you can save by switching to PACKAGE.broker</p>
-          </div>
-          <div className="row">
-            <div className="col col--12">
-              <CostCalculator />
-            </div>
-          </div>
-        </div>
-
-        {/* Cost Comparison Section */}
-        <div className="container padding-vert--xl">
-          <div className="text--center margin-bottom--xl">
-            <h2 className={styles.sectionTitle}>Why pay for private packages?</h2>
-            <p>Enterprise-grade features at a fraction of the cost.</p>
-          </div>
-          <div className="row">
-            <PricingCard
-              title="Commercial SaaS"
-              price="€700+"
-              features={[
-                "Private Packages",
-                "SaaS Hosting",
-                "Standard Support",
-                "Closed Source"
-              ]}
-            />
-            <PricingCard
-              title="Open Source Alternatives"
-              price="€240+"
-              comparison="vs Hosting"
-              savings="~€240/yr"
-              features={[
-                "Self-Hosted Satis",
-                "Manual Maintenance",
-                "Server Costs",
-                "Security Updates"
-              ]}
-            />
-            <PricingCard
-              title="PACKAGE.broker"
-              price="€0"
-              comparison="vs SaaS"
-              savings="~€700/yr"
-              highlight={true}
-              features={[
-                "Cloudflare Free Tier",
-                "Unlimited Private Pkgs",
-                "Global Edge Network",
-                "SOC-2 Ready"
-              ]}
-            />
-          </div>
-        </div>
-
         {/* Platform Deployment Showcase */}
         <div className="container padding-vert--xl">
           <div className="text--center margin-bottom--xl">
@@ -363,6 +307,15 @@ export default function Home(): ReactNode {
             <p>Choose the platform that fits your infrastructure</p>
           </div>
           <PlatformGrid />
+        </div>
+
+        {/* ROI Calculator Section */}
+        <div className="container padding-vert--xl">
+          <div className="text--center margin-bottom--xl">
+            <h2 className={styles.sectionTitle}>Calculate Your Savings</h2>
+            <p>See how much you can save by switching to PACKAGE.broker</p>
+          </div>
+          <CostCalculator />
         </div>
 
         {/* Comparison Table */}
@@ -379,6 +332,11 @@ export default function Home(): ReactNode {
           <div className="container">
             <SponsorShowcase />
           </div>
+        </div>
+
+        {/* FAQ Section */}
+        <div className="container padding-vert--xl">
+          <FAQ />
         </div>
       </main>
     </Layout>
