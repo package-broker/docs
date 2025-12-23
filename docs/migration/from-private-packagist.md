@@ -44,8 +44,8 @@ Private Packagist™ is a commercial SaaS solution for hosting private Composer 
 ### Step 2: Set Up PACKAGE.broker
 
 1. **Deploy PACKAGE.broker**:
-   - Follow the [Cloudflare Workers installation guide](../installation/cloudflare.md) or
-   - Follow the [Docker installation guide](../installation/docker.md) (when available)
+   - Follow the [Cloudflare Workers Quickstart](../getting-started/quickstart-cloudflare.md) or
+   - Follow the [Docker installation guide](../installation/docker.md)
 
 2. **Create access tokens**:
    - Log into your PACKAGE.broker dashboard

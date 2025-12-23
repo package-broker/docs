@@ -58,8 +58,8 @@ Satis is a static Composer repository generator. PACKAGE.broker is a dynamic, we
 ### Step 2: Set Up PACKAGE.broker
 
 1. **Deploy PACKAGE.broker**:
-   - Follow the [Cloudflare Workers installation guide](../installation/cloudflare.md) or
-   - Follow the [Docker installation guide](../installation/docker.md) (when available)
+   - Follow the [Cloudflare Workers Quickstart](../getting-started/quickstart-cloudflare.md) or
+   - Follow the [Docker installation guide](../installation/docker.md)
 
 2. **Access the dashboard**:
    - Navigate to your PACKAGE.broker URL
