@@ -89,6 +89,8 @@
   font-size: var(--pb-font-size-body);
   cursor: pointer;
   transition: all 0.2s;
+  width: 100%;
+  min-height: 44px;
 }
 
 .select:hover {
