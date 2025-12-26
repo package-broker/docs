@@ -8,8 +8,8 @@
 }
 
 .galleryTitle {
-  font-size: 1.75rem;
-  font-weight: 700;
+  font-size: var(--pb-font-size-h2);
+  font-weight: var(--pb-font-weight-bold);
   margin-bottom: 0.5rem;
   color: var(--ifm-heading-color);
 }
@@ -29,8 +29,9 @@
 }
 
 .screenshotCard {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--pb-card-bg);
+  border: 1px solid var(--pb-card-border);
+  box-shadow: var(--pb-card-shadow);
   border-radius: 12px;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -40,14 +41,13 @@
   height: 100%;
 }
 
-[data-theme='light'] .screenshotCard {
-  background: rgba(0, 0, 0, 0.03);
-  border-color: rgba(0, 0, 0, 0.1);
-}
-
 .screenshotCard:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--pb-shadow-lg);
+  border-color: var(--pb-border-accent);
+}
+
+[data-theme='dark'] .screenshotCard:hover {
   border-color: rgba(77, 166, 255, 0.3);
 }
 

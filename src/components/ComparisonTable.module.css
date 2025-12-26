@@ -18,8 +18,8 @@
 
 .tableTitle {
   margin: 0;
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: var(--pb-font-size-h3);
+  font-weight: var(--pb-font-weight-bold);
 }
 
 .tableControls {
@@ -137,14 +137,12 @@
   overflow-x: auto;
   overflow-y: visible;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--pb-border-subtle);
+  background: var(--pb-surface-1);
   position: relative;
-  /* Smooth scrolling */
   scroll-behavior: smooth;
-  /* Scrollbar styling */
   scrollbar-width: thin;
-  scrollbar-color: rgba(77, 166, 255, 0.3) transparent;
+  scrollbar-color: rgba(0, 102, 204, 0.3) transparent;
 }
 
 .tableWrapper::-webkit-scrollbar {
@@ -152,35 +150,35 @@
 }
 
 .tableWrapper::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.05);
   border-radius: 4px;
 }
 
 .tableWrapper::-webkit-scrollbar-thumb {
-  background: rgba(77, 166, 255, 0.4);
+  background: rgba(0, 102, 204, 0.4);
   border-radius: 4px;
 }
 
 .tableWrapper::-webkit-scrollbar-thumb:hover {
-  background: rgba(77, 166, 255, 0.6);
-}
-
-[data-theme='light'] .tableWrapper {
-  border-color: rgba(0, 0, 0, 0.1);
-  background: rgba(0, 0, 0, 0.03);
-  scrollbar-color: rgba(0, 102, 204, 0.3) transparent;
-}
-
-[data-theme='light'] .tableWrapper::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-[data-theme='light'] .tableWrapper::-webkit-scrollbar-thumb {
-  background: rgba(0, 102, 204, 0.4);
-}
-
-[data-theme='light'] .tableWrapper::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 102, 204, 0.6);
+}
+
+[data-theme='dark'] .tableWrapper {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  scrollbar-color: rgba(77, 166, 255, 0.3) transparent;
+}
+
+[data-theme='dark'] .tableWrapper::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .tableWrapper::-webkit-scrollbar-thumb {
+  background: rgba(77, 166, 255, 0.4);
+}
+
+[data-theme='dark'] .tableWrapper::-webkit-scrollbar-thumb:hover {
+  background: rgba(77, 166, 255, 0.6);
 }
 
 .comparisonTable {
@@ -193,37 +191,33 @@
 }
 
 .comparisonTable thead {
-  background: rgba(77, 166, 255, 0.1);
-  border-bottom: 2px solid rgba(77, 166, 255, 0.2);
+  background: rgba(248, 249, 250, 1);
+  border-bottom: 2px solid var(--pb-border-strong);
   position: sticky;
   top: 0;
   z-index: 11;
 }
 
-[data-theme='light'] .comparisonTable thead {
-  background: rgba(0, 102, 204, 0.1);
-  border-bottom-color: rgba(0, 102, 204, 0.2);
+[data-theme='dark'] .comparisonTable thead {
+  background: rgba(77, 166, 255, 0.1);
+  border-bottom: 2px solid rgba(77, 166, 255, 0.2);
 }
 
 .comparisonTable thead .featureColumn {
   z-index: 13;
-  background: rgba(77, 166, 255, 0.1);
+  background: rgba(248, 249, 250, 1);
 }
 
-[data-theme='light'] .comparisonTable thead .featureColumn {
-  background: rgba(0, 102, 204, 0.1);
+[data-theme='dark'] .comparisonTable thead .featureColumn {
+  background: rgba(77, 166, 255, 0.1);
 }
 
 .comparisonTable th {
   padding: 1rem;
   text-align: left;
-  font-weight: 700;
-  color: #fff;
+  font-weight: var(--pb-font-weight-bold);
+  color: var(--ifm-heading-color);
   white-space: nowrap;
-}
-
-[data-theme='light'] .comparisonTable th {
-  color: #1a1b26;
 }
 
 .featureColumn {
@@ -232,40 +226,38 @@
   max-width: 180px;
   position: sticky;
   left: 0;
-  background: rgba(26, 27, 38, 1);
+  background: #ffffff;
   z-index: 12;
   padding-left: 1rem;
   padding-right: 1rem;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
-  /* Ensure it stays on top during horizontal scroll */
+  box-shadow: var(--pb-shadow-sm);
   isolation: isolate;
 }
 
-[data-theme='light'] .featureColumn {
-  background: #ffffff;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+[data-theme='dark'] .featureColumn {
+  background: rgba(26, 27, 38, 1);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
 }
 
 .highlightColumn {
-  background: rgba(77, 166, 255, 0.15);
-  border-left: 2px solid #4DA6FF;
-  border-right: 2px solid #4DA6FF;
+  background: rgba(0, 102, 204, 0.05);
+  border-left: 2px solid #0066cc;
+  border-right: 2px solid #0066cc;
   position: sticky;
   left: 180px;
   z-index: 10;
   min-width: 200px;
   width: 200px;
   max-width: 200px;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
-  /* Ensure it stays on top during horizontal scroll */
+  box-shadow: var(--pb-shadow-sm);
   isolation: isolate;
 }
 
-[data-theme='light'] .highlightColumn {
-  background: rgba(0, 102, 204, 0.15);
-  border-left-color: #0066cc;
-  border-right-color: #0066cc;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+[data-theme='dark'] .highlightColumn {
+  background: rgba(77, 166, 255, 0.15);
+  border-left-color: #4DA6FF;
+  border-right-color: #4DA6FF;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
 }
 
 .comparisonTable thead .highlightColumn {
@@ -296,50 +288,49 @@
 }
 
 .comparisonTable tbody tr {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--pb-border-subtle);
   transition: background 0.2s;
 }
 
-[data-theme='light'] .comparisonTable tbody tr {
-  border-bottom-color: rgba(0, 0, 0, 0.05);
+[data-theme='dark'] .comparisonTable tbody tr {
+  border-bottom-color: rgba(255, 255, 255, 0.05);
 }
 
 .comparisonTable tbody tr:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.02);
 }
 
 .comparisonTable tbody tr:hover .featureCell {
-  background: rgba(255, 255, 255, 0.08) !important;
+  background: rgba(0, 0, 0, 0.03) !important;
 }
 
 .comparisonTable tbody tr:hover .highlightCell {
+  background: rgba(0, 102, 204, 0.08) !important;
+}
+
+[data-theme='dark'] .comparisonTable tbody tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .comparisonTable tbody tr:hover .featureCell {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme='dark'] .comparisonTable tbody tr:hover .highlightCell {
   background: rgba(77, 166, 255, 0.15) !important;
-}
-
-[data-theme='light'] .comparisonTable tbody tr:hover {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-[data-theme='light'] .comparisonTable tbody tr:hover .featureCell {
-  background: rgba(0, 0, 0, 0.08) !important;
-}
-
-[data-theme='light'] .comparisonTable tbody tr:hover .highlightCell {
-  background: rgba(0, 102, 204, 0.15) !important;
 }
 
 .comparisonTable td {
   padding: 1rem;
-  color: #a9b1d6;
+  color: var(--ifm-color-content);
   white-space: normal;
   word-wrap: break-word;
   vertical-align: top;
-  /* Fixed width for non-sticky columns to prevent layout shifts */
   min-width: 150px;
 }
 
-[data-theme='light'] .comparisonTable td {
-  color: #495057;
+[data-theme='dark'] .comparisonTable td {
+  color: #a9b1d6;
 }
 
 /* Ensure competitor columns have consistent width */
@@ -350,54 +341,52 @@
 }
 
 .featureCell {
-  font-weight: 600;
-  color: #fff;
+  font-weight: var(--pb-font-weight-semibold);
+  color: var(--ifm-heading-color);
   position: sticky;
   left: 0;
-  background: rgba(26, 27, 38, 1);
+  background: #ffffff;
   z-index: 2;
   padding-left: 1rem;
   padding-right: 1rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--pb-shadow-sm);
   min-width: 180px;
   width: 180px;
   max-width: 180px;
-  /* Ensure it stays on top during horizontal scroll */
   isolation: isolate;
 }
 
-[data-theme='light'] .featureCell {
-  color: #1a1b26;
-  background: #ffffff;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+[data-theme='dark'] .featureCell {
+  color: #fff;
+  background: rgba(26, 27, 38, 1);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
 }
 
 .highlightCell {
-  background: rgba(77, 166, 255, 0.1);
-  border-left: 2px solid #4DA6FF;
-  border-right: 2px solid #4DA6FF;
-  font-weight: 600;
-  color: #4DA6FF;
+  background: rgba(0, 102, 204, 0.05);
+  border-left: 2px solid #0066cc;
+  border-right: 2px solid #0066cc;
+  font-weight: var(--pb-font-weight-semibold);
+  color: #0066cc;
   position: sticky;
   left: 180px;
   z-index: 1;
   min-width: 200px;
   width: 200px;
   max-width: 200px;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
-  /* Ensure it stays on top during horizontal scroll */
+  box-shadow: var(--pb-shadow-sm);
   isolation: isolate;
 }
 
-[data-theme='light'] .highlightCell {
-  background: rgba(0, 102, 204, 0.1);
-  border-left-color: #0066cc;
-  border-right-color: #0066cc;
-  color: #0066cc;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+[data-theme='dark'] .highlightCell {
+  background: rgba(77, 166, 255, 0.1);
+  border-left-color: #4DA6FF;
+  border-right-color: #4DA6FF;
+  color: #4DA6FF;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
 }
 
 .cellContent {

@@ -8,8 +8,8 @@
 }
 
 .useCasesTitle {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: var(--pb-font-size-h2);
+  font-weight: var(--pb-font-weight-bold);
   margin-bottom: 0.75rem;
   color: var(--ifm-heading-color);
 }
@@ -29,8 +29,9 @@
 }
 
 .useCaseCard {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--pb-card-bg);
+  border: 1px solid var(--pb-card-border);
+  box-shadow: var(--pb-card-shadow);
   border-radius: 16px;
   padding: 2rem;
   transition: all 0.3s ease;
@@ -38,14 +39,13 @@
   flex-direction: column;
 }
 
-[data-theme='light'] .useCaseCard {
-  background: rgba(0, 0, 0, 0.03);
-  border-color: rgba(0, 0, 0, 0.1);
-}
-
 .useCaseCard:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--pb-shadow-lg);
+  border-color: var(--pb-border-accent);
+}
+
+[data-theme='dark'] .useCaseCard:hover {
   border-color: rgba(77, 166, 255, 0.3);
 }
 
@@ -62,8 +62,8 @@
 }
 
 .useCaseTitle {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: var(--pb-font-size-h4);
+  font-weight: var(--pb-font-weight-bold);
   margin: 0 0 1.5rem 0;
   color: var(--ifm-heading-color);
 }
@@ -113,11 +113,15 @@
 }
 
 .outcomeLabel {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #4DA6FF;
+  font-size: var(--pb-font-size-sm);
+  font-weight: var(--pb-font-weight-bold);
+  color: #0066cc;
   display: block;
   margin-bottom: 0.5rem;
+}
+
+[data-theme='dark'] .outcomeLabel {
+  color: #4DA6FF;
 }
 
 .outcomeText {

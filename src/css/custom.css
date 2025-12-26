@@ -24,6 +24,53 @@
   /* Typography */
   --ifm-font-family-base: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --ifm-heading-font-family: 'Space Grotesk', var(--ifm-font-family-base);
+  
+  /* Design Tokens - Light Mode (Corporate/Clean) */
+  /* Surfaces */
+  --pb-surface-1: #ffffff;
+  --pb-surface-2: #f8f9fa;
+  
+  /* Borders */
+  --pb-border-subtle: rgba(0, 0, 0, 0.1);
+  --pb-border-strong: rgba(0, 0, 0, 0.15);
+  --pb-border-accent: rgba(0, 102, 204, 0.2);
+  
+  /* Shadows - Cool Gray (Light Mode) */
+  --pb-shadow-sm: 0 2px 4px rgba(30, 41, 59, 0.08);
+  --pb-shadow-md: 0 4px 12px rgba(30, 41, 59, 0.1);
+  --pb-shadow-lg: 0 8px 24px rgba(30, 41, 59, 0.12);
+  --pb-shadow-xl: 0 12px 32px rgba(30, 41, 59, 0.15);
+  --pb-shadow-2xl: 0 20px 50px rgba(30, 41, 59, 0.2);
+  
+  /* Colored shadows for brand elements (Light Mode - subtle) */
+  --pb-shadow-blue: 0 4px 20px rgba(0, 102, 204, 0.15);
+  --pb-shadow-orange: 0 4px 20px rgba(255, 140, 66, 0.15);
+  --pb-shadow-green: 0 4px 20px rgba(34, 197, 94, 0.15);
+  
+  /* Focus rings */
+  --pb-ring-focus: 0 0 0 3px rgba(0, 102, 204, 0.1);
+  --pb-ring-accent: 0 0 0 1px rgba(0, 102, 204, 0.2);
+  
+  /* Typography Scale */
+  --pb-font-size-hero: clamp(2rem, 5vw, 3.5rem);
+  --pb-font-size-h1: 2.5rem;
+  --pb-font-size-h2: 2rem;
+  --pb-font-size-h3: 1.5rem;
+  --pb-font-size-h4: 1.25rem;
+  --pb-font-size-body: 1rem;
+  --pb-font-size-sm: 0.875rem;
+  --pb-font-size-xs: 0.75rem;
+  
+  /* Font weights */
+  --pb-font-weight-bold: 700;
+  --pb-font-weight-semibold: 600;
+  --pb-font-weight-medium: 500;
+  --pb-font-weight-normal: 400;
+  
+  /* Card Definition (Light Mode) */
+  --pb-card-bg: var(--pb-surface-1);
+  --pb-card-border: var(--pb-border-subtle);
+  --pb-card-shadow: var(--pb-shadow-sm);
 }
 
 /* For readability, use lighter orange in dark mode if needed, but keeping consistent for now */
@@ -37,6 +84,37 @@
   --ifm-color-primary-lightest: #ffb07a;
   
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  
+  /* Design Tokens - Dark Mode (Cyber Aesthetic) */
+  /* Surfaces */
+  --pb-surface-1: rgba(255, 255, 255, 0.03);
+  --pb-surface-2: rgba(255, 255, 255, 0.05);
+  
+  /* Borders */
+  --pb-border-subtle: rgba(255, 255, 255, 0.1);
+  --pb-border-strong: rgba(255, 255, 255, 0.15);
+  --pb-border-accent: rgba(77, 166, 255, 0.3);
+  
+  /* Shadows - Dark Mode (keep black-based for depth, but use sparingly) */
+  --pb-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --pb-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --pb-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --pb-shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --pb-shadow-2xl: 0 20px 50px rgba(0, 0, 0, 0.6);
+  
+  /* Colored shadows for brand elements (Dark Mode - more visible glows) */
+  --pb-shadow-blue: 0 4px 20px rgba(77, 166, 255, 0.4);
+  --pb-shadow-orange: 0 4px 20px rgba(255, 140, 66, 0.4);
+  --pb-shadow-green: 0 4px 20px rgba(34, 197, 94, 0.4);
+  
+  /* Focus rings */
+  --pb-ring-focus: 0 0 0 3px rgba(77, 166, 255, 0.2);
+  --pb-ring-accent: 0 0 0 1px rgba(77, 166, 255, 0.3);
+  
+  /* Card Definition (Dark Mode) */
+  --pb-card-bg: var(--pb-surface-1);
+  --pb-card-border: var(--pb-border-subtle);
+  --pb-card-shadow: none; /* No drop shadows in dark mode, use borders/glows instead */
 }
 
 /* Hero Section Styling */
@@ -71,6 +149,18 @@
   background-color: rgba(255, 255, 255, 0.2);
   border-color: #fff;
   text-decoration: none;
+}
+
+[data-theme='light'] .button--secondary {
+  background-color: var(--pb-surface-1);
+  border-color: var(--pb-border-strong);
+  color: #0f172a;
+  backdrop-filter: none;
+}
+
+[data-theme='light'] .button--secondary:hover {
+  background-color: var(--pb-surface-2);
+  border-color: rgba(0, 102, 204, 0.3);
 }
 
 /* Modern Navbar Styling */

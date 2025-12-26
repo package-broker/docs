@@ -68,8 +68,8 @@ function HomepageHeader() {
         <div className={styles.heroContent}>
           <h1 className={clsx('hero__title', styles.heroTitle)}>
             <span className={styles.heroTitleText}>
-              Private Composer Packages.<br />
-              Zero Per-Seat Pricing.
+              The Private Composer Registry for Teams.<br />
+              Unlimited Seats. Flat Pricing.
             </span>
           </h1>
           <p className={styles.heroSubtitle}>

@@ -25,8 +25,9 @@
   position: relative;
   padding: 1.5rem;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--pb-card-bg);
+  border: 1px solid var(--pb-card-border);
+  box-shadow: var(--pb-card-shadow);
   text-align: center;
   transition: all 0.3s ease;
   display: flex;
@@ -35,15 +36,13 @@
   gap: 0.75rem;
 }
 
-[data-theme='light'] .platformCard {
-  background: rgba(0, 0, 0, 0.03);
-  border-color: rgba(0, 0, 0, 0.05);
-}
-
 .platformCard:hover {
   transform: translateY(-5px);
+  box-shadow: var(--pb-shadow-lg);
+}
+
+[data-theme='dark'] .platformCard:hover {
   background: rgba(255, 255, 255, 0.07);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
 }
 
 .platformCard.available {

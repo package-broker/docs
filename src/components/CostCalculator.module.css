@@ -1,34 +1,26 @@
 .calculatorContainer {
   padding: 2rem;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--pb-card-bg);
+  border: 1px solid var(--pb-card-border);
+  box-shadow: var(--pb-card-shadow);
   margin: 2rem 0;
 }
 
-[data-theme='light'] .calculatorContainer {
-  background: rgba(0, 0, 0, 0.03);
-  border-color: rgba(0, 0, 0, 0.05);
-}
-
 .calculatorTitle {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: var(--pb-font-size-h3);
+  font-weight: var(--pb-font-weight-bold);
   margin-bottom: 0.5rem;
-  color: #fff;
-}
-
-[data-theme='light'] .calculatorTitle {
-  color: #1a1b26;
+  color: var(--ifm-heading-color);
 }
 
 .calculatorSubtitle {
-  color: #a9b1d6;
+  color: var(--ifm-color-emphasis-700);
   margin-bottom: 2rem;
 }
 
-[data-theme='light'] .calculatorSubtitle {
-  color: #495057;
+[data-theme='dark'] .calculatorSubtitle {
+  color: var(--ifm-color-emphasis-600);
 }
 
 .inputs {
@@ -91,34 +83,38 @@
 .select {
   padding: 0.75rem;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #fff;
-  font-size: 0.95rem;
+  background: var(--pb-surface-1);
+  border: 1px solid var(--pb-border-subtle);
+  color: var(--ifm-color-content);
+  font-size: var(--pb-font-size-body);
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .select:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: var(--pb-border-strong);
 }
 
 .select:focus {
   outline: none;
+  border-color: #0066cc;
+  box-shadow: var(--pb-ring-focus);
+}
+
+[data-theme='dark'] .select {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+[data-theme='dark'] .select:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme='dark'] .select:focus {
   border-color: #4DA6FF;
-  box-shadow: 0 0 0 3px rgba(77, 166, 255, 0.1);
-}
-
-[data-theme='light'] .select {
-  background: rgba(0, 0, 0, 0.05);
-  border-color: rgba(0, 0, 0, 0.1);
-  color: #1a1b26;
-}
-
-[data-theme='light'] .select:hover {
-  background: rgba(0, 0, 0, 0.08);
-  border-color: rgba(0, 0, 0, 0.2);
+  box-shadow: var(--pb-ring-focus);
 }
 
 .results {
@@ -133,6 +129,11 @@
   gap: 1rem;
   padding: 1.5rem;
   border-radius: 12px;
+  background: rgba(0, 102, 204, 0.05);
+  border: 1px solid rgba(0, 102, 204, 0.15);
+}
+
+[data-theme='dark'] .resultCard {
   background: rgba(77, 166, 255, 0.05);
   border: 1px solid rgba(77, 166, 255, 0.1);
 }
@@ -144,9 +145,14 @@
   width: 48px;
   height: 48px;
   border-radius: 10px;
+  background: rgba(0, 102, 204, 0.1);
+  color: #0066cc;
+  flex-shrink: 0;
+}
+
+[data-theme='dark'] .resultIcon {
   background: rgba(77, 166, 255, 0.1);
   color: #4DA6FF;
-  flex-shrink: 0;
 }
 
 .resultContent {
@@ -154,50 +160,46 @@
 }
 
 .resultLabel {
-  font-size: 0.85rem;
-  color: #a9b1d6;
+  font-size: var(--pb-font-size-sm);
+  color: var(--ifm-color-emphasis-700);
   margin-bottom: 0.5rem;
 }
 
-[data-theme='light'] .resultLabel {
-  color: #495057;
+[data-theme='dark'] .resultLabel {
+  color: #a9b1d6;
 }
 
 .resultValue {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #fff;
+  font-size: var(--pb-font-size-h3);
+  font-weight: var(--pb-font-weight-bold);
+  color: var(--ifm-heading-color);
   margin-bottom: 0.25rem;
 }
 
-[data-theme='light'] .resultValue {
-  color: #1a1b26;
-}
-
 .resultSubtext {
-  font-size: 0.8rem;
-  color: #565f89;
+  font-size: var(--pb-font-size-xs);
+  color: var(--ifm-color-emphasis-600);
 }
 
-[data-theme='light'] .resultSubtext {
-  color: #6c757d;
+[data-theme='dark'] .resultSubtext {
+  color: #565f89;
 }
 
 .savingsCta {
   margin-top: 2rem;
   padding: 1rem;
   border-radius: 8px;
-  background: rgba(74, 222, 128, 0.1);
-  border: 1px solid rgba(74, 222, 128, 0.2);
+  background: rgba(5, 150, 105, 0.1);
+  border: 1px solid rgba(5, 150, 105, 0.25);
   text-align: center;
-  color: #4ade80;
-  font-weight: 500;
+  color: #059669;
+  font-weight: var(--pb-font-weight-medium);
 }
 
-[data-theme='light'] .savingsCta {
-  background: rgba(74, 222, 128, 0.15);
-  border-color: rgba(74, 222, 128, 0.3);
-  color: #059669;
+[data-theme='dark'] .savingsCta {
+  background: rgba(74, 222, 128, 0.1);
+  border-color: rgba(74, 222, 128, 0.2);
+  color: #4ade80;
 }
 
 
