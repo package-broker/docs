@@ -1,0 +1,11 @@
+/* Clean menu list styling */
+.menuList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Style menu items via global CSS (Docusaurus uses .menu__link class) */
+
