@@ -88,7 +88,13 @@ Running migrations from: /app/packages/main/migrations
 - The dashboard will display this error with a link to the documentation until migrations are completed
 - API endpoints will return a `DATABASE_NOT_INITIALIZED` error
 
-**Note**: Migrations only need to be run once when setting up a new database. After migrations are complete, the server will automatically detect the initialized database and work normally.
+**Note**: Migrations only need to be run once when setting up a new database. After running migrations, restart the container to apply the changes:
+
+```bash
+$ docker restart package-broker
+```
+
+The server will then automatically detect the initialized database and work normally.
 
 ## Step 6: Verify Installation
 
