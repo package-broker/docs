@@ -18,8 +18,8 @@ This page outlines planned features and improvements for PACKAGE.broker. Feature
 Interactive CLI that simplifies Cloudflare deployment to a single command:
 
 ```bash
-npm install @package-broker/cloudflare
-npx package-broker-cloudflare init --interactive
+npm install @package-broker/cli
+npx package-broker init --interactive
 ```
 
 **Features**:
