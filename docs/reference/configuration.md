@@ -56,8 +56,10 @@ DB_URL="postgresql://user:password@host:5432/database"
 
 **SQLite**:
 ```bash
-DB_URL="file:/data/database.sqlite"
+DB_URL="/data/database.sqlite"
 ```
+
+**Note**: For SQLite, use a file path (e.g., `/data/database.sqlite`), not a URI with `file:` prefix.
 
 **Cloudflare D1**: Set via `wrangler.toml` bindings (no URL needed).
 
@@ -261,7 +263,7 @@ bucket_name = "package-broker-artifacts"
 ```bash
 ENCRYPTION_KEY="your-key-here"
 DB_DRIVER=sqlite
-DB_URL="file:/data/database.sqlite"
+DB_URL="/data/database.sqlite"
 STORAGE_DRIVER=fs
 STORAGE_FS_PATH="/data/storage"
 CACHE_DRIVER=memory
