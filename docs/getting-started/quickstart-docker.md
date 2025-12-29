@@ -57,7 +57,7 @@ $ docker run -d \
   -v $(pwd)/package-broker-data:/data \
   -e ENCRYPTION_KEY="YOUR_ENCRYPTION_KEY_HERE" \
   -e DB_DRIVER=sqlite \
-  -e DB_URL="file:/data/database.sqlite" \
+  -e DB_URL="/data/database.sqlite" \
   -e STORAGE_DRIVER=fs \
   -e STORAGE_FS_PATH="/data/storage" \
   packagebroker/server:latest
@@ -65,7 +65,32 @@ $ docker run -d \
 
 Replace `YOUR_ENCRYPTION_KEY_HERE` with the key you generated in Step 2.
 
-## Step 5: Verify Installation
+**Note**: The `DB_URL` should be a file path (e.g., `/data/database.sqlite`), not a URI with `file:` prefix.
+
+## Step 5: Run Database Migrations
+
+After starting the container, you need to initialize the database by running migrations:
+
+```bash
+$ docker exec package-broker node packages/adapter-node/scripts/migrate.cjs /data/database.sqlite
+```
+
+**Expected output:**
+```
+Initializing database at: /data/database.sqlite
+Running migrations from: /app/packages/main/migrations
+✅ Database migrations completed successfully
+```
+
+**What happens if migrations aren't run?**
+- The server will start successfully
+- When you access `http://localhost:8080`, you'll see a warning message: "Database not initialized. Please run migrations."
+- The dashboard will display this error with a link to the documentation until migrations are completed
+- API endpoints will return a `DATABASE_NOT_INITIALIZED` error
+
+**Note**: Migrations only need to be run once when setting up a new database. After migrations are complete, the server will automatically detect the initialized database and work normally.
+
+## Step 6: Verify Installation
 
 Check that the container is running:
 
@@ -87,7 +112,7 @@ $ curl http://localhost:8080/health
 }
 ```
 
-## Step 6: Initial Setup
+## Step 7: Initial Setup
 
 Open your browser and navigate to:
 
@@ -101,7 +126,7 @@ You'll see the setup screen. Create your first admin account:
 2. Set a secure password
 3. Click "Complete Setup"
 
-## Step 7: Create an Access Token
+## Step 8: Create an Access Token
 
 1. Navigate to **Access Tokens** in the dashboard
 2. Click **Create Token**
@@ -112,7 +137,7 @@ You'll see the setup screen. Create your first admin account:
 5. Click **Create**
 6. **Copy the token immediately** - it's only shown once
 
-## Step 8: Add a Repository Source
+## Step 9: Add a Repository Source
 
 1. Navigate to **Sources** in the dashboard
 2. Click **Add Source**
@@ -122,7 +147,7 @@ You'll see the setup screen. Create your first admin account:
    - **Credentials**: Add authentication if the repository is private
 4. Click **Save**
 
-## Step 9: Test Package Installation
+## Step 10: Test Package Installation
 
 Create a test `composer.json`:
 
@@ -185,6 +210,30 @@ If the container exited, check logs for errors.
 - Verify the container is running: `docker ps`
 - Check port mapping: `docker port package-broker`
 - Try accessing via `http://127.0.0.1:8080` instead of `localhost`
+
+### Database Not Initialized Error
+
+If you see "Database not initialized. Please run migrations" when accessing the dashboard:
+
+1. **Check if migrations have been run:**
+   ```bash
+   $ docker exec package-broker node packages/adapter-node/scripts/migrate.cjs /data/database.sqlite
+   ```
+
+2. **Verify the database file exists:**
+   ```bash
+   $ docker exec package-broker ls -la /data/database.sqlite
+   ```
+
+3. **Check container logs for migration errors:**
+   ```bash
+   $ docker logs package-broker | grep -i migration
+   ```
+
+4. **If migrations fail**, ensure:
+   - The database path is correct (should be `/data/database.sqlite`, not `file:/data/database.sqlite`)
+   - The data volume is properly mounted
+   - The container has write permissions to `/data`
 
 ## Next Steps
 
