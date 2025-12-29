@@ -21,8 +21,10 @@ npm install @package-broker/cli @package-broker/main
 Initialize a new PACKAGE.broker deployment.
 
 ```bash
-npx package-broker
+npx package-broker init
 ```
+
+**Note**: You can also use `npx package-broker` (without `init`) - both commands are equivalent.
 
 **What it does**:
 - Creates `wrangler.toml` from template
@@ -118,5 +120,6 @@ cp node_modules/@package-broker/main/wrangler.example.toml wrangler.toml
 - See [Cloudflare Quickstart](../getting-started/quickstart-cloudflare) for complete setup guide
 - Review [Configuration Reference](./configuration) for all options
 - Check [Roadmap](./roadmap) for upcoming CLI features
+
 
 

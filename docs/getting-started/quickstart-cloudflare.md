@@ -12,10 +12,10 @@ Deploy PACKAGE.broker on Cloudflare Workers for edge-optimized, serverless packa
 
 We offer two ways to deploy:
 
-1. **Interactive CLI** (recommended) - One-command setup with guided prompts
+1. **CLI Setup** (recommended) - Initialize configuration files and follow setup steps
 2. **GitHub Template** - Fork-and-deploy with automated GitHub Actions
 
-## Method 1: Interactive CLI (Recommended)
+## Method 1: CLI Setup (Recommended)
 
 ### Prerequisites
 
@@ -27,36 +27,125 @@ We offer two ways to deploy:
 
 ```bash
 $ npm init -y
-$ npm install @package-broker/cloudflare @package-broker/main
-$ npx package-broker-cloudflare init
+$ npm install @package-broker/cli @package-broker/main
+$ npx package-broker init
 ```
 
-The CLI will guide you through:
-- **Tier selection**: Free or Paid tier
-- **Worker name**: Customize or use default
-- **Resource creation**: Automatically creates D1, KV, R2 (and Queue if paid tier)
-- **Secret management**: Sets `ENCRYPTION_KEY` as Cloudflare secret
-- **Deployment**: Optionally deploys immediately
+The CLI will:
+- Create `wrangler.toml` from template
+- Copy migration files to `migrations/` directory
+- Display next steps for configuration
 
 ### What Happens Automatically
 
-1. ✅ Generates encryption key
-2. ✅ Creates D1 database
-3. ✅ Creates KV namespace
-4. ✅ Creates R2 bucket
-5. ✅ Creates Queue (if paid tier)
-6. ✅ Sets `ENCRYPTION_KEY` as Cloudflare secret (not in `wrangler.toml`)
-7. ✅ Generates `wrangler.toml` with all resource IDs
-8. ✅ Copies migration files
-9. ✅ Applies migrations (if deploying)
-10. ✅ Deploys Worker (if confirmed)
+1. ✅ Creates `wrangler.toml` configuration file
+2. ✅ Copies database migration files to `migrations/` directory
+3. ✅ Displays next steps for manual configuration
+
+**Note**: The CLI currently provides basic initialization. For automated resource creation and deployment, see the [Advanced: Manual Setup](#advanced-manual-setup) section below, or use the [GitHub Template method](#method-2-github-template-cicd) for fully automated deployment.
+
+### Step 2: Configure and Deploy
+
+After running `npx package-broker init`, follow the displayed instructions to:
+
+1. **Edit `wrangler.toml`** with your configuration:
+   - Set your worker name
+   - Configure encryption key (generate with: `openssl rand -base64 32`)
+
+2. **Login to Cloudflare**:
+   ```bash
+   $ npx wrangler login
+   ```
+
+3. **Create Cloudflare resources** (see [Advanced: Manual Setup](#advanced-manual-setup) for detailed steps):
+   - D1 database
+   - KV namespace
+   - R2 bucket
+   - Queue (if using paid tier)
+
+4. **Update `wrangler.toml`** with the generated resource IDs
+
+5. **Set encryption key as secret**:
+   ```bash
+   $ npx wrangler secret put ENCRYPTION_KEY
+   ```
+
+6. **Apply database migrations**:
+   ```bash
+   $ npx wrangler d1 migrations apply <worker-name>-db --remote
+   ```
+
+7. **Deploy to Cloudflare**:
+   ```bash
+   $ npx wrangler deploy
+   ```
 
 ### After Deployment
 
-1. Open your Worker URL (shown in CLI output)
+1. Open your Worker URL (shown in deployment output)
 2. Complete initial setup (email + password)
 3. Create an access token in the dashboard
 4. Start adding repository sources
+
+## Advanced: Manual Setup
+
+If you prefer manual control or need to customize the setup process, follow these detailed steps:
+
+### Manual Resource Creation
+
+1. **Create D1 database**:
+   ```bash
+   $ npx wrangler d1 create <worker-name>-db
+   ```
+   Copy the `database_id` from the output.
+
+2. **Create KV namespace**:
+   ```bash
+   $ npx wrangler kv namespace create <worker-name>-kv
+   ```
+   Copy the `id` from the output.
+
+3. **Create R2 bucket**:
+   ```bash
+   $ npx wrangler r2 bucket create <worker-name>-artifacts
+   ```
+
+4. **Create Queue** (paid tier only):
+   ```bash
+   $ npx wrangler queues create <worker-name>-queue
+   ```
+
+### Manual Configuration
+
+1. **Edit `wrangler.toml`** with resource IDs from above:
+   - Update `database_id` in `[[d1_databases]]` section
+   - Update `id` in `[[kv_namespaces]]` section
+   - Update `bucket_name` in `[[r2_buckets]]` section (if different)
+   - Update `queue` name in `[[queues.producers]]` and `[[queues.consumers]]` sections (if using paid tier)
+
+2. **Generate encryption key**:
+   ```bash
+   $ openssl rand -base64 32
+   ```
+   Copy the generated key.
+
+3. **Set encryption key as Cloudflare secret**:
+   ```bash
+   $ npx wrangler secret put ENCRYPTION_KEY
+   ```
+   Paste the encryption key when prompted.
+
+4. **Apply database migrations**:
+   ```bash
+   $ npx wrangler d1 migrations apply <worker-name>-db --remote
+   ```
+
+5. **Deploy Worker**:
+   ```bash
+   $ npx wrangler deploy
+   ```
+
+See [CLI Reference](../reference/cli) for more details on the init command.
 
 ## Method 2: GitHub Template (CI/CD)
 
@@ -233,7 +322,7 @@ $ npx wrangler d1 migrations apply <worker-name>-db --remote
 ### CLI Method
 
 ```bash
-$ npm update @package-broker/cloudflare @package-broker/main
+$ npm update @package-broker/cli @package-broker/main
 $ npx wrangler deploy
 ```
 
