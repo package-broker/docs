@@ -1,13 +1,5 @@
 # Docker Installation
 
-:::info Coming Soon
-
-Docker support is currently in development as part of the architectural refactor. This guide will be updated when Docker images are available.
-
-**Current Status**: Docker images are planned but not yet available. Please use the [Cloudflare Workers Quickstart](../getting-started/quickstart-cloudflare.md) for now.
-
-:::
-
 ## Overview
 
 PACKAGE.broker can be deployed using Docker for easy self-hosting on any platform that supports Docker.
@@ -21,14 +13,26 @@ PACKAGE.broker can be deployed using Docker for easy self-hosting on any platfor
 
 ## Quick Start
 
-Once Docker images are available, installation will be as simple as:
+Pull the Docker image from Docker Hub (recommended):
+
+```bash
+docker pull packagebroker/server:latest
+```
+
+Or from GitHub Container Registry:
+
+```bash
+docker pull ghcr.io/package-broker/server:latest
+```
+
+Then run the container:
 
 ```bash
 docker run -d \
   -p 8080:8080 \
   -v $(pwd)/data:/data \
   -e ENCRYPTION_KEY=$(openssl rand -base64 32) \
-  ghcr.io/package-broker/server:latest
+  packagebroker/server:latest
 ```
 
 ## Access Dashboard
@@ -41,8 +45,8 @@ After starting the container:
 
 ## Next Steps
 
-1. Review the [getting started guide](../intro.md)
-2. Check the [Cloudflare Workers Quickstart](../getting-started/quickstart-cloudflare.md) for current deployment options
+1. Review the [Docker Quickstart guide](../getting-started/quickstart-docker.md) for detailed setup instructions
+2. Check the [Cloudflare Workers Quickstart](../getting-started/quickstart-cloudflare.md) for serverless deployment options
 
 ## Production Considerations
 

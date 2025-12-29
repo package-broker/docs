@@ -10,8 +10,16 @@ PACKAGE.broker provides a CLI tool (`@package-broker/cli`) for initializing depl
 
 ## Installation
 
+Install from npmjs.org (recommended):
+
 ```bash
 npm install @package-broker/cli @package-broker/main
+```
+
+Or install from GitHub Packages:
+
+```bash
+npm install @package-broker/cli @package-broker/main --registry https://npm.pkg.github.com
 ```
 
 ## Commands

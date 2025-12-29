@@ -31,6 +31,11 @@ $ npm install @package-broker/cli @package-broker/main
 $ npx package-broker init
 ```
 
+**Note**: Packages are available from npmjs.org (default) or GitHub Packages. To install from GitHub Packages, use:
+```bash
+$ npm install @package-broker/cli @package-broker/main --registry https://npm.pkg.github.com
+```
+
 The CLI will:
 - Create `wrangler.toml` from template
 - Copy migration files to `migrations/` directory

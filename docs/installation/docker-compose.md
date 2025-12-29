@@ -1,13 +1,5 @@
 # Docker Compose Installation
 
-:::info Coming Soon
-
-Docker Compose support is currently in development as part of the architectural refactor. This guide will be updated when Docker images are available.
-
-**Current Status**: Docker images are planned but not yet available. Please use the [Cloudflare Workers Quickstart](../getting-started/quickstart-cloudflare.md) for now.
-
-:::
-
 ## Overview
 
 Docker Compose provides an easy way to run PACKAGE.broker with all dependencies (database, cache, storage) in a single command.
@@ -21,12 +13,12 @@ Docker Compose provides an easy way to run PACKAGE.broker with all dependencies 
 
 ## Production Setup
 
-Once Docker images are available, a production-ready `docker-compose.yml` will look like:
+A production-ready `docker-compose.yml`:
 
 ```yaml
 services:
   package-broker:
-    image: ghcr.io/package-broker/server:latest
+    image: packagebroker/server:latest
     ports:
       - "8080:8080"
     environment:
@@ -96,10 +88,20 @@ docker-compose up -d
 - **MinIO Console**: http://localhost:9001
 - **PostgreSQL**: localhost:5432
 
+## Alternative Image Sources
+
+You can also use the GitHub Container Registry image:
+
+```yaml
+services:
+  package-broker:
+    image: ghcr.io/package-broker/server:latest
+```
+
 ## Next Steps
 
-1. Review the [getting started guide](../intro.md)
-2. Check the [Cloudflare Workers Quickstart](../getting-started/quickstart-cloudflare.md) for current deployment options
+1. Review the [Docker Quickstart guide](../getting-started/quickstart-docker.md) for detailed setup instructions
+2. Check the [Cloudflare Workers Quickstart](../getting-started/quickstart-cloudflare.md) for serverless deployment options
 3. Review [compliance documentation](../soc2-compliance.md)
 
 ## Support
