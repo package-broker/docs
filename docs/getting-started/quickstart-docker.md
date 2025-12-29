@@ -83,12 +83,10 @@ Running migrations from: /app/packages/main/migrations
 ```
 
 **What happens if migrations aren't run?**
-- The server will start successfully
-- When you access `http://localhost:8080`, you'll see a warning message: "Database not initialized. Please run migrations."
-- The dashboard will display this error with a link to the documentation until migrations are completed
-- API endpoints will return a `DATABASE_NOT_INITIALIZED` error
+- The server will start but log an error message with migration instructions
+- API requests will fail with database errors until migrations are completed
 
-**Note**: Migrations only need to be run once when setting up a new database. After migrations are complete, the server will automatically detect the initialized database and work normally.
+**Note**: Migrations only need to be run once when setting up a new database. The server will work immediately after migrations complete - no restart required.
 
 ## Step 6: Verify Installation
 
