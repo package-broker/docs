@@ -16,7 +16,13 @@ This guide will get you up and running with PACKAGE.broker using Docker in about
 
 ## Step 1: Pull the Image
 
-Pull the official PACKAGE.broker Docker image:
+Pull the official PACKAGE.broker Docker image from Docker Hub (recommended):
+
+```bash
+$ docker pull packagebroker/server:latest
+```
+
+Or from GitHub Container Registry:
 
 ```bash
 $ docker pull ghcr.io/package-broker/server:latest
@@ -54,7 +60,7 @@ $ docker run -d \
   -e DB_URL="file:/data/database.sqlite" \
   -e STORAGE_DRIVER=fs \
   -e STORAGE_FS_PATH="/data/storage" \
-  ghcr.io/package-broker/server:latest
+  packagebroker/server:latest
 ```
 
 Replace `YOUR_ENCRYPTION_KEY_HERE` with the key you generated in Step 2.
