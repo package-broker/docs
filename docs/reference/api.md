@@ -6,13 +6,20 @@ description: REST API endpoints for PACKAGE.broker
 
 # API Reference
 
-:::info Planned Feature
-
-The Management API endpoints described below are planned but not yet fully implemented. The Composer API (`/packages.json`, `/p2/*`, `/dist/*`) is fully functional.
-
-:::
-
 PACKAGE.broker provides a REST API for programmatic access to repositories, tokens, and packages.
+
+## Interactive API Documentation
+
+For complete, interactive API documentation with the ability to test endpoints directly, visit:
+
+- **Swagger UI**: `/api/swagger` - Interactive API explorer
+- **OpenAPI Spec**: `/api/openapi.json` - Raw OpenAPI 3.0 specification
+
+The Swagger UI provides:
+- Complete endpoint documentation
+- Request/response schemas
+- Interactive "Try it out" functionality
+- Authentication support
 
 ## Base URL
 
@@ -81,117 +88,18 @@ Downloads the package distribution archive.
 
 **Response**: Binary ZIP file
 
-## Management API (Planned)
+## Management API
 
-### Repositories
+All Management API endpoints are fully documented in the [Swagger UI](/api/swagger). Key endpoint categories include:
 
-#### List Repositories
+- **Authentication**: Login, logout, user management, 2FA
+- **Repositories**: Create, list, update, delete, verify, sync repositories
+- **Tokens**: Create, list, update, delete API tokens
+- **Packages**: List packages, get package details, readme, changelog, statistics
+- **Settings**: Configure Packagist mirroring and other settings
+- **Artifacts**: Manage package artifacts and cleanup
 
-```http
-GET /api/repositories
-```
-
-#### Create Repository
-
-```http
-POST /api/repositories
-Content-Type: application/json
-
-{
-  "url": "https://github.com/org/repo",
-  "vcs_type": "github",
-  "credential_type": "token",
-  "auth_credentials": "encrypted-token"
-}
-```
-
-#### Get Repository
-
-```http
-GET /api/repositories/{id}
-```
-
-**Note**: Replace `{id}` with the actual repository ID.
-
-#### Update Repository
-
-```http
-PATCH /api/repositories/{id}
-```
-
-**Note**: Replace `{id}` with the actual repository ID.
-
-#### Delete Repository
-
-```http
-DELETE /api/repositories/{id}
-```
-
-**Note**: Replace `{id}` with the actual repository ID.
-
-### Tokens
-
-#### List Tokens
-
-```http
-GET /api/tokens
-```
-
-#### Create Token
-
-```http
-POST /api/tokens
-Content-Type: application/json
-
-{
-  "description": "Customer token",
-  "permissions": "readonly",
-  "expires_at": 1735689600,
-  "allowed_package_prefixes": ["vendor/"]
-}
-```
-
-#### Get Token
-
-```http
-GET /api/tokens/{id}
-```
-
-**Note**: Replace `{id}` with the actual token ID.
-
-#### Update Token
-
-```http
-PATCH /api/tokens/{id}
-```
-
-**Note**: Replace `{id}` with the actual token ID.
-
-#### Delete Token
-
-```http
-DELETE /api/tokens/{id}
-```
-
-**Note**: Replace `{id}` with the actual token ID.
-
-### Packages
-
-#### List Packages
-
-```http
-GET /api/packages?repo_id={id}
-```
-
-**Note**: Replace `{id}` with the actual repository ID.
-
-#### Get Package
-
-```http
-GET /api/packages/{id}
-```
-
-**Note**: Replace `{id}` with the actual package ID.
+For detailed request/response schemas, parameter descriptions, and examples, please use the interactive Swagger UI documentation.
 
 ## Error Responses
 
