@@ -158,12 +158,15 @@ See [CLI Reference](../reference/cli) for more details on the init command.
 
 - A GitHub account
 - A Cloudflare account
+- **Repository must be initialized**: The template includes `package.json` and `package-lock.json` with required dependencies
 
 ### Step 1: Use Template
 
 1. Go to [package-broker/cloudflare-template](https://github.com/package-broker/cloudflare-template)
 2. Click **"Use this template"**
 3. Create your repository
+
+**Important**: The template repository already includes `package.json` and `package-lock.json` with all required dependencies. Do not delete these files.
 
 ### Step 2: Configure Secrets and Variables
 
@@ -184,6 +187,7 @@ In your repository: **Settings → Secrets and variables → Actions**
 
 - **`WORKER_NAME`** - Custom worker name (defaults to repository name)
 - **`CLOUDFLARE_TIER`** - `free` or `paid` (defaults to `free`)
+- **`CUSTOM_DOMAIN`** - Custom domain to use (e.g., `app.example.com`). After deployment, you'll receive instructions to create a CNAME record in Cloudflare DNS.
 
 ### Step 3: Deploy
 
@@ -191,8 +195,9 @@ Push to `main` branch or manually trigger the workflow from the **Actions** tab.
 
 The workflow automatically:
 - Validates configuration
-- Creates Cloudflare resources
-- Generates `wrangler.toml`
+- Installs dependencies using `npm ci` (requires `package-lock.json`)
+- Creates Cloudflare resources via `@package-broker/cloudflare` CLI
+- Generates `wrangler.toml` at runtime (not committed to repository)
 - Sets secrets
 - Applies migrations
 - Deploys the Worker
@@ -299,6 +304,8 @@ $ npx wrangler login
 
 ### GitHub Actions: Workflow Fails
 
+- **Missing package-lock.json**: The action requires both `package.json` and `package-lock.json` to be committed. If you see an error about missing `package-lock.json`, run `npm install` locally and commit both files.
+- **Missing @package-broker/cloudflare**: Ensure `package.json` includes `@package-broker/cloudflare` as a dependency. The template repository already includes this.
 - Verify all required secrets and variables are set
 - Check secret/variable names are exact (case-sensitive)
 - Review workflow logs for specific error messages
@@ -333,17 +340,19 @@ $ npx wrangler deploy
 
 ### GitHub Template Method
 
-Update `package.json` in your repository:
+Update `package.json` in your repository to bump dependency versions:
 
 ```json
 {
   "dependencies": {
-    "@package-broker/main": "^0.2.12"
+    "@package-broker/main": "^0.9.0",
+    "@package-broker/ui": "^0.9.0",
+    "@package-broker/cloudflare": "^0.9.0"
   }
 }
 ```
 
-Then push to `main` branch - the workflow will automatically deploy the new version.
+Then run `npm install` locally to update `package-lock.json`, commit both files, and push to `main` branch. The workflow will automatically deploy the new version.
 
 ## Project Structure
 
