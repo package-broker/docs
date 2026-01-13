@@ -30,6 +30,12 @@ services:
       S3_ENDPOINT: minio:9000
       S3_BUCKET: packages
       ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+      # SMTP Configuration (Optional - uncomment to enable email sending)
+      # SMTP_HOST: ${SMTP_HOST}
+      # SMTP_PORT: ${SMTP_PORT:-587}
+      # SMTP_USER: ${SMTP_USER}
+      # SMTP_PASS: ${SMTP_PASS}
+      # SMTP_FROM: ${SMTP_FROM}
     depends_on:
       - postgres
       - redis
@@ -74,6 +80,14 @@ Create a `.env` file:
 ENCRYPTION_KEY=$(openssl rand -base64 32)
 DB_PASSWORD=your-secure-password
 MINIO_ROOT_PASSWORD=your-secure-password
+
+# SMTP Configuration (Optional)
+# Uncomment and configure to enable email sending for user invitations
+# SMTP_HOST=smtp.gmail.com
+# SMTP_PORT=587
+# SMTP_USER=your-email@gmail.com
+# SMTP_PASS=your-app-password
+# SMTP_FROM=noreply@example.com
 ```
 
 ### Starting Services
@@ -98,11 +112,31 @@ services:
     image: ghcr.io/package-broker/server:latest
 ```
 
+## SMTP Configuration (Optional)
+
+To enable email sending for user invitations, configure SMTP settings:
+
+1. Add SMTP variables to your `.env` file (see [Environment Variables](#environment-variables) above)
+2. Uncomment the SMTP environment variables in `docker-compose.yml`
+3. Restart the container: `docker-compose restart package-broker`
+
+**Example for Gmail**:
+```bash
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-specific-password
+SMTP_FROM=your-email@gmail.com
+```
+
+**Note**: Gmail requires an [app-specific password](https://support.google.com/accounts/answer/185833) for SMTP. See [Configuration Reference](../reference/configuration#email-configuration-smtp) for other email provider examples.
+
 ## Next Steps
 
 1. Review the [Docker Quickstart guide](../getting-started/quickstart-docker.md) for detailed setup instructions
 2. Check the [Cloudflare Workers Quickstart](../getting-started/quickstart-cloudflare.md) for serverless deployment options
 3. Review [compliance documentation](../soc2-compliance.md)
+4. Configure SMTP for email notifications (see [SMTP Configuration](#smtp-configuration-optional) above)
 
 ## Support
 

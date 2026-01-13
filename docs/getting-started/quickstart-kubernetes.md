@@ -23,6 +23,7 @@ PACKAGE.broker will support deployment on Kubernetes using an official Helm char
 - Configurable resource limits
 - Support for PostgreSQL, Redis, S3-compatible storage
 - Ingress configuration templates
+- SMTP email configuration for user invitations
 
 ### Deployment Options
 
@@ -30,6 +31,24 @@ PACKAGE.broker will support deployment on Kubernetes using an official Helm char
 - **Redis**: Caching and session storage
 - **S3-compatible**: Object storage for artifacts
 - **Horizontal scaling**: Multiple pod replicas
+- **SMTP**: Email configuration for user invitations and notifications
+
+### SMTP Configuration
+
+The Helm chart will support SMTP configuration via `values.yaml`:
+
+```yaml
+config:
+  smtp:
+    host: "smtp.gmail.com"
+    port: "587"
+    user: "your-email@gmail.com"
+    from: "noreply@example.com"
+    existingSecret: "smtp-credentials"  # Use existing Kubernetes secret
+    passwordKey: "smtp-password"        # Key in secret for password
+```
+
+**Note**: Store SMTP passwords in Kubernetes secrets, not directly in `values.yaml`. See the [Helm chart values.yaml](https://github.com/package-broker/server/blob/main/charts/package-broker/values.yaml) for the complete SMTP configuration structure.
 
 ## Timeline
 

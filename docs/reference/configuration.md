@@ -235,6 +235,152 @@ LOG_LEVEL=debug
 NODE_ENV=production
 ```
 
+## Email Configuration (SMTP)
+
+SMTP configuration enables email sending for user invitations and notifications. Email sending is **optional** - if SMTP is not configured, user creation will still work, but no emails will be sent.
+
+### SMTP_HOST
+
+**Type**: `string`  
+**Required**: Yes (for email functionality)  
+**Description**: SMTP server hostname.
+
+**Examples**:
+- Gmail: `smtp.gmail.com`
+- SendGrid: `smtp.sendgrid.net`
+- AWS SES: `email-smtp.us-east-1.amazonaws.com`
+- Mailgun: `smtp.mailgun.org`
+- Custom: `mail.example.com`
+
+### SMTP_PORT
+
+**Type**: `string`  
+**Required**: No  
+**Default**: `587`  
+**Description**: SMTP server port.
+
+**Common Values**:
+- `587` - STARTTLS (recommended for most providers)
+- `465` - SSL/TLS (automatically enabled)
+- `25` - Unencrypted (not recommended for production)
+
+**Example**:
+```bash
+SMTP_PORT=587
+```
+
+### SMTP_USER
+
+**Type**: `string`  
+**Required**: Yes (for email functionality)  
+**Description**: SMTP authentication username.
+
+**Examples**:
+- Gmail: Your Gmail address (e.g., `your-email@gmail.com`)
+- SendGrid: `apikey` (literal string)
+- AWS SES: IAM access key ID
+- Mailgun: Your Mailgun account email
+- Custom: SMTP username provided by your email provider
+
+### SMTP_PASS
+
+**Type**: `string`  
+**Required**: Yes (for email functionality)  
+**Description**: SMTP authentication password or API key.
+
+**Security**: Store as environment variable or secret. Never commit to version control.
+
+**Examples**:
+- Gmail: App-specific password (not your regular Gmail password)
+- SendGrid: API key from SendGrid dashboard
+- AWS SES: IAM secret access key
+- Mailgun: API key from Mailgun dashboard
+- Custom: SMTP password provided by your email provider
+
+### SMTP_FROM
+
+**Type**: `string`  
+**Required**: No  
+**Default**: Value of `SMTP_USER`  
+**Description**: "From" email address displayed in sent emails.
+
+**Examples**:
+```bash
+SMTP_FROM=noreply@example.com
+SMTP_FROM="Package Broker <noreply@example.com>"
+```
+
+**Note**: Some email providers require the "From" address to match your verified domain or account.
+
+### Email Functionality
+
+When SMTP is configured (`SMTP_HOST`, `SMTP_USER`, and `SMTP_PASS` are set), the system will:
+- Automatically send invitation emails when admins create new users
+- Include invitation links or temporary passwords in emails
+- Use HTML email templates for better formatting
+
+**Note**: Email sending is optional. If SMTP is not configured, user creation will still work, but no emails will be sent. Email failures are logged but don't block user creation.
+
+### Email Provider Examples
+
+#### Gmail
+
+```bash
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-specific-password
+SMTP_FROM=your-email@gmail.com
+```
+
+**Note**: Gmail requires an [app-specific password](https://support.google.com/accounts/answer/185833) for SMTP authentication. Regular passwords won't work.
+
+#### SendGrid
+
+```bash
+SMTP_HOST=smtp.sendgrid.net
+SMTP_PORT=587
+SMTP_USER=apikey
+SMTP_PASS=SG.your-sendgrid-api-key
+SMTP_FROM=noreply@yourdomain.com
+```
+
+**Note**: SendGrid uses `apikey` as the username and your API key as the password.
+
+#### AWS SES
+
+```bash
+SMTP_HOST=email-smtp.us-east-1.amazonaws.com
+SMTP_PORT=587
+SMTP_USER=AKIAIOSFODNN7EXAMPLE
+SMTP_PASS=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+SMTP_FROM=noreply@yourdomain.com
+```
+
+**Note**: Use IAM credentials with SES SMTP access. Ensure your domain/email is verified in SES.
+
+#### Mailgun
+
+```bash
+SMTP_HOST=smtp.mailgun.org
+SMTP_PORT=587
+SMTP_USER=postmaster@mg.yourdomain.com
+SMTP_PASS=your-mailgun-smtp-password
+SMTP_FROM=noreply@yourdomain.com
+```
+
+**Note**: Mailgun provides SMTP credentials in the dashboard under Sending → Domain Settings.
+
+#### Custom SMTP Server
+
+```bash
+SMTP_HOST=mail.example.com
+SMTP_PORT=587
+SMTP_USER=your-username
+SMTP_PASS=your-password
+SMTP_FROM=noreply@example.com
+```
+
 ## Cloudflare-Specific Configuration
 
 ### Workers Bindings
