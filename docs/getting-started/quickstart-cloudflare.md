@@ -56,6 +56,7 @@ After running `npx package-broker init`, follow the displayed instructions to:
 1. **Edit `wrangler.toml`** with your configuration:
    - Set your worker name
    - Configure encryption key (generate with: `openssl rand -base64 32`)
+   - Optionally configure SMTP for email sending (see [SMTP Configuration](#smtp-configuration-optional) below)
 
 2. **Login to Cloudflare**:
    ```bash
@@ -75,12 +76,18 @@ After running `npx package-broker init`, follow the displayed instructions to:
    $ npx wrangler secret put ENCRYPTION_KEY
    ```
 
-6. **Apply database migrations**:
+6. **Set SMTP secrets** (optional, for email sending):
+   ```bash
+   $ npx wrangler secret put SMTP_PASS
+   ```
+   See [SMTP Configuration](#smtp-configuration-optional) below for details.
+
+7. **Apply database migrations**:
    ```bash
    $ npx wrangler d1 migrations apply <worker-name>-db --remote
    ```
 
-7. **Deploy to Cloudflare**:
+8. **Deploy to Cloudflare**:
    ```bash
    $ npx wrangler deploy
    ```
@@ -235,6 +242,73 @@ The `ENCRYPTION_KEY` is **never stored in `wrangler.toml`**. It's set as a Cloud
 To update the key:
 - Via CLI: `wrangler secret put ENCRYPTION_KEY`
 - Via Dashboard: Workers & Pages → Settings → Variables and Secrets
+
+## SMTP Configuration (Optional)
+
+To enable email sending for user invitations, configure SMTP in `wrangler.toml`:
+
+```toml
+[vars]
+# ... existing vars ...
+SMTP_HOST = "smtp.sendgrid.net"
+SMTP_PORT = "587"
+SMTP_USER = "apikey"
+SMTP_FROM = "noreply@example.com"
+```
+
+**Important**: For production, store `SMTP_PASS` as a Cloudflare secret instead of in `[vars]`:
+
+```bash
+$ npx wrangler secret put SMTP_PASS
+```
+
+When prompted, enter your SMTP password or API key.
+
+### Email Provider Examples
+
+#### SendGrid (Recommended for Cloudflare)
+```toml
+[vars]
+SMTP_HOST = "smtp.sendgrid.net"
+SMTP_PORT = "587"
+SMTP_USER = "apikey"
+SMTP_FROM = "noreply@yourdomain.com"
+```
+Then set the API key as a secret:
+```bash
+$ npx wrangler secret put SMTP_PASS
+# Enter: SG.your-sendgrid-api-key
+```
+
+#### Gmail
+```toml
+[vars]
+SMTP_HOST = "smtp.gmail.com"
+SMTP_PORT = "587"
+SMTP_USER = "your-email@gmail.com"
+SMTP_FROM = "your-email@gmail.com"
+```
+Then set the app-specific password as a secret:
+```bash
+$ npx wrangler secret put SMTP_PASS
+```
+
+**Note**: Gmail requires an [app-specific password](https://support.google.com/accounts/answer/185833) for SMTP.
+
+#### AWS SES
+```toml
+[vars]
+SMTP_HOST = "email-smtp.us-east-1.amazonaws.com"
+SMTP_PORT = "587"
+SMTP_USER = "AKIAIOSFODNN7EXAMPLE"
+SMTP_FROM = "noreply@yourdomain.com"
+```
+Then set the IAM secret access key as a secret:
+```bash
+$ npx wrangler secret put SMTP_PASS
+```
+
+**Note**: Email sending is optional. If SMTP is not configured, user creation will still work, but no emails will be sent. See [Configuration Reference](../reference/configuration#email-configuration-smtp) for complete SMTP documentation.
 
 ## Initial Setup
 

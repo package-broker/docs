@@ -154,10 +154,20 @@ Tokens are rate-limited to prevent abuse:
 - Wait for rate limit reset
 - Consider increasing rate limit
 
+## User Invitations
+
+When creating new users via the dashboard, the system can automatically send invitation emails if SMTP is configured. Invitation emails include:
+
+- **Invite token flow**: A secure link to accept the invitation and set a password
+- **Temporary password flow**: A temporary password (if provided by admin)
+
+**Note**: Email sending requires SMTP configuration. See [Configuration Reference](../reference/configuration#email-configuration-smtp) for setup instructions. If SMTP is not configured, user creation will still work, but no emails will be sent.
+
 ## Next Steps
 
 - Review [Composer 101](../getting-started/composer-101) for authentication basics
 - See [E-shop Integration](../use-cases/eshop-extension-vendor) for automated token provisioning
 - Check [API Reference](../reference/api) for programmatic token management (planned)
+- Configure [SMTP](../reference/configuration#email-configuration-smtp) for user invitation emails
 
 
