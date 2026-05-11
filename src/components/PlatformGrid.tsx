@@ -18,8 +18,7 @@ const platforms: Platform[] = [
     name: 'Docker',
     description: '1-Click Setup',
     icon: <Box size={32} />,
-    status: 'available',
-    link: '/docs/getting-started/quickstart-docker',
+    status: 'coming-soon',
     bestFor: 'Self-hosted deployments',
   },
   {
@@ -100,10 +99,9 @@ export default function PlatformGrid() {
       </div>
       <div className={styles.roadmapFooter}>
         <p className={styles.roadmapText}>
-          <strong>Roadmap:</strong> Kubernetes deployment is planned for Q2 2025. Docker and Cloudflare Workers are available now.
+          <strong>Roadmap:</strong> Cloudflare Workers is available now. Docker and Kubernetes are still listed as planned/in development in the docs.
         </p>
       </div>
     </div>
   );
 }
-
