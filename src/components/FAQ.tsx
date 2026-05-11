@@ -10,7 +10,7 @@ interface FAQItem {
 const faqItems: FAQItem[] = [
   {
     question: 'Is Cloudflare free tier enough for my team?',
-    answer: 'Yes! Cloudflare Workers free tier includes 100,000 requests per day, which is sufficient for most small agencies. For larger teams, you can upgrade to Cloudflare Workers Paid ($5/month) or deploy on Docker/Kubernetes for unlimited usage.',
+    answer: 'Yes! Cloudflare Workers free tier includes 100,000 requests per day, which is sufficient for most small agencies. For larger teams, you can upgrade to Cloudflare Workers Paid ($5/month). Docker and Kubernetes are mentioned in the roadmap, but are not presented as the default path yet.',
   },
   {
     question: 'How do authentication tokens work?',
@@ -75,4 +75,3 @@ export default function FAQ() {
     </div>
   );
 }
-
