@@ -18,6 +18,7 @@ const config: Config = {
   projectName: 'docs',
   onBrokenLinks: 'throw',
   markdown: {
+    format: 'detect',
     mermaid: true,
     hooks: {onBrokenMarkdownLinks: 'throw'},
   },
