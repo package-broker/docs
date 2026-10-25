@@ -1,0 +1,400 @@
+{
+  "productRevision": "7596ccaeb9d9aa3bfa09f87c2bcc72d22857f15e",
+  "products": [
+    {
+      "id": "package-broker",
+      "name": "Package Broker"
+    },
+    {
+      "id": "satis",
+      "name": "Satis",
+      "sourceUrl": "https://github.com/composer/satis",
+      "migration": {
+        "href": "/docs/migration/from-satis",
+        "published": false
+      },
+      "fit": {
+        "value": "Choose Satis when you need a static Composer repository and already manage web-server access. Its build produces files you can serve from your own host.",
+        "sourceUrl": "https://raw.githubusercontent.com/composer/satis/main/README.md",
+        "lastVerified": "2026-10-17",
+        "verified": true,
+        "quote": "A simple static Composer repository generator."
+      }
+    },
+    {
+      "id": "private-packagist",
+      "name": "Private Packagist",
+      "sourceUrl": "https://packagist.com/docs",
+      "migration": {
+        "href": "/docs/migration/from-private-packagist",
+        "published": false
+      },
+      "fit": {
+        "value": "Choose Private Packagist Cloud when you want the vendor to host the registry. A hosted service fits teams that cannot operate their own Workers deployment or Node host.",
+        "sourceUrl": "https://packagist.com/pricing",
+        "lastVerified": "2026-10-17",
+        "verified": true,
+        "quote": "Cloud"
+      }
+    },
+    {
+      "id": "packeton",
+      "name": "Packeton",
+      "sourceUrl": "https://docs.packeton.org/",
+      "migration": {
+        "href": "/docs/migration/from-packeton",
+        "published": false
+      },
+      "fit": {
+        "value": "Choose Packeton when you need a self-hosted PHP package repository under the MIT licence. Its README documents running a Docker container.",
+        "sourceUrl": "https://raw.githubusercontent.com/vtsykun/packeton/master/README.md",
+        "lastVerified": "2026-10-17",
+        "verified": true,
+        "quote": "Run as Docker container"
+      }
+    }
+  ],
+  "criteria": [
+    {
+      "id": "isolation",
+      "label": "Per-project isolation",
+      "cells": [
+        {
+          "criterionId": "isolation",
+          "productId": "package-broker",
+          "value": "Separate projects and source credentials.",
+          "sourceUrl": "https://package.broker/docs/decisions/registry-and-sources",
+          "lastVerified": "2026-10-26",
+          "verified": true,
+          "quote": "A source and its credentials can be owned by the organization"
+        },
+        {
+          "criterionId": "isolation",
+          "productId": "satis",
+          "value": "One static repository per build; no per-client access control.",
+          "sourceUrl": "https://github.com/composer/satis",
+          "lastVerified": "2026-10-17",
+          "verified": true,
+          "quote": ""
+        },
+        {
+          "criterionId": "isolation",
+          "productId": "private-packagist",
+          "value": "Suborganizations.",
+          "sourceUrl": "https://packagist.com/pricing",
+          "lastVerified": "2026-10-17",
+          "verified": true,
+          "quote": "First 3 users and 3 suborganizations included"
+        },
+        {
+          "criterionId": "isolation",
+          "productId": "packeton",
+          "value": "Not verified",
+          "sourceUrl": "https://docs.packeton.org/",
+          "lastVerified": "2026-10-17",
+          "verified": false,
+          "quote": ""
+        }
+      ]
+    },
+    {
+      "id": "sso",
+      "label": "SSO",
+      "cells": [
+        {
+          "criterionId": "sso",
+          "productId": "package-broker",
+          "value": "OIDC groups mapped to project grants.",
+          "sourceUrl": "https://package.broker/docs/decisions/identity-and-sessions",
+          "lastVerified": "2026-10-26",
+          "verified": true,
+          "quote": "Single sign-on for the UI uses Cloudflare Access on Workers and Dex on Docker, both through OIDC"
+        },
+        {
+          "criterionId": "sso",
+          "productId": "satis",
+          "value": "None built in; access is set at the web server.",
+          "sourceUrl": "https://github.com/composer/satis",
+          "lastVerified": "2026-10-17",
+          "verified": true,
+          "quote": ""
+        },
+        {
+          "criterionId": "sso",
+          "productId": "private-packagist",
+          "value": "Not verified",
+          "sourceUrl": "https://packagist.com/docs/centralized-authentication-and-sso",
+          "lastVerified": "2026-10-16",
+          "verified": false,
+          "quote": ""
+        },
+        {
+          "criterionId": "sso",
+          "productId": "packeton",
+          "value": "OIDC and LDAP documented.",
+          "sourceUrl": "https://docs.packeton.org/",
+          "lastVerified": "2026-10-17",
+          "verified": true,
+          "quote": ""
+        }
+      ]
+    },
+    {
+      "id": "auth",
+      "label": "Authentication",
+      "cells": [
+        {
+          "criterionId": "auth",
+          "productId": "package-broker",
+          "value": "Personal and service tokens for Composer and npm.",
+          "sourceUrl": "https://package.broker/docs/decisions/secrets-and-tokens",
+          "lastVerified": "2026-10-26",
+          "verified": true,
+          "quote": "One opaque token must work for Composer HTTP Basic and npm Bearer across npm, pnpm and yarn Berry;"
+        },
+        {
+          "criterionId": "auth",
+          "productId": "satis",
+          "value": "None built in; access is set at the web server.",
+          "sourceUrl": "https://github.com/composer/satis",
+          "lastVerified": "2026-10-17",
+          "verified": true,
+          "quote": ""
+        },
+        {
+          "criterionId": "auth",
+          "productId": "private-packagist",
+          "value": "Read-only and update tokens for CI.",
+          "sourceUrl": "https://packagist.com/docs/setup-ci-cd",
+          "lastVerified": "2026-10-16",
+          "verified": true,
+          "quote": ""
+        },
+        {
+          "criterionId": "auth",
+          "productId": "packeton",
+          "value": "JWT, LDAP and OIDC.",
+          "sourceUrl": "https://docs.packeton.org/",
+          "lastVerified": "2026-10-17",
+          "verified": true,
+          "quote": ""
+        }
+      ]
+    },
+    {
+      "id": "npm",
+      "label": "npm registry",
+      "cells": [
+        {
+          "criterionId": "npm",
+          "productId": "package-broker",
+          "value": "Composer and npm use one token policy.",
+          "sourceUrl": "https://package.broker/docs/decisions/secrets-and-tokens",
+          "lastVerified": "2026-10-26",
+          "verified": true,
+          "quote": "One opaque token must work for Composer HTTP Basic and npm Bearer across npm, pnpm and yarn Berry;"
+        },
+        {
+          "criterionId": "npm",
+          "productId": "satis",
+          "value": "No; Composer only.",
+          "sourceUrl": "https://github.com/composer/satis",
+          "lastVerified": "2026-10-17",
+          "verified": true,
+          "quote": "A simple static Composer repository generator."
+        },
+        {
+          "criterionId": "npm",
+          "productId": "private-packagist",
+          "value": "Not verified",
+          "sourceUrl": "https://packagist.com/docs",
+          "lastVerified": "2026-10-16",
+          "verified": false,
+          "quote": ""
+        },
+        {
+          "criterionId": "npm",
+          "productId": "packeton",
+          "value": "PHP packages; npm not listed.",
+          "sourceUrl": "https://github.com/vtsykun/packeton",
+          "lastVerified": "2026-10-17",
+          "verified": true,
+          "quote": "Packeton - Private PHP package repository for vendors"
+        }
+      ]
+    },
+    {
+      "id": "self-host",
+      "label": "Self-hosting",
+      "cells": [
+        {
+          "criterionId": "self-host",
+          "productId": "package-broker",
+          "value": "Cloudflare Workers or Node. Build the container image from the repository; image publishing is planned.",
+          "sourceUrl": "https://package.broker/docs/decisions/platform-ports-and-adapters",
+          "lastVerified": "2026-10-26",
+          "verified": true,
+          "quote": "Ship two runtimes, `runtime-cloudflare` and `runtime-node`, over one core."
+        },
+        {
+          "criterionId": "self-host",
+          "productId": "satis",
+          "value": "Static files on your own web server.",
+          "sourceUrl": "https://github.com/composer/satis",
+          "lastVerified": "2026-10-17",
+          "verified": true,
+          "quote": "A simple static Composer repository generator."
+        },
+        {
+          "criterionId": "self-host",
+          "productId": "private-packagist",
+          "value": "Hosted service or a self-hosted edition.",
+          "sourceUrl": "https://packagist.com/self-hosted",
+          "lastVerified": "2026-10-17",
+          "verified": true,
+          "quote": "Private Packagist Self-Hosted"
+        },
+        {
+          "criterionId": "self-host",
+          "productId": "packeton",
+          "value": "Docker image or source install.",
+          "sourceUrl": "https://github.com/vtsykun/packeton",
+          "lastVerified": "2026-10-17",
+          "verified": true,
+          "quote": "Run as Docker container"
+        }
+      ]
+    },
+    {
+      "id": "licence",
+      "label": "Licence",
+      "cells": [
+        {
+          "criterionId": "licence",
+          "productId": "package-broker",
+          "value": "AGPL-3.0-only.",
+          "sourceUrl": "https://package.broker/docs/decisions/licensing-and-contribution-terms",
+          "lastVerified": "2026-10-26",
+          "verified": true,
+          "quote": "AGPL-3.0-only"
+        },
+        {
+          "criterionId": "licence",
+          "productId": "satis",
+          "value": "MIT.",
+          "sourceUrl": "https://github.com/composer/satis",
+          "lastVerified": "2026-10-17",
+          "verified": true,
+          "quote": "MIT"
+        },
+        {
+          "criterionId": "licence",
+          "productId": "private-packagist",
+          "value": "Not verified",
+          "sourceUrl": "https://packagist.com/self-hosted",
+          "lastVerified": "2026-10-17",
+          "verified": false,
+          "quote": ""
+        },
+        {
+          "criterionId": "licence",
+          "productId": "packeton",
+          "value": "MIT.",
+          "sourceUrl": "https://github.com/vtsykun/packeton",
+          "lastVerified": "2026-10-17",
+          "verified": true,
+          "quote": "MIT"
+        }
+      ]
+    },
+    {
+      "id": "price",
+      "label": "Price model",
+      "cells": [
+        {
+          "criterionId": "price",
+          "productId": "package-broker",
+          "value": "Your Cloudflare plan or host, storage and operations.",
+          "sourceUrl": "https://package.broker/docs/decisions/platform-ports-and-adapters",
+          "lastVerified": "2026-10-26",
+          "verified": true,
+          "quote": "The Workers Paid plan is a prerequisite.",
+          "planName": "Self-hosted",
+          "priceSourceUrl": "https://package.broker/docs/decisions/platform-ports-and-adapters"
+        },
+        {
+          "criterionId": "price",
+          "productId": "satis",
+          "value": "The cost of your own host.",
+          "sourceUrl": "https://github.com/composer/satis",
+          "lastVerified": "2026-10-17",
+          "verified": true,
+          "quote": "A simple static Composer repository generator.",
+          "planName": "Self-hosted (MIT)",
+          "priceSourceUrl": "https://github.com/composer/satis"
+        },
+        {
+          "criterionId": "price",
+          "productId": "private-packagist",
+          "value": "Per user and suborganization; self-hosted pricing by quote.",
+          "sourceUrl": "https://packagist.com/pricing",
+          "lastVerified": "2026-10-17",
+          "verified": true,
+          "quote": "First 3 users and 3 suborganizations included",
+          "planName": "Cloud / Self-Hosted",
+          "priceSourceUrl": "https://packagist.com/pricing"
+        },
+        {
+          "criterionId": "price",
+          "productId": "packeton",
+          "value": "The cost of your own host.",
+          "sourceUrl": "https://github.com/vtsykun/packeton",
+          "lastVerified": "2026-10-17",
+          "verified": true,
+          "quote": "MIT",
+          "planName": "Self-hosted (MIT)",
+          "priceSourceUrl": "https://github.com/vtsykun/packeton"
+        }
+      ]
+    }
+  ],
+  "summaryCriteria": [
+    {
+      "label": "Authentication and SSO",
+      "criterionIds": [
+        "auth",
+        "sso"
+      ]
+    },
+    {
+      "label": "Per-project isolation",
+      "criterionIds": [
+        "isolation"
+      ]
+    },
+    {
+      "label": "npm registry",
+      "criterionIds": [
+        "npm"
+      ]
+    },
+    {
+      "label": "Self-hosting",
+      "criterionIds": [
+        "self-host"
+      ]
+    },
+    {
+      "label": "Licence",
+      "criterionIds": [
+        "licence"
+      ]
+    },
+    {
+      "label": "Price model",
+      "criterionIds": [
+        "price"
+      ]
+    }
+  ]
+}

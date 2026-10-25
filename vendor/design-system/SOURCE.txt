@@ -5,6 +5,7 @@ Base files source commit: 15c55e8edc1ea2e1a0a5c8b6fb9777dc69183b6c
 Copy date: 2026-10-26
 Base files copied from the working tree and verified against the base files source commit.
 components.css: home-repo commit c118c805 (DEC-G17, 2026-10-25).
+Comparison detail additions (WEB-S6): stacked table sources, competitor-fit callout; home-repo commit 5f7646b4.
 Secondary-page additions: scenario layouts, contrast panels, isolation-diagram modifier and recovery/search.
 Round 1: intrinsic SVG dimensions, two-column client lanes, desktop page-title width and inline page metadata.
 Round 1 source: home-repo commit 33ce812c.
@@ -33,7 +34,7 @@ SHA-256 file list (paths relative to site repository root):
 Covers every file under vendor/design-system/ except SOURCE.*; includes the site-owned README.md.
 
 f05ec408847d6814b280b8ef1864e92a226ec0da0bc9c19b86f9ba5422018447  vendor/design-system/README.md
-3c252678d23db9566cd796e5c27c06349722979b8d79751beb57b90bddedaee5  vendor/design-system/components.css
+787e05d6a72b9592366fd25d72e7a4cf587cde3cf7158e97e011ed27e738023c  vendor/design-system/components.css
 65495179e5261cd1908d0e527ff15910a8cfa5252033ab9f301164fc1319fac2  vendor/design-system/content-patterns.md
 8d3445b106b0bc5051418923fdc57b7b6bd6559f2ff731555ad55df6dc062fdf  vendor/design-system/generated/infima.css
 0874e71ed5f122de0ddf20f01325be287387b0968e36f32037beea4286c6bf72  vendor/design-system/scripts/build-tokens.mjs

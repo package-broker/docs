@@ -2,11 +2,10 @@ export const repository = 'https://github.com/package-broker/broker';
 // Enable full-guide links after their synced content replaces the stub.
 export const workersQuickstartPublished = false;
 export const dockerQuickstartPublished = false;
-export const migrationGuidesPublished = false;
 export const workersQuickstartDoc = '/docs/getting-started/quickstart-cloudflare';
 export const workersQuickstart = workersQuickstartPublished ? workersQuickstartDoc : '/#quickstart';
 export const dockerQuickstart = '/docs/getting-started/quickstart-docker';
-export const comparisonsPublished = false;
+export const comparisonsPublished = true;
 export const agenciesPublished = true;
 export const releaseStatus = '2.0.0-rc.X, pre-release; no tagged release yet';
 
@@ -26,6 +25,7 @@ export const headerLinks = [
 export const footerLinks = [
   ...headerLinks.slice(0, 3),
   ...(agenciesPublished ? [{label: 'Agencies', to: '/agencies'}] : []),
+  ...(comparisonsPublished ? [{label: 'Compare', to: '/compare/private-packagist'}] : []),
   {label: 'Governance', href: `${repository}/blob/main/GOVERNANCE.md`},
   {label: 'Contributing', href: `${repository}/blob/main/CONTRIBUTING.md`},
   {label: 'Code of conduct', href: `${repository}/blob/main/CODE_OF_CONDUCT.md`},

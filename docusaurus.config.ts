@@ -21,7 +21,7 @@ const config: Config = {
     hooks: {onBrokenMarkdownLinks: 'throw'},
   },
   themes: ['@docusaurus/theme-mermaid', ['@easyops-cn/docusaurus-search-local', {hashed: true, language: 'en', docsDir: 'docs-content', indexBlog: false, indexPages: false}]],
-  plugins: ['./plugins/security-metadata.cjs'],
+  plugins: ['./plugins/security-metadata.cjs', './plugins/comparison-validation.cjs'],
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
