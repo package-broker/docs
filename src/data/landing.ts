@@ -2,7 +2,7 @@ export const repository = 'https://github.com/package-broker/broker';
 export const workersQuickstart = '/docs/getting-started/quickstart-cloudflare';
 export const dockerQuickstart = '/docs/getting-started/quickstart-docker';
 export const comparisonsPublished = false;
-export const agenciesPublished = false;
+export const agenciesPublished = true;
 export const releaseStatus = '2.0.0-rc.X, pre-release; no tagged release yet';
 
 export const docsLinks = [
@@ -13,13 +13,14 @@ export const docsLinks = [
 export const headerLinks = [
   {label: 'Docs', to: '/docs/architecture'},
   {label: 'Deploy', to: '/#quickstart'},
-  {label: 'Security', to: '/docs/security-and-residency'},
+  {label: 'Security', to: '/security'},
   ...(agenciesPublished ? [{label: 'Agencies', to: '/agencies'}] : []),
   ...(comparisonsPublished ? [{label: 'Compare', to: '/compare/private-packagist'}] : []),
   {label: 'GitHub', href: repository},
 ];
 export const footerLinks = [
   ...headerLinks.slice(0, 3),
+  ...(agenciesPublished ? [{label: 'Agencies', to: '/agencies'}] : []),
   {label: 'Governance', href: `${repository}/blob/main/GOVERNANCE.md`},
   {label: 'Contributing', href: `${repository}/blob/main/CONTRIBUTING.md`},
   {label: 'Code of conduct', href: `${repository}/blob/main/CODE_OF_CONDUCT.md`},

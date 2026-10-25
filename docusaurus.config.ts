@@ -20,7 +20,8 @@ const config: Config = {
     mermaid: true,
     hooks: {onBrokenMarkdownLinks: 'throw'},
   },
-  themes: ['@docusaurus/theme-mermaid'],
+  themes: ['@docusaurus/theme-mermaid', ['@easyops-cn/docusaurus-search-local', {hashed: true, language: 'en', docsDir: 'docs-content', indexBlog: false, indexPages: false}]],
+  plugins: ['./plugins/security-metadata.cjs'],
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],

@@ -33,8 +33,9 @@ Keep CSS imports in this order: `tokens.css`, `components.css`,
 colours, spacing, typography and motion. Do not put `.pb-app` on docs pages;
 Infima supplies their base styles. Do not use `button--success`,
 `button--warning` or `button--info`. Do not add remote fonts or CDN assets.
-The route-switched Navbar wrapper renders the design-system site header only
-on `/`: the Infima navbar cannot express the design-system header recipe.
+The Navbar wrapper renders the design-system site header on `/` and in the
+marketing-page layout (including the 404 page): the Infima navbar cannot
+express the design-system header recipe.
 Docs retain the Docusaurus navbar with Docs, GitHub and Security links.
 
 New marketing components belong in the source component catalogue before
