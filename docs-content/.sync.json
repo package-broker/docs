@@ -1,0 +1,116 @@
+{
+  "sha": "8055d818d50081f708b6fb8850c3f6226d3247af",
+  "files": {
+    "CONTRIBUTING-DOCS.md": {
+      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+    },
+    "architecture.md": {
+      "lastCommitDate": "2026-10-20T04:56:51Z"
+    },
+    "ci/_category_.json": {
+      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+    },
+    "ci/github-actions.md": {
+      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+    },
+    "ci/gitlab-ci.md": {
+      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+    },
+    "clients/_category_.json": {
+      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+    },
+    "clients/composer.md": {
+      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+    },
+    "clients/npm-pnpm-yarn.md": {
+      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+    },
+    "decisions/2026-10-17-composite-org-foreign-keys.md": {
+      "lastCommitDate": "2026-10-22T00:32:59Z"
+    },
+    "decisions/README.md": {
+      "lastCommitDate": "2026-10-17T11:11:24+02:00"
+    },
+    "decisions/deployment-and-runtimes.md": {
+      "lastCommitDate": "2026-10-17T11:11:24+02:00"
+    },
+    "decisions/identity-and-sessions.md": {
+      "lastCommitDate": "2026-10-17T11:11:24+02:00"
+    },
+    "decisions/licensing-and-contribution-terms.md": {
+      "lastCommitDate": "2026-10-17T11:11:24+02:00"
+    },
+    "decisions/platform-ports-and-adapters.md": {
+      "lastCommitDate": "2026-10-18T08:52:53+02:00"
+    },
+    "decisions/plugin-api-and-composition.md": {
+      "lastCommitDate": "2026-10-18T08:52:53+02:00"
+    },
+    "decisions/registry-and-sources.md": {
+      "lastCommitDate": "2026-10-17T11:11:24+02:00"
+    },
+    "decisions/release-and-versioning.md": {
+      "lastCommitDate": "2026-10-17T11:11:24+02:00"
+    },
+    "decisions/secrets-and-tokens.md": {
+      "lastCommitDate": "2026-10-17T11:11:24+02:00"
+    },
+    "getting-started/_category_.json": {
+      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+    },
+    "getting-started/quickstart-cloudflare.md": {
+      "lastCommitDate": "2026-10-20T20:40:22Z"
+    },
+    "getting-started/quickstart-docker.md": {
+      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+    },
+    "guides/_category_.json": {
+      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+    },
+    "guides/mirror-vendor-repositories.md": {
+      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+    },
+    "migration/_category_.json": {
+      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+    },
+    "migration/from-packeton.md": {
+      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+    },
+    "migration/from-private-packagist.md": {
+      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+    },
+    "migration/from-satis.md": {
+      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+    },
+    "operations/_category_.json": {
+      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+    },
+    "operations/backup-and-upgrades.md": {
+      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+    },
+    "operations/restore-rehearsal.md": {
+      "lastCommitDate": "2026-10-20T18:30:59Z"
+    },
+    "reference/_category_.json": {
+      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+    },
+    "reference/access-model.md": {
+      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+    },
+    "reference/api.md": {
+      "lastCommitDate": "2026-10-22T10:36:40Z"
+    },
+    "reference/plugin-authoring.md": {
+      "lastCommitDate": "2026-10-18T21:54:03Z"
+    },
+    "reference/workers-fill-limits.md": {
+      "lastCommitDate": "2026-10-25T13:03:34Z"
+    },
+    "security-and-residency.md": {
+      "lastCommitDate": "2026-10-24T06:36:20Z"
+    },
+    "workers-install.md": {
+      "lastCommitDate": "2026-10-22T09:32:41Z"
+    }
+  }
+}
