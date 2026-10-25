@@ -67,7 +67,7 @@ const config: Config = {
         routeBasePath: '/',
         lastVersion: 'current',
         versions: {
-          current: {label: '2.0 (pre-release)', path: 'docs', banner: 'unreleased'},
+          current: {label: '2.0 (pre-release)', path: 'docs', banner: 'none'},
           '1.x': {label: '1.x', path: 'v1', banner: 'unmaintained'},
         },
         editUrl: ({version, docPath}) => version === 'current'
@@ -102,7 +102,11 @@ const config: Config = {
     } satisfies Preset.Options,
   ]],
   themeConfig: {
-    image: 'img/logo.png',
+    image: 'img/og-2.0.png',
+    metadata: [
+      {name: 'description', content: pageDescription},
+      {name: 'twitter:card', content: 'summary_large_image'},
+    ],
     colorMode: {respectPrefersColorScheme: true},
     navbar: {
       title: 'PACKAGE.broker',

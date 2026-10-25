@@ -7,9 +7,12 @@ import {visit} from 'unist-util-visit';
 export default function directoryDocLinks(): Transformer<Root> {
   return (tree, file) => {
     visit(tree, 'link', node => {
-      if (!node.url.endsWith('/') || /^(?:[a-z][\w+.-]*:|[\/#?])/i.test(node.url)) return;
-      if (existsSync(path.resolve(path.dirname(String(file.path)), node.url, 'README.md'))) {
-        node.url += 'README.md';
+      const suffixStart = node.url.search(/[?#]/);
+      const pathname = suffixStart < 0 ? node.url : node.url.slice(0, suffixStart);
+      const suffix = suffixStart < 0 ? '' : node.url.slice(suffixStart);
+      if (!pathname.endsWith('/') || /^(?:[a-z][\w+.-]*:|[\/#?])/i.test(pathname)) return;
+      if (existsSync(path.resolve(path.dirname(String(file.path)), pathname, 'README.md'))) {
+        node.url = pathname + 'README.md' + suffix;
       }
     });
   };

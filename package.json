@@ -8,6 +8,8 @@
     "images:build": "node scripts/optimize-images.mjs",
     "prebuild": "node scripts/check-claims.mjs",
     "build": "npm run images:build && docusaurus build",
+    "postbuild": "node scripts/check-claims.mjs",
+    "test:scripts": "node --test scripts/*.test.mjs",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",

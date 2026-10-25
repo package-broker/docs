@@ -17,13 +17,13 @@ export const comparisonSources = [
   {id: 'packeton-oidc', label: 'Packeton generic OIDC and role mapping', url: 'https://github.com/vtsykun/packeton/blob/master/docs/oauth2/oidc.md'},
 ];
 
-type Cell = {text: string; source: string; verified: boolean};
+type Cell = {text: string; source: string; verified: boolean; caveat?: string};
 const verified = (text: string, source: string): Cell => ({text, source, verified: true});
-const undocumented = (text = 'Not documented', source = ''): Cell => ({text, source, verified: false});
+const undocumented = (text = 'Not documented', source = '', caveat?: string): Cell => ({text, source, verified: false, caveat});
 const pb = (text: string, source: string) => verified(text, source);
 export const comparisonProducts = ['Package Broker 2.0', 'Satis', 'Private Packagist', 'Packeton'];
 export const comparisonRows: {label: string; cells: Cell[]}[] = [
-  {label: 'Package formats', cells: [pb('Composer and npm', 'pb-formats'), verified('Composer', 'satis'), undocumented('Composer; npm: Not documented', 'pp-formats'), undocumented('Composer; npm: Not documented', 'packeton')]},
+  {label: 'Package formats', cells: [pb('Composer and npm', 'pb-formats'), verified('Composer', 'satis'), undocumented('Composer; npm: Not documented', 'pp-formats', 'npm: Not documented'), undocumented('Composer; npm: Not documented', 'packeton', 'npm: Not documented')]},
   {label: 'Access per project or customer', cells: [pb('Project package subsets; grants to SSO groups or e-mail addresses', 'pb-identity'), verified('None built in; protect it at the web server', 'satis'), undocumented(), verified('Customer users and ACL groups, limited by vendor and version', 'packeton')]},
   {label: 'Upstream credentials per project', cells: [pb('A source and its credentials can belong to one project', 'pb-sources'), undocumented(), undocumented(), undocumented()]},
   {label: 'Sign-in', cells: [pb('OIDC through Cloudflare Access or Dex; identity-provider groups map to projects', 'pb-identity'), verified('No accounts', 'satis'), verified('OAuth through GitHub, GitLab or Bitbucket; SAML or OIDC through those platforms', 'pp-auth'), verified('OAuth2, generic OIDC and LDAP; groups map to roles', 'packeton-oidc')]},
