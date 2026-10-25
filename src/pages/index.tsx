@@ -73,7 +73,7 @@ function HomepageHeader() {
             </span>
           </h1>
           <p className={styles.heroSubtitle}>
-            Stop paying €50-700/month. Deploy on Cloudflare Workers free tier or your infrastructure—zero per-seat fees.
+            Stop paying €50-700/month. Deploy on Cloudflare Workers or your infrastructure.
           </p>
           <div className={styles.heroButtons}>
             <Link
@@ -91,7 +91,7 @@ function HomepageHeader() {
           <div className={styles.heroProofChips}>
             <span className={styles.proofChip}>
               <Check size={14} className={styles.proofIcon} />
-              Free tier
+              Self-hosted
             </span>
             <span className={styles.proofChip}>
               <Check size={14} className={styles.proofIcon} />
@@ -237,7 +237,7 @@ export default function Home(): ReactNode {
       "ratingValue": "4.8",
       "reviewCount": "42"
     },
-    "description": "Open source, SOC2-compliant Composer proxy for small agencies and enterprises. Self-hosted with Docker, Cloudflare Workers, or Kubernetes.",
+    "description": "Open source Composer proxy for small agencies and enterprises. Self-hosted with Docker, Cloudflare Workers, or Kubernetes.",
     "url": "https://package.broker",
     "author": {
       "@type": "Person",
@@ -248,7 +248,7 @@ export default function Home(): ReactNode {
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="Minimalistic, SOC-2 Compatible Composer Mirror">
+      description="Self-hosted Composer repository proxy">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
@@ -292,8 +292,8 @@ export default function Home(): ReactNode {
             <div className="row">
               <Feature
                 icon={<Zap size={32} />}
-                title="Zero Cost Core"
-                description="Runs on top of Cloudflare Workers Free Tier. No hidden costs, no per-seat pricing."
+                title="Open Source Core"
+                description="Runs on Cloudflare Workers or your own infrastructure."
               />
               <Feature
                 icon={<Server size={32} />}
@@ -302,7 +302,7 @@ export default function Home(): ReactNode {
               />
               <Feature
                 icon={<ShieldCheck size={32} />}
-                title="SOC-2 Ready"
+                title="Token-based Access"
                 description="Built with compliance in mind. Secure token-based access, encrypted credentials, and audit logging."
               />
             </div>

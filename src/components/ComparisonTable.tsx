@@ -304,14 +304,14 @@ export default function ComparisonTable({
         )}
       <p className={styles.disclaimer}>
           All trademarks are property of their respective owners. This project is not affiliated with, endorsed by, or sponsored by any third-party services. See{' '}
-          <a href="/docs/migration/legal-notice" className={styles.legalLink}>
+          <a href="/v1/migration/legal-notice/" className={styles.legalLink}>
             Legal Notice
           </a>{' '}
           for details.
         </p>
         {summaryOnly && (
           <p className={styles.fullComparisonLink}>
-            <a href="/docs/comparison" className={styles.fullLink}>
+            <a href="/v1/comparison/" className={styles.fullLink}>
               View full comparison matrix →
             </a>
           </p>

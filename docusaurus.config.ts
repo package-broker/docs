@@ -1,179 +1,145 @@
-import { themes as prismThemes } from 'prism-react-renderer';
-import type { Config } from '@docusaurus/types';
+import {readFileSync, readdirSync} from 'node:fs';
+import path from 'node:path';
+import {themes as prismThemes} from 'prism-react-renderer';
+import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import responsiveImages from './src/remark/responsive-images';
+import directoryDocLinks from './src/remark/directory-doc-links';
 
-// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
+// The LLM plugin does not filter unlisted front matter itself.
+const unlistedDocs = readdirSync(path.join(__dirname, 'docs'), {recursive: true, withFileTypes: true})
+  .filter(entry => entry.isFile() && /\.mdx?$/.test(entry.name))
+  .map(entry => path.join(entry.parentPath, entry.name))
+  .filter(file => {
+    const frontMatter = readFileSync(file, 'utf8').match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? '';
+    return /^unlisted:\s*true\s*$/m.test(frontMatter);
+  })
+  .map(file => path.relative(__dirname, file).split(path.sep).join('/'));
 
 const config: Config = {
   title: 'PACKAGE.broker',
-  tagline: 'Minimalistic, SOC-2 Compatible Composer Mirror',
+  tagline: 'Self-hosted package registry for Composer and npm',
   favicon: 'img/logo.png',
-
-  // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
-  future: {
-    v4: true, // Improve compatibility with the upcoming Docusaurus v4
-  },
-
-  // Set the production url of your site here
+  future: {v4: true, faster: true},
   url: 'https://package.broker',
-  // Set the /<baseUrl>/ pathname under which your site is served
   baseUrl: '/',
-
-  // GitHub pages deployment config.
+  trailingSlash: true,
   organizationName: 'package-broker',
   projectName: 'docs',
-
-  onBrokenLinks: 'warn',
-
-  // Internationalization
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
-  },
-
-  presets: [
-    [
-      'classic',
-      {
-        docs: {
-          sidebarPath: './sidebars.ts',
-          editUrl: 'https://github.com/package-broker/docs/tree/main/',
-          remarkPlugins: [responsiveImages],
-        },
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          editUrl: 'https://github.com/package-broker/docs/tree/main/',
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-          remarkPlugins: [responsiveImages],
-        },
-        theme: {
-          customCss: './src/css/custom.css',
-        },
-        // Sitemap configuration
-        sitemap: {
-          changefreq: 'weekly',
-          priority: 0.5,
-          ignorePatterns: ['/tags/**'],
-          filename: 'sitemap.xml',
-        },
-      } satisfies Preset.Options,
-    ],
-  ],
-
-  themeConfig: {
-    // Social card image
-    image: 'img/logo.png',
-    colorMode: {
-      respectPrefersColorScheme: true,
+  onBrokenLinks: 'throw',
+  markdown: {hooks: {onBrokenMarkdownLinks: 'throw'}},
+  i18n: {defaultLocale: 'en', locales: ['en']},
+  plugins: [[
+    'docusaurus-plugin-llms',
+    {
+      docsDir: [{path: 'docs', routeBasePath: 'docs'}],
+      ignoreFiles: unlistedDocs,
+      includeBlog: false,
+      generateLLMsTxt: true,
+      generateLLMsFullTxt: true,
+      addMdExtension: false,
+      version: '2.0 (pre-release)',
+      title: 'Package Broker 2.0 documentation',
+      description: 'Documentation for the pre-release rewrite. Version 2.0 is not an in-place upgrade from v1.',
     },
-    // SEO metadata
+  ]],
+  themes: [[
+    '@easyops-cn/docusaurus-search-local',
+    {
+      hashed: true,
+      indexDocs: true,
+      indexPages: true,
+      indexBlog: true,
+      docsRouteBasePath: '/docs',
+      ignoreFiles: [/^v1(?:\/|$)/],
+      forceIgnoreNoIndex: false,
+      highlightSearchTermsOnTargetPage: true,
+    },
+  ]],
+  presets: [[
+    'classic',
+    {
+      docs: {
+        sidebarPath: './sidebars.ts',
+        routeBasePath: '/',
+        lastVersion: 'current',
+        versions: {
+          current: {label: '2.0 (pre-release)', path: 'docs', banner: 'unreleased'},
+          '1.x': {label: '1.x', path: 'v1', banner: 'unmaintained'},
+        },
+        editUrl: ({version, docPath}) => version === 'current'
+          ? `https://github.com/package-broker/broker/edit/main/docs/${docPath}`
+          : undefined,
+        beforeDefaultRemarkPlugins: [directoryDocLinks],
+        remarkPlugins: [responsiveImages],
+      },
+      blog: {
+        showReadingTime: true,
+        feedOptions: {type: ['rss', 'atom'], xslt: true},
+        editUrl: 'https://github.com/package-broker/docs/tree/main/',
+        onInlineTags: 'warn',
+        onInlineAuthors: 'warn',
+        onUntruncatedBlogPosts: 'warn',
+        remarkPlugins: [responsiveImages],
+      },
+      theme: {customCss: './src/css/custom.css'},
+      sitemap: {
+        changefreq: 'weekly',
+        priority: 0.5,
+        ignorePatterns: ['/tags/**'],
+        filename: 'sitemap.xml',
+        async createSitemapItems({defaultCreateSitemapItems, ...params}) {
+          const items = await defaultCreateSitemapItems(params);
+          return items.map(item => ({
+            ...item,
+            priority: new URL(item.url).pathname.startsWith('/v1/') ? 0.2 : 0.5,
+          }));
+        },
+      },
+    } satisfies Preset.Options,
+  ]],
+  themeConfig: {
+    image: 'img/logo.png',
+    colorMode: {respectPrefersColorScheme: true},
     metadata: [
-      { 
-        name: 'description', 
-        content: 'Open source Composer repository proxy for small agencies and enterprises. Self-hosted private package management with SOC2 compliance. Alternative to commercial SaaS - zero cost with Docker, Cloudflare Workers, or VPS.' 
-      },
-      { 
-        name: 'keywords', 
-        content: 'composer proxy, php package management, self-hosted composer, magento composer cache, soc2 compliance, docker composer mirror, composer repository hosting, php package mirror security, composer private packages, self-hosted package repository' 
-      },
-      { property: 'og:title', content: 'PACKAGE.broker - Private Composer Repository Hosting' },
-      { property: 'og:description', content: 'Open source, SOC2-compliant Composer proxy for small agencies and enterprises. Self-hosted with Docker, Cloudflare Workers, or Kubernetes.' },
-      { property: 'og:image', content: 'https://package.broker/img/logo.png' },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:url', content: 'https://package.broker' },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: 'PACKAGE.broker - Private Composer Repository Hosting' },
-      { name: 'twitter:description', content: 'Open source, SOC2-compliant Composer proxy for small agencies and enterprises.' },
+      {name: 'description', content: 'Self-hosted package registry for Composer and npm. Explore the Package Broker 2.0 pre-release documentation and v1 documentation.'},
+      {name: 'keywords', content: 'composer proxy, npm registry, self-hosted packages, package broker'},
+      {property: 'og:title', content: 'PACKAGE.broker - Self-hosted Package Registry'},
+      {property: 'og:description', content: 'Self-hosted package registry for Composer and npm.'},
+      {property: 'og:image', content: 'https://package.broker/img/logo.png'},
+      {property: 'og:type', content: 'website'},
+      {property: 'og:url', content: 'https://package.broker'},
+      {name: 'twitter:card', content: 'summary_large_image'},
+      {name: 'twitter:title', content: 'PACKAGE.broker - Self-hosted Package Registry'},
+      {name: 'twitter:description', content: 'Self-hosted package registry for Composer and npm.'},
     ],
     navbar: {
       title: 'PACKAGE.broker',
-      logo: {
-        alt: 'PACKAGE.broker Logo',
-        src: 'img/logo.svg',
-      },
+      logo: {alt: 'PACKAGE.broker', src: 'img/logo.svg'},
       items: [
-        {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: 'Documentation',
-        },
-        {
-          to: '/docs/getting-started/quickstart-docker',
-          label: 'Deploy',
-          position: 'left',
-        },
-        {
-          to: '/docs/soc2-compliance',
-          label: 'Security',
-          position: 'left',
-        },
-        {
-          href: 'https://github.com/orgs/package-broker/discussions',
-          label: 'Discussions',
-          position: 'left',
-        },
-        {
-          type: 'html',
-          position: 'right',
-          value: '<a href="https://github.com/package-broker/server" target="_blank" rel="noopener noreferrer" class="navbar__link navbar__stars" style="display:flex;align-items:center;margin-right:1rem;"><img src="https://img.shields.io/github/stars/package-broker/server?style=social&label=Stars" alt="GitHub Stars" height="20" /></a>',
-        },
-        {
-          to: '/docs/',
-          label: 'Get Started',
-          position: 'right',
-          className: 'navbar__cta-button',
-        },
+        {to: '/docs/', label: 'Docs (2.0)', position: 'left'},
+        {to: '/v1/', label: 'v1 docs', position: 'left'},
+        {href: 'https://github.com/package-broker/broker', label: 'GitHub', position: 'left'},
+        {href: 'https://github.com/package-broker/broker/blob/main/SECURITY.md', label: 'Security policy', position: 'left'},
+        {type: 'docsVersionDropdown', position: 'right'},
       ],
     },
     footer: {
       style: 'dark',
       links: [
-        {
-          title: 'Docs',
-          items: [
-            {
-              label: 'Getting Started',
-              to: '/docs/',
-            },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'GitHub Discussions',
-              href: 'https://github.com/orgs/package-broker/discussions',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'Blog',
-              to: '/blog',
-            },
-            {
-              label: 'GitHub',
-              href: 'https://github.com/package-broker/server',
-            },
-          ],
-        },
+        {title: 'Documentation', items: [
+          {label: 'Docs (2.0)', to: '/docs/'},
+          {label: 'v1 docs', to: '/v1/'},
+        ]},
+        {title: 'Project', items: [
+          {label: 'GitHub', href: 'https://github.com/package-broker/broker'},
+          {label: 'Security policy', href: 'https://github.com/package-broker/broker/blob/main/SECURITY.md'},
+          {label: 'Blog', to: '/blog/'},
+        ]},
       ],
       copyright: `Copyright © ${new Date().getFullYear()} Lukasz Bajsarowicz. Built with Docusaurus.`,
     },
-    prism: {
-      theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
-    },
+    prism: {theme: prismThemes.github, darkTheme: prismThemes.dracula},
   } satisfies Preset.ThemeConfig,
 };
 

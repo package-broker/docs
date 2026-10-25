@@ -68,7 +68,7 @@ export default function SponsorShowcase() {
     <div className={styles.sponsorShowcase}>
       <h2 className={styles.title}>Support Sustainable Open Source</h2>
       <p className={styles.subtitle}>
-        PACKAGE.broker is free and open source. If it saves your agency time (and money), please consider sponsoring ongoing maintenance, security, and support.
+        PACKAGE.broker is open source. If it saves your agency time (and money), please consider sponsoring ongoing maintenance, security, and support.
       </p>
 
       <div className={styles.billingRow} aria-label="Choose billing view">

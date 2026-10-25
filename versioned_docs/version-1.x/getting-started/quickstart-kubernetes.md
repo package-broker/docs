@@ -1,0 +1,77 @@
+---
+sidebar_position: 4
+title: Kubernetes Deployment (Planned)
+description: Kubernetes/Helm deployment support is planned for future release
+---
+
+# Kubernetes Deployment (Planned)
+
+:::info Planned Feature
+
+Kubernetes/Helm chart support is planned but not yet available. This page outlines what to expect when the feature is released.
+
+:::
+
+PACKAGE.broker will support deployment on Kubernetes using an official Helm chart for production-ready, scalable deployments.
+
+## Planned Features
+
+### Helm Chart
+
+- Official Helm repository
+- Production-ready defaults
+- Configurable resource limits
+- Support for PostgreSQL, Redis, S3-compatible storage
+- Ingress configuration templates
+- SMTP email configuration for user invitations
+
+### Deployment Options
+
+- **PostgreSQL**: Production database backend
+- **Redis**: Caching and session storage
+- **S3-compatible**: Object storage for artifacts
+- **Horizontal scaling**: Multiple pod replicas
+- **SMTP**: Email configuration for user invitations and notifications
+
+### SMTP Configuration
+
+The Helm chart will support SMTP configuration via `values.yaml`:
+
+```yaml
+config:
+  smtp:
+    host: "smtp.gmail.com"
+    port: "587"
+    user: "your-email@gmail.com"
+    from: "noreply@example.com"
+    existingSecret: "smtp-credentials"  # Use existing Kubernetes secret
+    passwordKey: "smtp-password"        # Key in secret for password
+```
+
+**Note**: Store SMTP passwords in Kubernetes secrets, not directly in `values.yaml`. See the [Helm chart values.yaml](https://github.com/package-broker/server/blob/main/charts/package-broker/values.yaml) for the complete SMTP configuration structure.
+
+## Timeline
+
+**Target**: Q1 2026
+
+See [Roadmap](../reference/roadmap.md) for detailed timeline and updates.
+
+## Current Deployment Options
+
+While Kubernetes support is being developed, you can deploy PACKAGE.broker using:
+
+- **[Docker Quickstart](quickstart-docker.md)** - Single container deployment
+- **[Cloudflare Workers Quickstart](quickstart-cloudflare.md)** - Serverless edge deployment
+
+## Getting Updates
+
+- Check [GitHub Issues](https://github.com/package-broker/server/issues) for Kubernetes-related updates
+- Follow [GitHub Discussions](https://github.com/orgs/package-broker/discussions) for announcements
+- Review [Roadmap](../reference/roadmap.md) for feature status
+
+## Next Steps
+
+- Deploy using [Docker Quickstart](quickstart-docker.md) or [Cloudflare Workers Quickstart](quickstart-cloudflare.md)
+- Review [Architecture](../concepts/architecture.md) to understand deployment requirements
+- Check [Roadmap](../reference/roadmap.md) for Kubernetes implementation timeline
+- See [Deployment Overview](../deployment/overview.md) for production considerations

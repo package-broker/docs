@@ -9,8 +9,8 @@ interface FAQItem {
 
 const faqItems: FAQItem[] = [
   {
-    question: 'Is Cloudflare free tier enough for my team?',
-    answer: 'Yes! Cloudflare Workers free tier includes 100,000 requests per day, which is sufficient for most small agencies. For larger teams, you can upgrade to Cloudflare Workers Paid ($5/month) or deploy on Docker/Kubernetes for unlimited usage.',
+    question: 'What should I budget for Cloudflare hosting?',
+    answer: 'Package Broker 2.0 requires the Workers Paid plan. Review the deployment documentation and your storage and request volumes when estimating hosting costs.',
   },
   {
     question: 'How do authentication tokens work?',
@@ -25,8 +25,8 @@ const faqItems: FAQItem[] = [
     answer: 'Docker and Kubernetes support are in active development as part of our architectural refactor. Cloudflare Workers is available now and recommended for most use cases. We\'ll announce Docker availability in our GitHub releases and documentation when ready.',
   },
   {
-    question: 'Is PACKAGE.broker SOC-2 ready?',
-    answer: 'Yes! PACKAGE.broker is built with compliance in mind. It includes token-based access control, encrypted credential storage, comprehensive audit logging, and follows security best practices. While we don\'t provide SOC-2 certification (that\'s your responsibility), we provide all the tools and documentation needed for your audit.',
+    question: 'Where can I read about the security model?',
+    answer: 'The 2.0 documentation describes the security model and data residency. The repository security policy explains how to report a vulnerability.',
   },
   {
     question: 'How does caching work?',

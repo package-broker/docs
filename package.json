@@ -6,6 +6,7 @@
     "docusaurus": "docusaurus",
     "start": "npm run images:build && docusaurus start",
     "images:build": "node scripts/optimize-images.mjs",
+    "prebuild": "node scripts/check-claims.mjs",
     "build": "npm run images:build && docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",

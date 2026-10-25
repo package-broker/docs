@@ -28,7 +28,7 @@ const platforms: Platform[] = [
     icon: <Cloud size={32} />,
     status: 'available',
     link: '/docs/getting-started/quickstart-cloudflare',
-    bestFor: 'Free tier + edge cache',
+    bestFor: 'Workers + edge cache',
     recommended: true,
   },
   {
@@ -43,7 +43,7 @@ const platforms: Platform[] = [
     description: 'Ubuntu/Debian',
     icon: <Server size={32} />,
     status: 'planned',
-    link: '/docs/installation/vps-ubuntu',
+    link: '/docs/',
     bestFor: 'Traditional server hosting',
   },
   {
@@ -51,7 +51,7 @@ const platforms: Platform[] = [
     description: 'Helm Chart',
     icon: <Layers size={32} />,
     status: 'planned',
-    link: '/docs/getting-started/quickstart-kubernetes',
+    link: '/v1/getting-started/quickstart-kubernetes/',
     bestFor: 'K8s clusters',
   },
   {

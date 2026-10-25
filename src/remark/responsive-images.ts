@@ -9,19 +9,7 @@ import { visit } from 'unist-util-visit';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
-// Type definitions for MDX JSX nodes
-interface MdxJsxAttribute {
-  type: 'mdxJsxAttribute';
-  name: string;
-  value: string | number;
-}
-
-interface MdxJsxFlowElement {
-  type: 'mdxJsxFlowElement';
-  name: string;
-  attributes: MdxJsxAttribute[];
-  children: MdxJsxFlowElement[];
-}
+import type {MdxJsxAttribute, MdxJsxFlowElement} from 'mdast-util-mdx-jsx';
 
 interface ImageManifest {
   [url: string]: {
@@ -89,6 +77,7 @@ export default function responsiveImages(): Transformer<Root> {
       const pictureElement: MdxJsxFlowElement = {
         type: 'mdxJsxFlowElement',
         name: 'picture',
+        attributes: [],
         children: [
           // AVIF source
           {
@@ -149,12 +138,12 @@ export default function responsiveImages(): Transformer<Root> {
               {
                 type: 'mdxJsxAttribute',
                 name: 'width',
-                value: imageData.width,
+                value: String(imageData.width),
               },
               {
                 type: 'mdxJsxAttribute',
                 name: 'height',
-                value: imageData.height,
+                value: String(imageData.height),
               },
               {
                 type: 'mdxJsxAttribute',

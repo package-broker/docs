@@ -23,7 +23,7 @@ export default function CostCalculator() {
 
     let packageBrokerCost = 0;
     if (deploymentType === 'cloudflare') {
-      packageBrokerCost = 0; // Free tier
+      packageBrokerCost = 60; // Illustrative annual hosting estimate
     } else if (deploymentType === 'docker') {
       packageBrokerCost = 60; // Estimated VPS costs
     } else {
@@ -83,7 +83,7 @@ export default function CostCalculator() {
             onChange={(e) => setDeploymentType(e.target.value)}
             className={styles.select}
           >
-            <option value="cloudflare">Cloudflare Workers (Free)</option>
+            <option value="cloudflare">Cloudflare Workers</option>
             <option value="docker">Docker (VPS)</option>
             <option value="kubernetes">Kubernetes</option>
           </select>
