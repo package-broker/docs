@@ -125,7 +125,7 @@ test('each comparison has a sourced fit case, legal notice and migration link', 
     const render = () => renderToStaticMarkup(React.createElement(Page, {productId: product.id}));
     const html = render();
     assert.match(html, /fits better/); assert.match(html, /trademarks/);
-    assert.match(html, /application\/ld\+json/);
+    // Shared site Head metadata is checked against built HTML in tests/seo.test.mjs.
     assert.ok(html.includes(`href="${product.migration.href}"`));
   }
 });

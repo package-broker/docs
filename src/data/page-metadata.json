@@ -1,0 +1,111 @@
+{
+  "/": {
+    "title": "Private Composer and npm registry",
+    "description": "Self-host private Composer and npm packages with project isolation, OIDC groups and one token policy. Deploy on Cloudflare Workers or Node under AGPL-3.0-only."
+  },
+  "/agencies": {
+    "title": "For agencies: one project per client",
+    "description": "Give each client a project, its own repo.magento.com source credentials and project-bound CI tokens. See how grants control who can install."
+  },
+  "/compare/private-packagist": {
+    "title": "Package Broker and Private Packagist, compared",
+    "description": "Compare Package Broker and Private Packagist on authentication, project isolation, npm, SSO, hosting and licence. Read sources and checked dates."
+  },
+  "/compare/satis": {
+    "title": "Package Broker and Satis, compared",
+    "description": "Compare Package Broker and Satis on authentication, project isolation, npm, SSO, hosting and licence. Read sources and checked dates."
+  },
+  "/compare/packeton": {
+    "title": "Package Broker and Packeton, compared",
+    "description": "Compare Package Broker and Packeton on authentication, project isolation, npm, SSO, hosting and licence. Read sources and checked dates."
+  },
+  "/security": {
+    "title": "Security at Package Broker",
+    "description": "Report a vulnerability, review token scopes and the audit log, and check data residency. You operate the registry and choose its deployment controls."
+  },
+  "/search": {
+    "title": "Search the documentation",
+    "description": "Search Package Broker documentation for deployment instructions, registry architecture, token scopes and decisions about Composer and npm packages."
+  },
+  "/404.html": {
+    "title": "Page not found",
+    "description": "This page does not exist. Search the Package Broker documentation or start with the deployment quickstart to find your next step."
+  },
+  "/docs/CONTRIBUTING-DOCS": {
+    "description": "Learn where Package Broker documentation is maintained, how it reaches the website and how to contribute changes to the product documentation."
+  },
+  "/docs/ci/github-actions": {
+    "description": "The GitHub Actions guide is planned for Package Broker 2.0. Read the architecture and token decisions while the CI authentication recipe is being written."
+  },
+  "/docs/ci/gitlab-ci": {
+    "description": "The GitLab CI guide is planned for Package Broker 2.0. Read the architecture and token decisions while the CI authentication recipe is being written."
+  },
+  "/docs/clients/composer": {
+    "description": "The Composer client guide is planned for Package Broker 2.0. Read the registry and token decisions while the client configuration guide is being written."
+  },
+  "/docs/clients/npm-pnpm-yarn": {
+    "description": "The npm, pnpm and yarn guide is planned for Package Broker 2.0. Read the registry and token decisions while the client configuration guide is being written."
+  },
+  "/docs/decisions": {
+    "description": "Read the architecture decisions behind Package Broker 2.0, grouped by scope with each decision's status, context, consequences and related records."
+  },
+  "/docs/decisions/2026-10-17-composite-org-foreign-keys": {
+    "title": "Organization foreign keys for catalogue child tables",
+    "description": "Review the recommendation for composite organization foreign keys in catalogue child tables, including the proposed constraints and migration considerations."
+  },
+  "/docs/decisions/deployment-and-runtimes": {
+    "description": "Read Package Broker decisions on backup and recovery, storage jurisdiction and rate limiting for self-hosted Cloudflare Workers and Node deployments."
+  },
+  "/docs/decisions/identity-and-sessions": {
+    "description": "Read Package Broker decisions on one organization per deployment, OIDC sign-in, roles, sessions, project URLs and the audit log."
+  },
+  "/docs/decisions/release-and-versioning": {
+    "description": "Read Package Broker decisions on repository layout, package versioning and the release process for the core, runtimes, CLI and first-party plugins."
+  },
+  "/docs/decisions/secrets-and-tokens": {
+    "description": "Read Package Broker decisions on token kinds and scopes, secret storage, the deployment master key and key rotation for stored source credentials."
+  },
+  "/docs/getting-started/quickstart-cloudflare": {
+    "description": "The Cloudflare Workers quickstart is planned for Package Broker 2.0. Read the runtime decisions for deployment requirements while the guide is being written."
+  },
+  "/docs/getting-started/quickstart-docker": {
+    "description": "The Docker quickstart is planned for Package Broker 2.0. Read the runtime decisions for Node hosting requirements while the guide is being written."
+  },
+  "/docs/guides/mirror-vendor-repositories": {
+    "title": "Vendor repositories as sources",
+    "description": "The vendor repository sources guide is planned for Package Broker 2.0. Read the source ownership decisions while the configuration guide is being written."
+  },
+  "/docs/migration/from-packeton": {
+    "description": "The Packeton migration guide is planned for Package Broker 2.0. Read the comparison and registry decisions while the migration steps are being written."
+  },
+  "/docs/migration/from-private-packagist": {
+    "description": "The Private Packagist migration guide is planned for Package Broker 2.0. Read the comparison and registry decisions while the steps are being written."
+  },
+  "/docs/migration/from-satis": {
+    "description": "The Satis migration guide is planned for Package Broker 2.0. Read the comparison and registry decisions while the migration steps are being written."
+  },
+  "/docs/operations/backup-and-upgrades": {
+    "description": "The backup and upgrades guide is planned for Package Broker 2.0. Read the deployment decisions while the operations instructions are being written."
+  },
+  "/docs/operations/restore-rehearsal": {
+    "description": "Rehearse restoring Package Broker with disposable deployment resources. Review the helper scripts, authentication limits and verification steps."
+  },
+  "/docs/reference/access-model": {
+    "description": "The access model guide is planned for Package Broker 2.0. Read the identity and token decisions for the design of roles, grants and project boundaries."
+  },
+  "/docs/reference/api": {
+    "description": "Read Package Broker HTTP API reference notes for package version vulnerability status and deployment configuration, with request and response examples."
+  },
+  "/docs/reference/plugin-authoring": {
+    "description": "Read how Package Broker plugins declare routes, hooks, jobs, migrations and ports, and how the build validates and assembles a deployment's plugin set."
+  },
+  "/docs/reference/workers-fill-limits": {
+    "description": "Review Cloudflare Workers fill limits and self-origin aliases for Package Broker, including D1 query limits, memory constraints and deployment settings."
+  },
+  "/docs/security-and-residency": {
+    "description": "Review Package Broker security and data residency notes, including token handling, storage placement and the controls that a deployment operator manages."
+  },
+  "/docs/workers-install": {
+    "description": "Set up the first Package Broker administrator using a one-time setup token, then configure a password and authenticator app for local sign-in."
+  }
+}

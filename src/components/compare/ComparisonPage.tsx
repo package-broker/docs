@@ -1,4 +1,3 @@
-import Head from '@docusaurus/Head';
 import Link from '@docusaurus/Link';
 import MarketingLayout, {PageSection} from '../marketing/MarketingLayout';
 import ComparisonTable, {competitors, SourceDate} from './ComparisonTable';
@@ -10,7 +9,6 @@ export default function ComparisonPage({productId}: {productId: string}) {
   const title = `Package Broker and ${product.name}, compared`;
   const description = `Compare Package Broker and ${product.name}: authentication, project isolation, npm, SSO, self-hosting, licence and price model, with sources and checked dates.`;
   return <MarketingLayout title={title} description={description}>
-    <Head><script type="application/ld+json">{JSON.stringify({'@context': 'https://schema.org', '@type': 'WebPage', name: title, description, url: `https://package.broker/compare/${product.id}`})}</script></Head>
     <div className="pb-hero pb-hero--page"><p className="pb-eyebrow">Compare</p><h1>{title}</h1><p className="pb-hero__sub">Check the mechanisms behind each criterion. Every cell links to its source and recorded review date. Unconfirmed cells say “Not verified”.</p><p className="pb-page-meta">Package Broker 2.0 is in development towards its first release candidate; no tagged release exists yet.</p></div>
     <nav aria-label="Comparison pages"><ul className="pb-links-row">{competitors.map(item => <li key={item.id}><Link className="pb-link" to={`/compare/${item.id}`} aria-current={item.id === product.id ? 'page' : undefined}>{item.name}</Link></li>)}<li><Link className="pb-link" to="/#compare">Comparison summary</Link></li></ul></nav>
     <aside className="pb-compare-fit" aria-labelledby="competitor-fit"><h2 id="competitor-fit">When {product.name} fits better</h2><p>{fit.value}</p><SourceDate {...fit} label={`${product.name} documentation`}/></aside>

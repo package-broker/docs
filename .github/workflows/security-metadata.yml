@@ -22,3 +22,12 @@ jobs:
         run: |
           node --test scripts/security-metadata.test.cjs
           node plugins/security-metadata.cjs
+      - name: Build and test site
+        env:
+          NO_UPDATE_NOTIFIER: '1'
+        run: |
+          corepack enable
+          pnpm install --frozen-lockfile
+          pnpm build
+          pnpm typecheck
+          pnpm test

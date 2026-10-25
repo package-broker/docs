@@ -1,0 +1,344 @@
+[
+  {
+    "route": "/",
+    "type": "landing",
+    "source": "static/img/og/landing.svg",
+    "output": "static/img/og/landing.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/agencies",
+    "type": "generic",
+    "source": "static/img/og/agencies.svg",
+    "output": "static/img/og/agencies.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/compare/private-packagist",
+    "type": "comparison",
+    "source": "static/img/og/compare-private-packagist.svg",
+    "output": "static/img/og/compare-private-packagist.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/compare/satis",
+    "type": "comparison",
+    "source": "static/img/og/compare-satis.svg",
+    "output": "static/img/og/compare-satis.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/compare/packeton",
+    "type": "comparison",
+    "source": "static/img/og/compare-packeton.svg",
+    "output": "static/img/og/compare-packeton.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/security",
+    "type": "generic",
+    "source": "static/img/og/security.svg",
+    "output": "static/img/og/security.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/search",
+    "type": "generic",
+    "source": "static/img/og/search.svg",
+    "output": "static/img/og/search.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/404.html",
+    "type": "generic",
+    "source": "static/img/og/404-html.svg",
+    "output": "static/img/og/404-html.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/architecture",
+    "type": "docs",
+    "source": "static/img/og/docs-architecture.svg",
+    "output": "static/img/og/docs-architecture.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/ci/github-actions",
+    "type": "docs",
+    "source": "static/img/og/docs-ci-github-actions.svg",
+    "output": "static/img/og/docs-ci-github-actions.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/ci/gitlab-ci",
+    "type": "docs",
+    "source": "static/img/og/docs-ci-gitlab-ci.svg",
+    "output": "static/img/og/docs-ci-gitlab-ci.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/clients/composer",
+    "type": "docs",
+    "source": "static/img/og/docs-clients-composer.svg",
+    "output": "static/img/og/docs-clients-composer.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/clients/npm-pnpm-yarn",
+    "type": "docs",
+    "source": "static/img/og/docs-clients-npm-pnpm-yarn.svg",
+    "output": "static/img/og/docs-clients-npm-pnpm-yarn.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/CONTRIBUTING-DOCS",
+    "type": "docs",
+    "source": "static/img/og/docs-CONTRIBUTING-DOCS.svg",
+    "output": "static/img/og/docs-CONTRIBUTING-DOCS.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/decisions/2026-10-17-composite-org-foreign-keys",
+    "type": "docs",
+    "source": "static/img/og/docs-decisions-2026-10-17-composite-org-foreign-keys.svg",
+    "output": "static/img/og/docs-decisions-2026-10-17-composite-org-foreign-keys.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/decisions/deployment-and-runtimes",
+    "type": "docs",
+    "source": "static/img/og/docs-decisions-deployment-and-runtimes.svg",
+    "output": "static/img/og/docs-decisions-deployment-and-runtimes.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/decisions/identity-and-sessions",
+    "type": "docs",
+    "source": "static/img/og/docs-decisions-identity-and-sessions.svg",
+    "output": "static/img/og/docs-decisions-identity-and-sessions.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/decisions/licensing-and-contribution-terms",
+    "type": "docs",
+    "source": "static/img/og/docs-decisions-licensing-and-contribution-terms.svg",
+    "output": "static/img/og/docs-decisions-licensing-and-contribution-terms.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/decisions/platform-ports-and-adapters",
+    "type": "docs",
+    "source": "static/img/og/docs-decisions-platform-ports-and-adapters.svg",
+    "output": "static/img/og/docs-decisions-platform-ports-and-adapters.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/decisions/plugin-api-and-composition",
+    "type": "docs",
+    "source": "static/img/og/docs-decisions-plugin-api-and-composition.svg",
+    "output": "static/img/og/docs-decisions-plugin-api-and-composition.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/decisions",
+    "type": "docs",
+    "source": "static/img/og/docs-decisions.svg",
+    "output": "static/img/og/docs-decisions.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/decisions/registry-and-sources",
+    "type": "docs",
+    "source": "static/img/og/docs-decisions-registry-and-sources.svg",
+    "output": "static/img/og/docs-decisions-registry-and-sources.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/decisions/release-and-versioning",
+    "type": "docs",
+    "source": "static/img/og/docs-decisions-release-and-versioning.svg",
+    "output": "static/img/og/docs-decisions-release-and-versioning.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/decisions/secrets-and-tokens",
+    "type": "docs",
+    "source": "static/img/og/docs-decisions-secrets-and-tokens.svg",
+    "output": "static/img/og/docs-decisions-secrets-and-tokens.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/getting-started/quickstart-cloudflare",
+    "type": "docs",
+    "source": "static/img/og/docs-getting-started-quickstart-cloudflare.svg",
+    "output": "static/img/og/docs-getting-started-quickstart-cloudflare.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/getting-started/quickstart-docker",
+    "type": "docs",
+    "source": "static/img/og/docs-getting-started-quickstart-docker.svg",
+    "output": "static/img/og/docs-getting-started-quickstart-docker.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/guides/mirror-vendor-repositories",
+    "type": "docs",
+    "source": "static/img/og/docs-guides-mirror-vendor-repositories.svg",
+    "output": "static/img/og/docs-guides-mirror-vendor-repositories.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/migration/from-packeton",
+    "type": "docs",
+    "source": "static/img/og/docs-migration-from-packeton.svg",
+    "output": "static/img/og/docs-migration-from-packeton.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/migration/from-private-packagist",
+    "type": "docs",
+    "source": "static/img/og/docs-migration-from-private-packagist.svg",
+    "output": "static/img/og/docs-migration-from-private-packagist.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/migration/from-satis",
+    "type": "docs",
+    "source": "static/img/og/docs-migration-from-satis.svg",
+    "output": "static/img/og/docs-migration-from-satis.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/operations/backup-and-upgrades",
+    "type": "docs",
+    "source": "static/img/og/docs-operations-backup-and-upgrades.svg",
+    "output": "static/img/og/docs-operations-backup-and-upgrades.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/operations/restore-rehearsal",
+    "type": "docs",
+    "source": "static/img/og/docs-operations-restore-rehearsal.svg",
+    "output": "static/img/og/docs-operations-restore-rehearsal.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/reference/access-model",
+    "type": "docs",
+    "source": "static/img/og/docs-reference-access-model.svg",
+    "output": "static/img/og/docs-reference-access-model.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/reference/api",
+    "type": "docs",
+    "source": "static/img/og/docs-reference-api.svg",
+    "output": "static/img/og/docs-reference-api.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/reference/plugin-authoring",
+    "type": "docs",
+    "source": "static/img/og/docs-reference-plugin-authoring.svg",
+    "output": "static/img/og/docs-reference-plugin-authoring.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/reference/workers-fill-limits",
+    "type": "docs",
+    "source": "static/img/og/docs-reference-workers-fill-limits.svg",
+    "output": "static/img/og/docs-reference-workers-fill-limits.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/security-and-residency",
+    "type": "docs",
+    "source": "static/img/og/docs-security-and-residency.svg",
+    "output": "static/img/og/docs-security-and-residency.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/workers-install",
+    "type": "docs",
+    "source": "static/img/og/docs-workers-install.svg",
+    "output": "static/img/og/docs-workers-install.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  }
+]

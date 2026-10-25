@@ -2,6 +2,7 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import {assertDocsSynced, isPlannedDoc} from './scripts/docs-content.cjs';
 import {docsLinks, footerLinks} from './src/data/landing';
+import {llmsOptions} from './scripts/llms-options.cjs';
 
 // Read on every config load: a missing sync must never render an empty docs site.
 assertDocsSynced();
@@ -21,7 +22,12 @@ const config: Config = {
     hooks: {onBrokenMarkdownLinks: 'throw'},
   },
   themes: ['@docusaurus/theme-mermaid', ['@easyops-cn/docusaurus-search-local', {hashed: true, language: 'en', docsDir: 'docs-content', indexBlog: false, indexPages: false}]],
-  plugins: ['./plugins/security-metadata.cjs', './plugins/comparison-validation.cjs'],
+  plugins: [
+    './plugins/security-metadata.cjs',
+    './plugins/comparison-validation.cjs',
+    './plugins/page-metadata.cjs',
+    ['docusaurus-plugin-llms', llmsOptions()],
+  ],
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
@@ -62,13 +68,14 @@ const config: Config = {
         sitemap: {
           changefreq: 'weekly',
           priority: 0.5,
-          ignorePatterns: ['/tags/**'],
+          ignorePatterns: ['/tags/**', '/docs/tags/**', '/404', '/404.html', '/search'],
           filename: 'sitemap.xml',
         },
       } satisfies Preset.Options,
     ],
   ],
   themeConfig: {
+    metadata: [{property: 'og:site_name', content: 'Package Broker'}],
     colorMode: {
       respectPrefersColorScheme: true,
     },
