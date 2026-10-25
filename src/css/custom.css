@@ -1,0 +1,5 @@
+@import '../../vendor/design-system/tokens.css';
+@import '../../vendor/design-system/components.css';
+@import '../../vendor/design-system/generated/infima.css';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/jetbrains-mono';
