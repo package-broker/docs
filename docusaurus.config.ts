@@ -1,7 +1,7 @@
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import {assertDocsSynced, isPlannedDoc} from './scripts/docs-content.cjs';
-import {headerLinks, footerLinks} from './src/data/landing';
+import {docsLinks, footerLinks} from './src/data/landing';
 
 // Read on every config load: a missing sync must never render an empty docs site.
 assertDocsSynced();
@@ -77,7 +77,7 @@ const config: Config = {
         alt: 'Package Broker',
         src: 'img/logo.svg',
       },
-      items: headerLinks.map(({label, href}) => ({label, href, position: 'right' as const})),
+      items: docsLinks.map(link => ({...link, position: 'right' as const})),
     },
     footer: {
       links: [{title: 'Package Broker', items: footerLinks}],

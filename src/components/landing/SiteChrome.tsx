@@ -1,4 +1,4 @@
-import {useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import Link from '@docusaurus/Link';
 import ColorModeToggle from '@theme/Navbar/ColorModeToggle';
 import {Menu, X} from 'lucide-react';
@@ -7,9 +7,42 @@ import {footerLinks, headerLinks} from '../../data/landing';
 export function LandingHeader() {
   const [open, setOpen] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
+  const header = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    // This page owns the background list; preserve the host's existing inert state.
+    const background = Array.from(document.querySelectorAll<HTMLElement>(
+      'main, .pb-site-footer, aside, a[href="#__docusaurus_skipToContent_fallback"]',
+    )).filter(element => !header.current?.contains(element) && !element.contains(header.current));
+    const previous = background.map(element => [element, element.inert] as const);
+    for (const [element] of previous) element.inert = true;
+    const outside = (event: PointerEvent) => {
+      if (event.target instanceof Node && !header.current?.contains(event.target)) setOpen(false);
+    };
+    document.addEventListener('pointerdown', outside);
+    return () => {
+      for (const [element, inert] of previous) element.inert = inert;
+      document.removeEventListener('pointerdown', outside);
+    };
+  }, [open]);
+
+  useEffect(() => {
+    const desktop = window.matchMedia('(min-width: 1100px)');
+    const onBreakpoint = () => {
+      const focused = document.activeElement;
+      setOpen(false);
+      if (focused instanceof HTMLElement && header.current?.contains(focused)) {
+        if (desktop.matches && focused === toggle.current) header.current.querySelector<HTMLAnchorElement>('.pb-brand')?.focus();
+        else if (!desktop.matches && focused.closest('.pb-site-nav')) toggle.current?.focus();
+      }
+    };
+    desktop.addEventListener('change', onBreakpoint);
+    return () => desktop.removeEventListener('change', onBreakpoint);
+  }, []);
   function close() {setOpen(false);}
   return (
-    <header className="pb-site pb-site-header pb-site-header--sticky" onKeyDown={event => {
+    <header ref={header} className="pb-site pb-site-header pb-site-header--sticky" onKeyDown={event => {
       if (event.key === 'Escape' && open) {close(); toggle.current?.focus();}
     }} onBlur={event => {if (!event.currentTarget.contains(event.relatedTarget)) close();}}>
       <Link className="pb-brand" aria-label="Package Broker home" to="/">
@@ -25,7 +58,7 @@ export function LandingHeader() {
         <span className="pb-site-nav-toggle__label">Menu</span>
       </button>
       <nav className="pb-site-nav" id="landing-nav" aria-label="Main">
-        <ul>{headerLinks.map(link => <li key={link.label}><Link to={link.href} onClick={close}>{link.label}</Link></li>)}</ul>
+        <ul>{headerLinks.map(({label, ...destination}) => <li key={label}><Link {...destination} onClick={close}>{label}</Link></li>)}</ul>
       </nav>
     </header>
   );
@@ -35,7 +68,7 @@ export function LandingFooter() {
   return (
     <footer className="pb-site-footer" id="footer">
       <div className="pb-wrap">
-        <nav aria-label="Footer"><ul>{footerLinks.map(link => <li key={link.label}><Link className="pb-link" to={link.href}>{link.label}</Link></li>)}</ul></nav>
+        <nav aria-label="Footer"><ul>{footerLinks.map(({label, ...destination}) => <li key={label}><Link className="pb-link" {...destination}>{label}</Link></li>)}</ul></nav>
         <p className="pb-site-footer__contact">Contact: <a className="pb-link" href="mailto:hi@package.broker">hi@package.broker</a></p>
         <p>Package Broker is licensed under AGPL-3.0-only.</p>
       </div>

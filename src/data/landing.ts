@@ -2,14 +2,20 @@ export const repository = 'https://github.com/package-broker/broker';
 export const workersQuickstart = '/docs/getting-started/quickstart-cloudflare';
 export const dockerQuickstart = '/docs/getting-started/quickstart-docker';
 export const comparisonsPublished = false;
+export const agenciesPublished = false;
 export const releaseStatus = '2.0.0-rc.X, pre-release; no tagged release yet';
 
+export const docsLinks = [
+  {label: 'Docs', to: '/docs/architecture'},
+  {label: 'GitHub', href: repository},
+  {label: 'Security', to: '/docs/security-and-residency'},
+];
 export const headerLinks = [
-  {label: 'Docs', href: '/docs/architecture'},
-  {label: 'Deploy', href: '/#quickstart'},
-  {label: 'Security', href: '/docs/security-and-residency'},
-  {label: 'Agencies', href: '/#claims'},
-  {label: 'Compare', href: '/#compare'},
+  {label: 'Docs', to: '/docs/architecture'},
+  {label: 'Deploy', to: '/#quickstart'},
+  {label: 'Security', to: '/docs/security-and-residency'},
+  ...(agenciesPublished ? [{label: 'Agencies', to: '/agencies'}] : []),
+  ...(comparisonsPublished ? [{label: 'Compare', to: '/compare/private-packagist'}] : []),
   {label: 'GitHub', href: repository},
 ];
 export const footerLinks = [
@@ -33,21 +39,26 @@ pnpm pb cloudflare setup \\
   --key-file <master-key-file> \\
   --token-file <setup-token-file>`;
 
-// [verify command] Source: origin/main:README.md (build and whole-output deployment),
-// scripts/node-bundle-smoke.mjs (server environment), packages/cli/src/cli.ts.
-// README.md says the GHCR image is planned; use the supported Node output meanwhile.
-export const dockerCommands = `pnpm install --frozen-lockfile
+// [verify command] Source: origin/main:Dockerfile (runtime CLI, port and volume),
+// packages/cli/src/cli.ts (USAGE), commands/admin.ts (key and setup-token output).
+// Run in a broker source checkout. Wait for /health/ready before admin bootstrap.
+export const dockerCommands = `docker build -t package-broker .
+pnpm install --frozen-lockfile
 pnpm build
-pnpm pb build --config broker.config.ts --target node
-cd .pb/node
-npm install --omit=dev
-export PB_MASTER_KEY='<master-key>'
-export PB_SQLITE_PATH='<absolute-data-directory>/db.sqlite'
-export PB_BLOB_ROOT='<absolute-data-directory>/blobs'
-export PB_ORG_SLUG='<organization-slug>'
-export PB_ORG_NAME='<organization-name>'
-export PB_PUBLIC_URL='http://localhost:8787'
-node server.js`;
+pnpm pb secrets generate-master-key
+export PB_MASTER_KEY='<generated-master-key>'
+docker run -d --name package-broker \\
+  -p 8787:8787 -v pb-data:/data \\
+  -e PB_MASTER_KEY \\
+  -e PB_ORG_SLUG='<organization-slug>' \\
+  -e PB_ORG_NAME='<organization-name>' \\
+  -e PB_PUBLIC_URL='http://localhost:8787' \\
+  package-broker
+until [ "$(docker inspect --format '{{.State.Health.Status}}' package-broker)" = healthy ]; do
+  sleep 1
+done
+docker exec -it package-broker node /app/cli/dist/bin.js admin bootstrap \\
+  --email '<email>' --sqlite /data/broker.sqlite`;
 
 export const claims = [
   {
@@ -76,23 +87,8 @@ export const claims = [
   },
   {
     title: 'Token hygiene by default',
-    mechanism: 'Token issuance requires fresh authentication, expiry follows your configured policy, and you can issue a service token with read scope for one project.',
+    mechanism: 'Token issuance requires re-authentication, expiry follows your configured policy, and you can issue a service token with read scope for one project.',
     prevents: 'A leaked install token publishing packages or reading another project when its scope is read and it is limited to one project.',
     label: 'Token scopes and revocation', href: '/docs/decisions/secrets-and-tokens',
   },
-];
-
-export const comparisonRows = [
-  ['Authentication', 'Personal and service tokens for Composer and npm.'],
-  ['Isolation per client', 'Separate projects and source credentials.'],
-  ['npm registry', 'Composer and npm use one token policy.'],
-  ['SSO', 'OIDC groups mapped to project grants.'],
-  ['Self-hosting', 'Cloudflare Workers or the Node bundle; Docker image planned.'],
-  ['Licence', 'AGPL-3.0-only.'],
-  ['Price model', 'Your Cloudflare plan or host, storage and operations.'],
-];
-export const comparisons = [
-  {name: 'Satis', href: '/compare/satis', migration: '/docs/migration/from-satis', source: 'https://github.com/composer/satis'},
-  {name: 'Private Packagist', href: '/compare/private-packagist', migration: '/docs/migration/from-private-packagist', source: 'https://packagist.com/docs'},
-  {name: 'Packeton', href: '/compare/packeton', migration: '/docs/migration/from-packeton', source: 'https://docs.packeton.org/'},
 ];

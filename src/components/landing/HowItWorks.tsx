@@ -41,8 +41,8 @@ export default function HowItWorks() {
         <rect className="pb-dg-node pb-dg-node--token" x="212" y="252" width="146" height="48" rx="8"/>
         <text className="pb-dg-mono" x="285" y="272" textAnchor="middle">pb_cst_</text>
         <text className="pb-dg-text" x="285" y="290" textAnchor="middle">reserved prefix</text>
-        <path className="pb-dg-edge" d="M370 170H438" markerEnd="url(#dg-w-arrow)"/>
-        <path className="pb-dg-edge" d="M370 280H438" markerEnd="url(#dg-w-arrow)"/>
+        <path className="pb-dg-edge" d="M358 164H438" markerEnd="url(#dg-w-arrow)"/>
+        <path className="pb-dg-edge" d="M358 220H398V280H438" markerEnd="url(#dg-w-arrow)"/>
 
         <rect className="pb-dg-node" x="440" y="140" width="170" height="60" rx="8"/>
         <text className="pb-dg-text" x="525" y="164" textAnchor="middle">Project</text>
@@ -69,7 +69,7 @@ export default function HowItWorks() {
         <rect className="pb-dg-node" x="150" y="0" width="130" height="44" rx="8"/>
         <text className="pb-dg-text" x="215" y="27" textAnchor="middle">npm, pnpm, yarn</text>
         <path className="pb-dg-edge" d="M65 44V72" markerEnd="url(#dg-n-arrow)"/>
-        <path className="pb-dg-edge" d="M215 44V72" markerEnd="url(#dg-n-arrow)"/>
+        <path className="pb-dg-edge" d="M215 44V60H140V72" markerEnd="url(#dg-n-arrow)"/>
 
         <rect className="pb-dg-node pb-dg-node--token" x="0" y="76" width="84" height="56" rx="8"/>
         <text className="pb-dg-mono" x="42" y="99" textAnchor="middle">pb_pat_</text>
@@ -82,7 +82,7 @@ export default function HowItWorks() {
         <text className="pb-dg-text" x="238" y="110" textAnchor="middle">reserved</text>
         <text className="pb-dg-text" x="238" y="126" textAnchor="middle">prefix</text>
 
-        <path className="pb-dg-edge" d="M42 132V148M140 132V148M238 132V148M42 148H238"/>
+        <path className="pb-dg-edge" d="M42 132V148M140 132V148M42 148H140"/>
         <path className="pb-dg-edge" d="M65 148V172" markerEnd="url(#dg-n-arrow)"/>
 
         <rect className="pb-dg-node pb-dg-node--brand" x="0" y="176" width="130" height="64" rx="8"/>
