@@ -2,7 +2,11 @@ Research-workspace repository: /Users/lbajsarowicz (home git repository)
 Source directory: lbajsarowicz/package-broker/v2-research/50-recommendations/design-system/
 Source commit: 15c55e8edc1ea2e1a0a5c8b6fb9777dc69183b6c
 Copy date: 2026-10-25
-Copied from the working tree; every copied file verified byte-for-byte against the source commit.
+Base files copied from the working tree and verified against the source commit.
+components.css: home-repo commit 49912a44 (DEC-G17, 2026-10-25).
+Source additions: responsive SVG diagram, comparison summary, marketing Infima integration.
+The updated components.css is byte-for-byte equal to the research working-tree source;
+components.md, component-apis.md and styleguide.html document and demonstrate the additions there.
 README.md is the site's own usage note, not copied from the research design system.
 Copied files (relative to vendor/design-system/):
 - tokens.css

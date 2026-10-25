@@ -2012,3 +2012,44 @@ div.pb-drawer,
 @media print { .pb-site-header--sticky, .pb-table--sticky thead th { position: static; } }
 
 .pb-table caption.pb-visually-hidden { margin: 0; padding: 0; }
+
+/* Diagram: shared marketing recipe, with one SVG and responsive symbol instances. */
+
+.pb-diagram { margin: 0; padding: var(--pb-space-4); border: var(--pb-space-px) solid var(--pb-color-border); border-radius: var(--pb-radius-lg); background: var(--pb-color-surface); }
+.pb-diagram svg { display: block; width: 100%; height: auto; aspect-ratio: 280 / 336; max-width: calc(var(--pb-space-20) * 5); margin-inline: auto; }
+@media (min-width: 1024px) { .pb-diagram svg { aspect-ratio: 900 / 340; max-width: calc(var(--pb-space-20) * 12); } }
+.pb-diagram__wide { display: none; }
+@media (min-width: 1024px) { .pb-diagram__wide { display: block; } .pb-diagram__narrow { display: none; } }
+.pb-diagram__cap-narrow { display: inline; }
+.pb-diagram__cap-wide { display: none; }
+@media (min-width: 1024px) { .pb-diagram__cap-narrow { display: none; } .pb-diagram__cap-wide { display: inline; } }
+.pb-diagram figcaption { margin-top: var(--pb-space-3); color: var(--pb-color-text-muted); font-size: var(--pb-font-size-sm); }
+.pb-dg-node { fill: var(--pb-color-surface-raised); stroke: var(--pb-color-border-control); stroke-width: calc(1.5 * var(--pb-space-px)); }
+.pb-dg-node--token { fill: var(--pb-color-accent-subtle); }
+.pb-dg-broker { fill: none; stroke: var(--pb-color-brand); stroke-width: var(--pb-space-0-5); stroke-dasharray: var(--pb-space-1-5) var(--pb-space-1); }
+.pb-dg-group { fill: none; stroke: var(--pb-color-border-control); stroke-width: var(--pb-space-px); }
+.pb-dg-node--brand { stroke: var(--pb-color-brand); stroke-width: var(--pb-space-0-5); }
+.pb-dg-edge { fill: none; stroke: var(--pb-color-text-muted); stroke-width: calc(1.5 * var(--pb-space-px)); }
+.pb-dg-arrow { fill: var(--pb-color-text-muted); }
+.pb-dg-text { fill: var(--pb-color-text); font-size: var(--pb-font-size-md); font-family: var(--pb-font-family-sans); }
+.pb-dg-mono { fill: var(--pb-color-text); font-size: var(--pb-font-size-md); font-family: var(--pb-font-family-mono); }
+.pb-dg-label { fill: var(--pb-color-text-muted); font-size: var(--pb-font-size-md); font-family: var(--pb-font-family-sans); font-weight: var(--pb-font-weight-semibold); }
+.pb-dg-mark { fill: var(--pb-color-brand); }
+
+/* Landing comparison summary: preserve row headers and the product column on small containers. */
+.pb-table--summary { display: table; }
+.pb-table--summary .pb-col-pb { background: var(--pb-color-accent-subtle); }
+@container (max-width: 640px) {
+  .pb-table--summary th:nth-child(n+3),
+  .pb-table--summary td:nth-child(n+3) { display: none; }
+}
+.pb-table-note { display: none; color: var(--pb-color-text-muted); font-size: var(--pb-font-size-sm); }
+@media (max-width: 719px) { .pb-table-note { display: block; } }
+.pb-links-row { display: flex; flex-wrap: wrap; gap: var(--pb-space-2) var(--pb-space-6); padding: 0; margin: var(--pb-space-4) 0 0; list-style: none; }
+/* Keep native hidden panels hidden and prevent Infima table/pre defaults changing catalogue recipes. */
+.pb-site [hidden] { display: none; }
+.pb-site .pb-table { display: table; margin: 0; }
+.pb-site .pb-table tr { background: none; border-top: 0; }
+.pb-site .pb-table :is(th, td) { border-inline: 0; border-top: 0; }
+.pb-site .pb-code pre { background: var(--pb-color-surface-sunken); color: var(--pb-color-text); border-radius: 0; }
+.pb-site .pb-code pre code { padding: 0; background: none; border: 0; }
