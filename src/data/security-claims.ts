@@ -1,13 +1,20 @@
 import policy from './security-policy.json';
-import {repository} from './landing';
+import {releaseStatus, repository} from './landing';
 
 export const productFile = (path: string) => `${repository}/blob/${policy.productCommit}/${path}`;
 export const securityPolicyUrl = productFile('SECURITY.md');
 export const privateReportingUrl = `${repository}/security/advisories/new`;
-export type SecurityClaim = {
-  id: string; status: 'shipped' | 'planned' | 'unknown'; text: string; sources: string[];
+export type ClaimEvidence = {
+  id: string; status: 'shipped' | 'planned' | 'unknown'; sources: string[];
 };
+export type SecurityClaim = ClaimEvidence & {text: string};
 export const securityClaims: SecurityClaim[] = [
+  {id: 'overview', status: 'shipped', text: 'Report a vulnerability, review the token model and audit log, and check where your deployment stores data. You operate the registry and choose its deployment controls.', sources: ['SECURITY.md', 'packages/core/src/authz/token-use.ts', 'packages/core/src/audit/chain.ts', 'docs/decisions/deployment-and-runtimes.md']},
+  {id: 'release-status', status: 'shipped', text: `Release status: ${releaseStatus}.`, sources: ['SECURITY.md', 'src/data/landing.ts']},
+  {id: 'report-email', status: 'shipped', text: 'You can also report by e-mail. The same address accepts questions about this page.', sources: ['src/data/contacts.json', 'growth/30-decisions/decision-log.md (DEC-G16)']},
+  {id: 'scope-usage', status: 'shipped', text: 'Use `read` scope for installs in CI. Choose `write` for publishing operations or `full` for token-eligible API operations only when the principal’s grants allow them. Session-only actions still require a session.', sources: ['packages/core/src/authz/scope.ts', 'packages/core/src/authz/catalogue.ts']},
+  {id: 'operator-intro', status: 'shipped', text: 'You deploy Package Broker. Use this division of responsibilities when reviewing your deployment.', sources: ['docs/decisions/deployment-and-runtimes.md']},
+  {id: 'support', status: 'shipped', text: 'Ask general questions in GitHub Discussions or by e-mail. Report security problems through the private disclosure routes above.', sources: ['GOVERNANCE.md', 'src/data/contacts.json', 'growth/30-decisions/decision-log.md (DEC-G16)']},
   {id: 'reporting', status: 'shipped', text: 'Report a vulnerability through GitHub private vulnerability reporting. Open the repository’s Security tab and choose Report a vulnerability. Do not open a public issue for a security problem. The policy promises an acknowledgement within five working days.', sources: ['SECURITY.md']},
   {id: 'report-details', status: 'shipped', text: 'Include the affected package and version or commit, the runtime (Cloudflare Workers or Node), steps to reproduce and the impact you see.', sources: ['SECURITY.md']},
   {id: 'report-scope', status: 'shipped', text: 'The repository, CLI, both runtimes, first-party plugins and generated build manifest are in scope. Third-party registries and findings requiring a compromised deployment master key or database write access are outside the policy’s scope.', sources: ['SECURITY.md']},
@@ -26,21 +33,25 @@ export const securityClaims: SecurityClaim[] = [
   {id: 'licence-wording', status: 'unknown', text: 'Legal-team licence wording awaits product-session confirmation and is omitted from this page.', sources: ['LICENSE', 'docs/decisions/licensing-and-contribution-terms.md']},
   {id: 'provenance-editions', status: 'unknown', text: 'Release provenance, SBOM and edition-gating statements are omitted pending the required publish check.', sources: ['SECURITY.md']},
 ];
-export function publishedClaim(id: string): SecurityClaim {
-  const claim = securityClaims.find(item => item.id === id);
-  if (!claim || claim.status !== 'shipped') throw new Error(`Unpublished security claim: ${id}`);
+export function publishedClaim(id: string): SecurityClaim;
+export function publishedClaim<T extends ClaimEvidence>(claim: T): T;
+export function publishedClaim(input: string | ClaimEvidence): ClaimEvidence {
+  const claim = typeof input === 'string' ? securityClaims.find(item => item.id === input) : input;
+  if (!claim || claim.status !== 'shipped' || !claim.sources.length || claim.sources.some(source => !source.trim())) {
+    throw new Error(`Unpublished security claim: ${typeof input === 'string' ? input : input.id}`);
+  }
   return claim;
 }
 export const tokenKinds = [
-  {status: 'shipped' as const, prefix: 'pb_pat_', principal: 'A user', binding: 'Selected projects, or all projects allowed by the user’s grants', lifetime: 'Configured personal-token limit', sources: ['packages/core/src/authz/pat-service.ts', 'packages/core/src/authz/token-lifetime.ts']},
-  {status: 'shipped' as const, prefix: 'pb_svc_', principal: 'A service principal', binding: 'One project; organization-wide creation requires organization administration rights', lifetime: 'Configured service-token limit', sources: ['packages/core/src/authz/service-principal-service.ts', 'packages/core/src/authz/service-token-service.ts', 'packages/core/src/authz/token-lifetime.ts']},
+  {id: 'personal-token', status: 'shipped' as const, prefix: 'pb_pat_', principal: 'A user', binding: 'Selected projects, or all projects allowed by the user’s grants', lifetime: 'Configured personal-token limit', sources: ['packages/core/src/authz/pat-service.ts', 'packages/core/src/authz/token-lifetime.ts']},
+  {id: 'service-token', status: 'shipped' as const, prefix: 'pb_svc_', principal: 'A service principal', binding: 'One project; organization-wide creation requires organization administration rights', lifetime: 'Configured service-token limit', sources: ['packages/core/src/authz/service-principal-service.ts', 'packages/core/src/authz/service-token-service.ts', 'packages/core/src/authz/token-lifetime.ts']},
 ];
 export const operatorResponsibilities = [
-  {status: 'shipped' as const, area: 'Identity', provided: 'OIDC sign-in and grants to identity provider groups or e-mails', operator: 'Identity provider, groups, offboarding and multi-factor policy', sources: ['docs/decisions/identity-and-sessions.md']},
-  {status: 'shipped' as const, area: 'Tokens', provided: 'Project binding, scopes, expiry and revocation', operator: 'Lifetime settings, CI secret storage and rotation, service principal grants', sources: ['packages/core/src/authz/service-token-service.ts', 'packages/core/src/authz/token-lifetime.ts']},
-  {status: 'shipped' as const, area: 'Audit log', provided: 'Stored events and a sealed hash chain', operator: 'Retention and independent storage of head hashes', sources: ['packages/core/src/audit/chain.ts', 'docs/decisions/identity-and-sessions.md']},
-  {status: 'shipped' as const, area: 'Data location', provided: 'D1 and R2 jurisdiction inputs during provisioning', operator: 'Cloudflare resources, storage placement, Node host and volumes', sources: ['packages/cli/src/commands/cloudflare/provision.ts', 'Dockerfile']},
-  {status: 'shipped' as const, area: 'Deployment master key', provided: 'Encryption of source credentials using the deployment key', operator: 'Key storage, access, backup and rotation', sources: ['docs/decisions/secrets-and-tokens.md', 'docs/decisions/deployment-and-runtimes.md']},
-  {status: 'shipped' as const, area: 'Backups and upgrades', provided: 'Self-hosted runtimes and an operations guide', operator: 'Taking and testing backups, applying updates and checking release notes', sources: ['docs/decisions/deployment-and-runtimes.md']},
-  {status: 'shipped' as const, area: 'Network exposure', provided: 'Application access checks', operator: 'TLS, hostnames, firewall and any identity gateway policy', sources: ['packages/core/src/kernel/access.ts', 'docs/decisions/deployment-and-runtimes.md']},
+  {id: 'operator-identity', status: 'shipped' as const, area: 'Identity', provided: 'OIDC sign-in and grants to identity provider groups or e-mails', operator: 'Identity provider, groups, offboarding and multi-factor policy', sources: ['docs/decisions/identity-and-sessions.md']},
+  {id: 'operator-tokens', status: 'shipped' as const, area: 'Tokens', provided: 'Project binding, scopes, expiry and revocation', operator: 'Lifetime settings, CI secret storage and rotation, service principal grants', sources: ['packages/core/src/authz/service-token-service.ts', 'packages/core/src/authz/token-lifetime.ts']},
+  {id: 'operator-audit-log', status: 'shipped' as const, area: 'Audit log', provided: 'Stored events and a sealed hash chain', operator: 'Retention and independent storage of head hashes', sources: ['packages/core/src/audit/chain.ts', 'docs/decisions/identity-and-sessions.md']},
+  {id: 'operator-data-location', status: 'shipped' as const, area: 'Data location', provided: 'D1 and R2 jurisdiction inputs during provisioning', operator: 'Cloudflare resources, storage placement, Node host and volumes', sources: ['packages/cli/src/commands/cloudflare/provision.ts', 'Dockerfile']},
+  {id: 'operator-deployment-master-key', status: 'shipped' as const, area: 'Deployment master key', provided: 'Encryption of source credentials using the deployment key', operator: 'Key storage, access, backup and rotation', sources: ['docs/decisions/secrets-and-tokens.md', 'docs/decisions/deployment-and-runtimes.md']},
+  {id: 'operator-backups-and-upgrades', status: 'shipped' as const, area: 'Backups and upgrades', provided: 'Self-hosted Workers and Node runtimes', operator: 'Taking and testing backups, applying updates and checking release notes', sources: ['docs/decisions/deployment-and-runtimes.md']},
+  {id: 'operator-network-exposure', status: 'shipped' as const, area: 'Network exposure', provided: 'Application access checks', operator: 'TLS, hostnames, firewall and any identity gateway policy', sources: ['packages/core/src/kernel/access.ts', 'docs/decisions/deployment-and-runtimes.md']},
 ];

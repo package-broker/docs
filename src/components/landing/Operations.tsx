@@ -13,13 +13,13 @@ const rows: {label: string; workers: ReactNode; docker: ReactNode}[] = [
 export default function Operations() {
   return (
     <div className="pb-site-table pb-container">
-      <table className="pb-table">
+      <table className="pb-table" role="table">
         <caption>Workers and Docker deployment requirements and operator responsibilities</caption>
-        <thead><tr><th scope="col">Item</th><th scope="col">Cloudflare Workers</th><th scope="col">Docker / Node</th></tr></thead>
-        <tbody>{rows.map(row => <tr key={row.label}>
-          <th scope="row">{row.label}</th>
-          <td><span className="pb-table__cell-label" aria-hidden="true">Cloudflare Workers</span><span className="pb-table__value">{row.workers}</span></td>
-          <td><span className="pb-table__cell-label" aria-hidden="true">Docker / Node</span><span className="pb-table__value">{row.docker}</span></td>
+        <thead role="rowgroup"><tr role="row"><th id="runtime-item" scope="col" role="columnheader">Item</th><th id="runtime-workers" scope="col" role="columnheader">Cloudflare Workers</th><th id="runtime-node" scope="col" role="columnheader">Docker / Node</th></tr></thead>
+        <tbody role="rowgroup">{rows.map((row, index) => <tr role="row" key={row.label}>
+          <th id={`runtime-row-${index}`} headers="runtime-item" scope="row" role="rowheader">{row.label}</th>
+          <td headers={`runtime-row-${index} runtime-workers`} role="cell"><span className="pb-table__cell-label" aria-hidden="true">Cloudflare Workers</span><span className="pb-table__value">{row.workers}</span></td>
+          <td headers={`runtime-row-${index} runtime-node`} role="cell"><span className="pb-table__cell-label" aria-hidden="true">Docker / Node</span><span className="pb-table__value">{row.docker}</span></td>
         </tr>)}</tbody>
       </table>
     </div>

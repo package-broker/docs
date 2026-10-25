@@ -1,5 +1,10 @@
 export const repository = 'https://github.com/package-broker/broker';
-export const workersQuickstart = '/docs/getting-started/quickstart-cloudflare';
+// Enable full-guide links after their synced content replaces the stub.
+export const workersQuickstartPublished = false;
+export const dockerQuickstartPublished = false;
+export const migrationGuidesPublished = false;
+export const workersQuickstartDoc = '/docs/getting-started/quickstart-cloudflare';
+export const workersQuickstart = workersQuickstartPublished ? workersQuickstartDoc : '/#quickstart';
 export const dockerQuickstart = '/docs/getting-started/quickstart-docker';
 export const comparisonsPublished = false;
 export const agenciesPublished = true;
@@ -78,7 +83,7 @@ export const claims = [
     title: 'Self-hosted on Workers or Node, under AGPL',
     mechanism: 'You deploy the broker to Cloudflare Workers or run the Node bundle on your host under AGPL-3.0-only.',
     prevents: 'Depending on a hosted registry operator to retain control of your package index.',
-    label: 'Cloudflare Workers quickstart', href: workersQuickstart,
+    label: 'Deployment quickstart', href: workersQuickstart,
   },
   {
     title: 'OIDC groups mapped to projects',

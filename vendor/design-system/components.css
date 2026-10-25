@@ -1975,7 +1975,7 @@ div.pb-drawer,
 .pb-feature-grid h3 { margin-bottom: var(--pb-space-2); font-size: var(--pb-font-size-lg); }
 .pb-feature-grid p:last-child { margin-bottom: 0; }
 @media (min-width: 768px) { .pb-feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 1024px) { .pb-hero--page :is(h1, .pb-hero__title) { font-size: var(--pb-font-size-4xl); } }
+@media (min-width: 1024px) { .pb-hero--page :is(h1, .pb-hero__title) { max-width: none; font-size: var(--pb-font-size-4xl); } }
 
 /* Marketing tables share the native table header associations in every layout. */
 .pb-site-table .pb-table { font-size: var(--pb-font-size-base); }
@@ -2071,10 +2071,15 @@ div.pb-drawer,
 .pb-page-section .pb-steps, .pb-page-section .pb-feature-grid { max-width: none; padding: 0; }
 .pb-page-section .pb-steps h3, .pb-page-section .pb-feature-grid h3 { margin-top: 0; }
 .pb-diagram--isolation svg { aspect-ratio: auto; max-width: none; }
+/* Client lanes use their own viewBox ratio instead of the shared desktop diagram ratio. */
+.pb-diagram--isolation .pb-diagram__clients svg { aspect-ratio: 280 / 370; height: auto; }
+.pb-diagram__clients { display: grid; gap: var(--pb-space-4); }
+@media (min-width: 1024px) { .pb-diagram__clients { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.pb-diagram--isolation :is(.pb-dg-text, .pb-dg-mono) { font-size: var(--pb-font-size-lg); }
 .pb-not-found { display: grid; gap: var(--pb-space-8); max-width: var(--pb-size-prose-max); margin-inline: auto; padding-top: var(--pb-space-12); }
 .pb-not-found h1 { font-size: var(--pb-font-size-3xl); }
 @media (min-width: 1024px) { .pb-not-found h1 { font-size: var(--pb-font-size-4xl); } }
 .pb-not-found .pb-links-row { display: grid; gap: var(--pb-space-2); margin: 0; }
 .pb-recovery-search { display: grid; gap: var(--pb-space-2); }
 .pb-recovery-search .pb-input { width: 100%; }
-.pb-page-meta { display: flex; flex-wrap: wrap; gap: var(--pb-space-2) var(--pb-space-4); color: var(--pb-color-text-muted); font-size: var(--pb-font-size-sm); }
+.pb-page-meta { color: var(--pb-color-text-muted); font-size: var(--pb-font-size-sm); }

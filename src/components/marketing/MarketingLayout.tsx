@@ -4,15 +4,15 @@ import Head from '@docusaurus/Head';
 import {LandingFooter} from '../landing/SiteChrome';
 import {MarketingPageContext} from './MarketingPageContext';
 
-export default function MarketingLayout({title, description, noIndex, showLicense = true, children}: {
-  title: string; description: string; noIndex?: boolean; showLicense?: boolean; children: ReactNode;
+export default function MarketingLayout({title, description, noIndex, children}: {
+  title: string; description: string; noIndex?: boolean; children: ReactNode;
 }) {
   return <MarketingPageContext.Provider value={true}>
     <Layout title={title} description={description} noFooter>
       {noIndex && <Head><meta name="robots" content="noindex, follow"/></Head>}
       <div className="pb-site">
         <main id="main" className="pb-wrap pb-page" tabIndex={-1}>{children}</main>
-        <LandingFooter showLicense={showLicense}/>
+        <LandingFooter/>
       </div>
     </Layout>
   </MarketingPageContext.Provider>;

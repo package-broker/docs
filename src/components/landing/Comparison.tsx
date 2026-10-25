@@ -1,5 +1,5 @@
 import Link from '@docusaurus/Link';
-import {comparisonsPublished} from '../../data/landing';
+import {comparisonsPublished, migrationGuidesPublished} from '../../data/landing';
 import {comparisonRows, comparisons} from '../../data/comparison';
 
 export default function Comparison() {
@@ -23,9 +23,9 @@ export default function Comparison() {
       <ul className="pb-links-row">{comparisons.map(item => <li key={item.name}>
         {comparisonsPublished ? <Link className="pb-link" to={item.href}>Compare with {item.name}</Link> : <span>Compare with {item.name} — in preparation</span>}
       </li>)}</ul>
-      <ul className="pb-links-row">{comparisons.map(item => <li key={item.name}>
-        <Link className="pb-link" to={item.migration}>Migrate from {item.name}</Link>
-      </li>)}</ul>
+      {migrationGuidesPublished && <ul className="pb-links-row">{comparisons.map(item => <li key={item.name}>
+        <Link className="pb-link" to={item.migration}>Migration from {item.name}</Link>
+      </li>)}</ul>}
     </>
   );
 }

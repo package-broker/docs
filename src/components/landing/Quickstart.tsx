@@ -1,11 +1,11 @@
 import {useRef, useState, type KeyboardEvent} from 'react';
 import Link from '@docusaurus/Link';
 import {Copy} from 'lucide-react';
-import {dockerCommands, dockerQuickstart, repository, workersCommands, workersQuickstart} from '../../data/landing';
+import {dockerCommands, dockerQuickstart, dockerQuickstartPublished, repository, workersCommands, workersQuickstartDoc, workersQuickstartPublished} from '../../data/landing';
 
 const runtimes = [
-  {id: 'workers', label: 'Workers', commands: workersCommands, href: workersQuickstart},
-  {id: 'docker', label: 'Docker', commands: dockerCommands, href: dockerQuickstart},
+  {id: 'workers', label: 'Workers', commands: workersCommands, href: workersQuickstartDoc, published: workersQuickstartPublished},
+  {id: 'docker', label: 'Docker', commands: dockerCommands, href: dockerQuickstart, published: dockerQuickstartPublished},
 ];
 
 export default function Quickstart() {
@@ -67,12 +67,12 @@ export default function Quickstart() {
               {status.runtime === runtime.id ? status.message : ''}
             </p>
             <p>{runtime.id === 'workers' ? <>Open <code>/_pb/ui/setup</code> on your broker to finish administrator setup. </> : <>Wait for the broker to be ready, then bootstrap the first administrator inside the container. Open <code>/_pb/ui/setup</code> and paste the setup token from the terminal. Copy it now. You cannot see it again. </>}
-              <Link className="pb-link" to={runtime.href}>{runtime.label} quickstart</Link>{runtime.id === 'docker' && <> · <a className="pb-link" href={`${repository}/blob/main/Dockerfile`}>Dockerfile</a> · <a className="pb-link" href={`${repository}/blob/main/packages/cli/src/cli.ts`}>Administrator CLI reference</a></>}</p>
+              {runtime.published && <Link className="pb-link" to={runtime.href}>{runtime.label} quickstart</Link>}{runtime.id === 'docker' && <> <a className="pb-link" href={`${repository}/blob/main/Dockerfile`}>Dockerfile</a> · <a className="pb-link" href={`${repository}/blob/main/packages/cli/src/cli.ts`}>Administrator CLI reference</a></>}</p>
           </div>
         ))}
       </div>
       <div className="pb-quickstart__cta">
-        <Link className="pb-btn pb-btn--primary pb-btn--lg" to={runtimes[selected].href}>Read the full quickstart</Link>
+        {runtimes[selected].published && <Link className="pb-btn pb-btn--primary pb-btn--lg" to={runtimes[selected].href}>{runtimes[selected].label} quickstart</Link>}
         <a className="pb-btn pb-btn--lg" href={repository}>View the repository on GitHub</a>
       </div>
     </section>
