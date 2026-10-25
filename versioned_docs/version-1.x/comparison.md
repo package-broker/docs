@@ -22,7 +22,7 @@ This comparison matrix is based on publicly available documentation, official fe
 
 ## Comparison Matrix
 
-import ComparisonTable from '@site/src/components/ComparisonTable';
+import ComparisonTable from '@site/src/components/V1ComparisonTable';
 
 <ComparisonTable 
   summaryOnly={false} 

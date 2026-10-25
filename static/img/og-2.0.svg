@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">PACKAGE.broker 2.0</title>
+  <desc id="desc">Self-hosted Composer and npm registry. Per-project isolation by SSO group, with upstream credentials kept per project. Pre-release.</desc>
+  <rect width="1200" height="630" fill="#1a1b26"/>
+  <rect x="48" y="48" width="1104" height="534" rx="20" fill="none" stroke="#ff8c42" stroke-width="3"/>
+  <g font-family="Space Grotesk, system-ui, sans-serif" fill="#f2f2f5">
+    <text x="90" y="130" font-size="42" font-weight="700">PACKAGE<tspan fill="#ffa86b">.broker</tspan></text>
+    <text x="90" y="202" font-size="24" fill="#ffa86b">2.0 PRE-RELEASE</text>
+    <text x="90" y="285" font-size="52" font-weight="700">Per-project isolation.</text>
+    <text x="90" y="355" font-size="52" font-weight="700">Your registry. Your credentials.</text>
+    <text x="90" y="435" font-size="30" fill="#c1c3ce">Composer + npm · Cloudflare Workers + Node</text>
+    <text x="90" y="522" font-size="25" fill="#c1c3ce">Self-hosted · AGPL-3.0-only · package.broker</text>
+  </g>
+</svg>

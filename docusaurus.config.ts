@@ -5,6 +5,7 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import responsiveImages from './src/remark/responsive-images';
 import directoryDocLinks from './src/remark/directory-doc-links';
+import {landingSummary, pageDescription} from './src/data/landing';
 
 // The LLM plugin does not filter unlisted front matter itself.
 const unlistedDocs = readdirSync(path.join(__dirname, 'docs'), {recursive: true, withFileTypes: true})
@@ -39,14 +40,16 @@ const config: Config = {
       generateLLMsFullTxt: true,
       addMdExtension: false,
       version: '2.0 (pre-release)',
-      title: 'Package Broker 2.0 documentation',
-      description: 'Documentation for the pre-release rewrite. Version 2.0 is not an in-place upgrade from v1.',
+      title: 'PACKAGE.broker 2.0 — Composer and npm registry',
+      description: pageDescription,
+      rootContent: landingSummary,
+      fullRootContent: landingSummary,
     },
   ]],
   themes: [[
     '@easyops-cn/docusaurus-search-local',
     {
-      hashed: true,
+      hashed: 'filename',
       indexDocs: true,
       indexPages: true,
       indexBlog: true,
@@ -101,23 +104,12 @@ const config: Config = {
   themeConfig: {
     image: 'img/logo.png',
     colorMode: {respectPrefersColorScheme: true},
-    metadata: [
-      {name: 'description', content: 'Self-hosted package registry for Composer and npm. Explore the Package Broker 2.0 pre-release documentation and v1 documentation.'},
-      {name: 'keywords', content: 'composer proxy, npm registry, self-hosted packages, package broker'},
-      {property: 'og:title', content: 'PACKAGE.broker - Self-hosted Package Registry'},
-      {property: 'og:description', content: 'Self-hosted package registry for Composer and npm.'},
-      {property: 'og:image', content: 'https://package.broker/img/logo.png'},
-      {property: 'og:type', content: 'website'},
-      {property: 'og:url', content: 'https://package.broker'},
-      {name: 'twitter:card', content: 'summary_large_image'},
-      {name: 'twitter:title', content: 'PACKAGE.broker - Self-hosted Package Registry'},
-      {name: 'twitter:description', content: 'Self-hosted package registry for Composer and npm.'},
-    ],
     navbar: {
       title: 'PACKAGE.broker',
-      logo: {alt: 'PACKAGE.broker', src: 'img/logo.svg'},
+      logo: {alt: '', src: 'img/logo.svg', width: 32, height: 32},
       items: [
         {to: '/docs/', label: 'Docs (2.0)', position: 'left'},
+        {to: '/#compare', label: 'Compare', position: 'left'},
         {to: '/v1/', label: 'v1 docs', position: 'left'},
         {href: 'https://github.com/package-broker/broker', label: 'GitHub', position: 'left'},
         {href: 'https://github.com/package-broker/broker/blob/main/SECURITY.md', label: 'Security policy', position: 'left'},
@@ -139,7 +131,25 @@ const config: Config = {
       ],
       copyright: `Copyright © ${new Date().getFullYear()} Lukasz Bajsarowicz. Built with Docusaurus.`,
     },
-    prism: {theme: prismThemes.github, darkTheme: prismThemes.dracula},
+    prism: {
+      theme: {
+        ...prismThemes.github,
+        styles: [...prismThemes.github.styles,
+          {types: ['comment', 'prolog', 'doctype', 'cdata'], style: {color: '#5b616b'}},
+          {types: ['entity', 'url', 'symbol', 'number', 'boolean', 'variable', 'constant', 'property', 'regex', 'inserted'], style: {color: '#176965'}},
+          {types: ['atrule', 'keyword', 'attr-name', 'selector'], style: {color: '#006b8f'}},
+          {types: ['string', 'attr-value'], style: {color: '#b50d53'}},
+          {types: ['function', 'deleted', 'tag'], style: {color: '#b42332'}},
+        ],
+      },
+      darkTheme: {
+        ...prismThemes.dracula,
+        styles: [...prismThemes.dracula.styles,
+          {types: ['comment'], style: {color: '#a7b2d5'}},
+          {types: ['deleted'], style: {color: '#ff7d85'}},
+        ],
+      },
+    },
   } satisfies Preset.ThemeConfig,
 };
 

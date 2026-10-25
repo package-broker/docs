@@ -1,357 +1,174 @@
-import { type ReactNode, useEffect, useState } from 'react';
-import clsx from 'clsx';
+import type {ReactNode} from 'react';
+import Head from '@docusaurus/Head';
 import Link from '@docusaurus/Link';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import useBrokenLinks from '@docusaurus/useBrokenLinks';
 import Layout from '@theme/Layout';
-import Heading from '@theme/Heading';
-import {
-  ShieldCheck,
-  Zap,
-  Check,
-  Server,
-  ArrowRight,
-  Github,
-} from 'lucide-react';
-
-import styles from './index.module.css';
-import CodeTabs from '../components/CodeTabs';
-import CostCalculator from '../components/CostCalculator';
-import PlatformGrid from '../components/PlatformGrid';
-import SponsorShowcase from '../components/SponsorShowcase';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import {ArrowRight, Boxes, Github, KeyRound, LockKeyhole, Network, Server} from 'lucide-react';
 import ComparisonTable from '../components/ComparisonTable';
-import InteractiveArchitecture from '../components/InteractiveArchitecture';
-import ScreenshotGallery from '../components/ScreenshotGallery';
-import AgencyUseCases from '../components/AgencyUseCases';
 import FAQ from '../components/FAQ';
+import {claims, faqItems, nodeCommands, pageDescription, pageTitle, releaseStatus, workersCommands} from '../data/landing';
+import styles from './index.module.css';
 
-function GitHubStarButton() {
-  const [stars, setStars] = useState<number | null>(null);
-
-  useEffect(() => {
-    const fetchStars = async () => {
-      try {
-        const res = await fetch('https://api.github.com/repos/package-broker/server');
-        if (res.ok) {
-          const data = await res.json();
-          setStars(data.stargazers_count);
-        }
-      } catch (e) {
-        console.error('Failed to fetch stars', e);
-      }
-    };
-    fetchStars();
-  }, []);
-
-  return (
-    <Link
-      className={clsx('button button--lg', styles.githubButton)}
-      to="https://github.com/package-broker/server">
-      <Github size={20} />
-      <span className="margin-left--sm">Star on GitHub</span>
-      {stars !== null && (
-        <span className="badge badge--secondary margin-left--sm" style={{ background: 'rgba(0,0,0,0.2)', color: 'inherit' }}>
-          {stars}
-        </span>
-      )}
-    </Link>
-  );
-}
-
-function HomepageHeader() {
-  const { siteConfig } = useDocusaurusContext();
-  return (
-    <header className={clsx('hero', styles.heroBanner)}>
-      <div className={styles.heroGlow} />
-      <div className={styles.heroNoise} />
-      <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-        {/* Layer 1: Headline Block */}
-        <div className={styles.heroContent}>
-          <h1 className={clsx('hero__title', styles.heroTitle)}>
-            <span className={styles.heroTitleText}>
-              The Private Composer Registry for Teams.<br />
-              Unlimited Seats. Flat Pricing.
-            </span>
-          </h1>
-          <p className={styles.heroSubtitle}>
-            Stop paying €50-700/month. Deploy on Cloudflare Workers or your infrastructure.
-          </p>
-          <div className={styles.heroButtons}>
-            <Link
-              className="button button--primary button--lg"
-              to="/docs/">
-              Get Started
-              <ArrowRight className="margin-left--sm" size={18} />
-            </Link>
-            <Link
-              className="button button--secondary button--lg"
-              to="/docs/getting-started/quickstart-cloudflare">
-              Deploy on Cloudflare
-            </Link>
-          </div>
-          <div className={styles.heroProofChips}>
-            <span className={styles.proofChip}>
-              <Check size={14} className={styles.proofIcon} />
-              Self-hosted
-            </span>
-            <span className={styles.proofChip}>
-              <Check size={14} className={styles.proofIcon} />
-              Token auth
-            </span>
-            <span className={styles.proofChip}>
-              <Check size={14} className={styles.proofIcon} />
-              Edge cache
-            </span>
-            <span className={styles.proofChip}>
-              <Check size={14} className={styles.proofIcon} />
-              Audit logs
-            </span>
-          </div>
-        </div>
-
-        {/* Layer 2: Visual Strip - Architecture Diagram in Glass Panel */}
-        <div className={styles.heroVisualStrip}>
-          <div className={styles.glassPanel}>
-            <InteractiveArchitecture />
-          </div>
-          {/* Big Colorful Step Circles */}
-          <div className={styles.heroStepsExplanation}>
-            <div className={styles.heroStepItem}>
-              <div className={styles.heroStepNumber}>①</div>
-              <div className={styles.heroStepContent}>
-                <h4 className={styles.heroStepTitle}>Request</h4>
-                <p className={styles.heroStepDescription}>Composer requests a package from PACKAGE.broker</p>
-              </div>
-            </div>
-            <div className={styles.heroStepItem}>
-              <div className={styles.heroStepNumber}>②</div>
-              <div className={styles.heroStepContent}>
-                <h4 className={styles.heroStepTitle}>Cache Miss: Fetch & Store</h4>
-                <p className={styles.heroStepDescription}>If not cached, fetch from source and store for future requests</p>
-              </div>
-            </div>
-            <div className={styles.heroStepItem}>
-              <div className={styles.heroStepNumber}>③</div>
-              <div className={styles.heroStepContent}>
-                <h4 className={styles.heroStepTitle}>Cache Hit: Serve Fast</h4>
-                <p className={styles.heroStepDescription}>Serve from cache for instant package delivery</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
-  );
-}
-
-function TerminalWindow() {
-  return (
-    <CodeTabs
-      tabs={[
-        {
-          label: 'Cloudflare Workers',
-          content: `$ npx wrangler deploy
-
-✨  Deploying to Cloudflare Workers
-✓  Deployed successfully
-→  https://package-broker.your-subdomain.workers.dev
-
-$ composer config repositories.private composer \\
-  https://package-broker.your-subdomain.workers.dev
-
-$ composer require my-org/premium-package
-✓  Package installed successfully`,
-        },
-        {
-          label: 'Docker Setup (Coming Soon)',
-          content: `# Status: Planned (Architecture Refactor in Progress)
-
-$ docker run -d \\
-  -p 8080:8080 \\
-  -v $(pwd)/data:/data \\
-  -e ENCRYPTION_KEY=$(openssl rand -base64 32) \\
-  ghcr.io/package-broker/server:latest
-
-✓  Container started
-→  http://localhost:8080
-
-$ composer config repositories.private composer \\
-  http://localhost:8080
-
-$ composer require my-org/premium-package
-✓  Package installed successfully`,
-        },
-        {
-          label: 'Kubernetes (Planned)',
-          content: `# Status: Planned
-
-$ helm repo add package-broker https://charts.package.broker
-$ helm install my-broker package-broker/server \\
-  --set storage.driver=s3 \\
-  --set database.driver=postgres
-
-✓  Deployed to Kubernetes
-→  https://package-broker.your-domain.com
-
-$ composer config repositories.private composer \\
-  https://package-broker.your-domain.com
-
-$ composer require my-org/premium-package
-✓  Package installed successfully`,
-        },
-      ]}
-    />
-  );
-}
-
-function Feature({ title, description, icon }: { title: string, description: string, icon: ReactNode }) {
-  return (
-    <div className={clsx('col col--4')}>
-      <div className={styles.featureCard}>
-        <div className={styles.featureIcon}>
-          {icon}
-        </div>
-        <Heading as="h3">{title}</Heading>
-        <p>{description}</p>
-      </div>
-    </div>
-  );
-}
+const claimIcons = [LockKeyhole, Boxes, Server, Network, KeyRound];
 
 export default function Home(): ReactNode {
-  const { siteConfig } = useDocusaurusContext();
-  
-  // Structured data for SEO
+  const brokenLinks = useBrokenLinks();
+  ['quickstart', 'compare', 'comparison-unknown'].forEach(id => brokenLinks.collectAnchor(id));
+  const canonical = useBaseUrl('/', {absolute: true});
+  const socialImage = useBaseUrl('/img/og-2.0.png', {absolute: true});
   const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "PACKAGE.broker",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Linux, Docker, Cloudflare Workers",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "reviewCount": "42"
-    },
-    "description": "Open source Composer proxy for small agencies and enterprises. Self-hosted with Docker, Cloudflare Workers, or Kubernetes.",
-    "url": "https://package.broker",
-    "author": {
-      "@type": "Person",
-      "name": "Łukasz Bajsarowicz"
-    }
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'SoftwareApplication', name: 'PACKAGE.broker',
+        applicationCategory: 'DeveloperApplication', operatingSystem: 'Cloudflare Workers, Node.js',
+        softwareVersion: '2.0 pre-release', license: 'https://www.gnu.org/licenses/agpl-3.0.html',
+        description: pageDescription, url: canonical,
+      },
+      {'@type': 'WebSite', name: 'PACKAGE.broker', url: canonical, description: pageDescription},
+      {
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map(({question, answer}) => ({
+          '@type': 'Question', name: question,
+          acceptedAnswer: {'@type': 'Answer', text: answer},
+        })),
+      },
+    ],
   };
 
   return (
-    <Layout
-      title={`${siteConfig.title}`}
-      description="Self-hosted Composer repository proxy">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
-      <HomepageHeader />
-
-      <main>
-
-        {/* Proof Bar - Screenshots */}
-        <div className="container padding-vert--xl">
-          <ScreenshotGallery />
-        </div>
-
-        {/* Value Proposition / Terminal Section */}
-        <div className="container padding-vert--xl">
-          <div className="row row--align-center">
-            <div className="col col--5">
-              <h2 className={styles.sectionTitle}>Works exactly like you expect.</h2>
-              <p className="text--lg">
-                Stop paying per-seat for private package hosting. Configure your proxy once, and use standard Composer commands forever.
-              </p>
-              <ul className={styles.checkList}>
-                <li className={styles.checkItem}><Check className={styles.checkIcon} size={18} /> Zero build steps</li>
-                <li className={styles.checkItem}><Check className={styles.checkIcon} size={18} /> Instant updates via Webhooks</li>
-                <li className={styles.checkItem}><Check className={styles.checkIcon} size={18} /> Authenticated by Tokens</li>
-              </ul>
+    <Layout title={pageTitle} description={pageDescription}>
+      <Head>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
+        <link rel="canonical" href={canonical} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content={socialImage} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="PACKAGE.broker 2.0: a Composer and npm registry with per-project isolation" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDescription} />
+        <meta name="twitter:image" content={socialImage} />
+        <meta name="twitter:image:alt" content="PACKAGE.broker 2.0: a Composer and npm registry with per-project isolation" />
+        <script type="application/ld+json">{JSON.stringify(structuredData).replace(/</g, '\\u003c')}</script>
+      </Head>
+      <main className={styles.landing}>
+        <header className={styles.hero}>
+          <div className={styles.container}>
+            <p className={styles.status}>{releaseStatus}</p>
+            <h1>Per-project isolation by SSO group, with upstream credentials kept per project</h1>
+            <p className={styles.lede}>Package Broker is a Composer and npm registry you run yourself, on Cloudflare Workers or Docker. A developer in one client’s SSO group installs that client’s packages and nothing else. The client’s repo.magento.com keys and vendor tokens stay attached to that client’s project.</p>
+            <div className={styles.actions}>
+              <Link className={styles.primaryButton} to="#quickstart">Try the pre-release <ArrowRight size={18} aria-hidden="true" /></Link>
+              <Link className={styles.secondaryButton} to="/docs/">Read the 2.0 docs</Link>
             </div>
-            <div className="col col--7">
-              <TerminalWindow />
-            </div>
+            <section id="quickstart" aria-labelledby="quickstart-title" className={styles.quickstart}>
+              <h2 id="quickstart-title">Start with your runtime</h2>
+              <Tabs defaultValue="workers" aria-label="Quickstart runtime">
+                <TabItem value="workers" label="Cloudflare Workers">
+                  <p><strong>Requirements:</strong> Workers Paid plan, Node 24, pnpm.</p>
+                  {/* Sources: origin/main README.md; packages/cli/src/cli.ts USAGE:31; commands/cloudflare/setup.ts. */}
+                  <CodeBlock language="bash" title="Deploy from a source checkout">{workersCommands}</CodeBlock>
+                  <p>Run in an interactive terminal. Follow the prompts and save the master key. Open the setup URL printed by the CLI to finish administrator enrollment.</p>
+                  <Link to="/docs/getting-started/quickstart-cloudflare/">Full Workers quickstart <ArrowRight size={16} aria-hidden="true" /></Link>
+                </TabItem>
+                <TabItem value="node" label="Node / Docker">
+                  <p><strong>Requirements:</strong> Node 24, pnpm, SQLite, filesystem or S3-compatible storage.</p>
+                  {/* Sources: origin/main README.md; scripts/node-bundle-smoke.mjs; packages/runtime-node/src/entry.ts and startup.ts; cli.ts USAGE:28,39,40; docs/workers-install.md. */}
+                  <CodeBlock language="bash" title="Run the Node bundle">{nodeCommands}</CodeBlock>
+                  <p>The container image is planned for a release candidate. Until then these commands run the Node bundle directly. Keep the generated master key for subsequent starts and backups.</p>
+                  <Link to="/docs/workers-install/">Finish administrator setup <ArrowRight size={16} aria-hidden="true" /></Link>
+                </TabItem>
+              </Tabs>
+            </section>
           </div>
-        </div>
+        </header>
 
-        {/* Features Section - Reordered */}
-        <div className={clsx('padding-vert--xl', styles.bentoSection)}>
-          <div className="container">
-            <div className="text--center margin-bottom--xl">
-              <h2 className={styles.sectionTitle}>The "S.O.S." Strategy</h2>
-              <p>Secure. Open. Serverless.</p>
-            </div>
-            <div className="row">
-              <Feature
-                icon={<Zap size={32} />}
-                title="Open Source Core"
-                description="Runs on Cloudflare Workers or your own infrastructure."
-              />
-              <Feature
-                icon={<Server size={32} />}
-                title="Serverless Compatible"
-                description="Deploy anywhere (Cloudflare, AWS, DigitalOcean) with zero infrastructure management overhead."
-              />
-              <Feature
-                icon={<ShieldCheck size={32} />}
-                title="Token-based Access"
-                description="Built with compliance in mind. Secure token-based access, encrypted credentials, and audit logging."
-              />
-            </div>
+        <section className={styles.section} aria-labelledby="claims-title">
+          <div className={styles.container}>
+            <h2 id="claims-title">What 2.0 does</h2>
+            <p className={styles.sectionLede}>The accepted 2.0 decisions, in order. This is a pre-release; APIs and the plugin contract can still change.</p>
+            <ol className={styles.claims}>
+              {claims.map((claim, index) => {
+                const Icon = claimIcons[index];
+                return <li key={claim.title}>
+                  <span className={styles.claimNumber} aria-hidden="true">0{index + 1}</span>
+                  <Icon size={24} className={styles.claimIcon} aria-hidden="true" />
+                  <div><h3>{claim.title}</h3><p>{claim.text}</p><Link to={claim.href}>{claim.label}</Link></div>
+                </li>;
+              })}
+            </ol>
           </div>
-        </div>
+        </section>
 
-        {/* Agency Use Cases */}
-        <div className="container padding-vert--xl">
-          <AgencyUseCases />
-        </div>
-
-        {/* Platform Deployment Showcase */}
-        <div className="container padding-vert--xl">
-          <div className="text--center margin-bottom--xl">
-            <h2 className={styles.sectionTitle}>Deploy Anywhere</h2>
-            <p>Choose the platform that fits your infrastructure</p>
+        <section className={styles.section} aria-labelledby="architecture-title">
+          <div className={styles.container}>
+            <h2 id="architecture-title">How it works</h2>
+            <p className={styles.sectionLede}>One core, two runtimes, with access checked at the project boundary.</p>
+            <figure className={styles.architecture}>
+              <svg viewBox="0 0 960 170" width="960" height="170" role="img" aria-labelledby="architecture-svg-title architecture-svg-desc">
+                <title id="architecture-svg-title">Package requests pass through the project boundary</title>
+                <desc id="architecture-svg-desc">Composer and npm clients send a token to Package Broker. Project grants select the packages and source credentials the request may use. The broker connects to the configured upstream sources.</desc>
+                <defs><marker id="request-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" /></marker></defs>
+                <g fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="10" y="30" width="235" height="110" rx="12" />
+                  <rect x="330" y="10" width="300" height="150" rx="12" className={styles.brokerNode} />
+                  <rect x="715" y="30" width="235" height="110" rx="12" />
+                  <path d="M 250 85 H 320 M 640 85 H 705" markerEnd="url(#request-arrow)" />
+                </g>
+                <g fill="currentColor" textAnchor="middle" fontSize="20" fontFamily="system-ui, sans-serif">
+                  <text x="127" y="77">Composer / npm</text><text x="127" y="107" fontSize="16">Client token</text>
+                  <text x="480" y="58" fontWeight="700">PACKAGE.broker</text><text x="480" y="91" fontSize="16">Project grants + package subset</text><text x="480" y="121" fontSize="16">Project upstream credentials</text>
+                  <text x="832" y="77">Upstream sources</text><text x="832" y="107" fontSize="16">Registries + repositories</text>
+                </g>
+              </svg>
+              <figcaption>Composer or npm sends a token to a project URL. Package Broker checks scopes and grants, then serves that project’s package subset using the applicable source credentials. Workers stores state in D1, R2 and Queues; Node uses SQLite with filesystem or S3-compatible storage.</figcaption>
+            </figure>
+            <Link to="/docs/architecture/">Explore the architecture</Link>
           </div>
-          <PlatformGrid />
-        </div>
+        </section>
 
-        {/* ROI Calculator Section */}
-        <div id="calculate-savings" className="container padding-vert--xl">
-          <div className="text--center margin-bottom--xl">
-            <h2 className={styles.sectionTitle}>Calculate Your Savings</h2>
-            <p>See how much you can save by switching to PACKAGE.broker</p>
+        <section id="compare" className={styles.section} aria-labelledby="compare-title">
+          <div className={styles.container}>
+            <h2 id="compare-title">Compared with Satis, Private Packagist and Packeton</h2>
+            <p className={styles.sectionLede}>Facts checked against each project’s own documentation. Missing documentation does not establish that a feature is absent.</p>
+            <ul className={styles.fits}>
+              <li><strong>Satis</strong> fits when a static Composer repository is enough and your web server handles access.</li>
+              <li><strong>Private Packagist</strong> fits when you want a hosted service and your team already signs in through GitHub, GitLab or Bitbucket.</li>
+              <li><strong>Packeton</strong> fits when you run PHP infrastructure and need LDAP sign-in or customer access limited by vendor and version.</li>
+            </ul>
+            <ComparisonTable />
           </div>
-          <CostCalculator />
-        </div>
+        </section>
 
-        {/* Comparison Table */}
-        <div className="container padding-vert--xl">
-          <div className="text--center margin-bottom--xl">
-            <h2 className={styles.sectionTitle}>Feature Comparison</h2>
-            <p>See how PACKAGE.broker compares to other solutions</p>
+        <section className={styles.section} aria-labelledby="faq-title">
+          <div className={styles.container}><h2 id="faq-title">Frequently asked questions</h2><FAQ items={faqItems} /></div>
+        </section>
+
+        <section className={styles.v1} aria-labelledby="v1-title">
+          <div className={styles.container}>
+            <h2 id="v1-title">Running v1?</h2>
+            <p>Package Broker v1 still gets security fixes in <Link to="https://github.com/package-broker/server">package-broker/server</Link>. New features go into 2.0 only.</p>
+            <p>2.0 is a rewrite in a new repository, package-broker/broker. It does not upgrade a v1 installation in place.</p>
+            <Link to="/v1/">Read the v1 documentation</Link>
           </div>
-          <ComparisonTable summaryOnly={true} />
-        </div>
-
-        {/* FAQ Section */}
-        <div className="container padding-vert--xl">
-          <FAQ />
-        </div>
-
-        {/* Community / Sponsor Section */}
-        <div className={styles.socialProof}>
-          <div className="container">
-            <SponsorShowcase />
+        </section>
+        <section className={styles.section} aria-labelledby="contribute-title">
+          <div className={styles.container}>
+            <h2 id="contribute-title">Build with us</h2>
+            <p>Review the code, try a source build, or contribute to the first 2.0 release candidate. Licensed under AGPL-3.0-only.</p>
+            <Link className={styles.primaryButton} to="https://github.com/package-broker/broker"><Github size={20} aria-hidden="true" /> View PACKAGE.broker on GitHub</Link>
           </div>
-        </div>
+        </section>
       </main>
     </Layout>
   );

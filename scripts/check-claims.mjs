@@ -5,7 +5,7 @@ import {fileURLToPath} from 'node:url';
 const siteDir = fileURLToPath(new URL('../', import.meta.url));
 const marketingRoots = [
   'src/pages', 'src/components', 'src/data', 'src/theme/Navbar', 'src/theme/Footer',
-  'blog', 'docusaurus.config.ts',
+  'blog', 'docusaurus.config.ts', 'static/img/og-2.0.svg',
 ];
 // Docs retain factual upstream wording. The password-manager rule also applies
 // to current and historical docs, translations, and other published sources.
