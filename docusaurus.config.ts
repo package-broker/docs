@@ -40,10 +40,14 @@ const config: Config = {
               .filter(doc => isPlannedDoc(args.version.contentPath, doc.source))
               .map(doc => [doc.id, doc.title]));
             const markPlanned = (entries: typeof items): typeof items => entries.map(item => {
-              if (item.type === 'category') return {...item, items: markPlanned(item.items)};
+              if (item.type === 'category') return {
+                ...item,
+                label: item.link?.type === 'doc' && planned.has(item.link.id)
+                  ? `${item.label} — Planned` : item.label,
+                items: markPlanned(item.items),
+              };
               if (item.type === 'doc' && planned.has(item.id)) {
-                return {...item, label: `${item.label ?? planned.get(item.id)} — Planned`,
-                  className: [item.className, 'pb-badge'].filter(Boolean).join(' ')};
+                return {...item, label: `${item.label ?? planned.get(item.id)} — Planned`};
               }
               return item;
             });

@@ -42,7 +42,7 @@ function paxFields(data) {
 // Parse rather than extract: links and traversal never reach the filesystem.
 export function readArchive(archive) {
   const files = new Map();
-  let pending = {};
+  let pending;
   for (let offset = 0; offset + 512 <= archive.length;) {
     const header = archive.subarray(offset, offset + 512);
     if (header.every(byte => byte === 0)) break;
@@ -59,6 +59,7 @@ export function readArchive(archive) {
     const data = archive.subarray(offset + 512, offset + 512 + size);
     offset += 512 + Math.ceil(size / 512) * 512;
     if (type === 'g' || type === 'x') {
+      if (pending) throw new Error('Unconsumed per-file archive metadata.');
       const fields = paxFields(data);
       if (type === 'g' && Object.keys(fields).some(key => key !== 'comment')) {
         throw new Error('Unsupported global archive metadata.');
@@ -70,8 +71,8 @@ export function readArchive(archive) {
       continue;
     }
     const prefix = field(345, 155);
-    const name = pending.path ?? `${prefix ? `${prefix}/` : ''}${field(0, 100)}`;
-    pending = {};
+    const name = pending?.path ?? `${prefix ? `${prefix}/` : ''}${field(0, 100)}`;
+    pending = undefined;
     const relative = archivePath(name);
     if (type === '5') continue;
     if (type !== '0' && type !== '') throw new Error(`Archive links and special files are not supported: ${name}`);
@@ -80,13 +81,16 @@ export function readArchive(archive) {
     }
     files.set(relative, Buffer.from(data));
   }
+  if (pending) throw new Error('Unconsumed per-file archive metadata.');
   if (files.size === 0) throw new Error('The commit contains no docs files.');
   return new Map([...files].sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0));
 }
 
 export function addFrontMatter(name, data) {
-  if (name !== 'architecture.md' || /^(?:\uFEFF)?---\r?\n/.test(data.toString())) return data;
-  return Buffer.concat([Buffer.from('---\ntitle: Architecture overview\nsidebar_position: 9\ndescription: How Package Broker runtimes, plugins, access decisions and storage fit together.\n---\n\n'), data]);
+  const text = data.toString();
+  if (name !== 'architecture.md' || /^(?:\uFEFF)?---\r?\n(?:[\s\S]*?\r?\n)?---(?:\r?\n|$)/.test(text)) return data;
+  const bomLength = text.startsWith('\uFEFF') ? 3 : 0;
+  return Buffer.concat([data.subarray(0, bomLength), Buffer.from('---\ntitle: Architecture overview\nsidebar_position: 9\ndescription: How Package Broker runtimes, plugins, access decisions and storage fit together.\n---\n\n'), data.subarray(bomLength)]);
 }
 
 export function syncDocs({brokerDir = process.env.BROKER_DIR, ref, siteDir = siteRoot, dryRun = false, log = console.log}) {
@@ -115,7 +119,8 @@ export function syncDocs({brokerDir = process.env.BROKER_DIR, ref, siteDir = sit
   const manifest = {sha, files: Object.fromEntries(dates)};
   if (!dryRun) {
     const destination = path.join(siteDir, 'docs-content');
-    if (existsSync(destination) && (!lstatSync(destination).isDirectory() || lstatSync(destination).isSymbolicLink())) {
+    const stat = lstatSync(destination, {throwIfNoEntry: false});
+    if (stat && (!stat.isDirectory() || stat.isSymbolicLink())) {
       throw new Error('docs-content/ must be a directory, not a link or file.');
     }
     const temporary = mkdtempSync(path.join(siteDir, '.docs-content-sync-'));
@@ -129,7 +134,7 @@ export function syncDocs({brokerDir = process.env.BROKER_DIR, ref, siteDir = sit
         writeFileSync(target, data);
       }
       writeFileSync(path.join(staged, '.sync.json'), `${JSON.stringify(manifest, null, 2)}\n`);
-      if (existsSync(destination)) renameSync(destination, previous);
+      if (stat) renameSync(destination, previous);
       try { renameSync(staged, destination); } catch (error) {
         if (existsSync(previous)) renameSync(previous, destination);
         throw error;
@@ -142,7 +147,7 @@ export function syncDocs({brokerDir = process.env.BROKER_DIR, ref, siteDir = sit
   return manifest;
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+export function runCli() {
   try {
     const {values} = parseArgs({options: {ref: {type: 'string'}, 'dry-run': {type: 'boolean', default: false}}});
     syncDocs({ref: values.ref, dryRun: values['dry-run']});
@@ -151,3 +156,5 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     process.exitCode = 1;
   }
 }
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) runCli();

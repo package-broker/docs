@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
-import {mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, symlinkSync, writeFileSync} from 'node:fs';
+import {lstatSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, readlinkSync, rmSync, symlinkSync, writeFileSync} from 'node:fs';
 import path from 'node:path';
 import {test} from 'node:test';
 import {addFrontMatter, readArchive, syncDocs} from './sync-docs.mjs';
@@ -57,11 +57,34 @@ test('adds front matter only to architecture without it and preserves existing b
   const original = Buffer.from('# Architecture\n');
   const rendered = addFrontMatter('architecture.md', original);
   assert.match(rendered.toString(), /^---\ntitle: Architecture overview\nsidebar_position: 9\ndescription: .+\n---\n\n# Architecture/);
-  for (const source of ['---\ntitle: Custom\n---\n\nBody\n', '\uFEFF---\r\ntitle: Custom\r\n---\r\nBody']) {
+  for (const source of ['---\ntitle: Custom\n---\n\nBody\n', '\uFEFF---\r\ntitle: Custom\r\n---\r\nBody', '---\n---\nBody']) {
     const data = Buffer.from(source);
     assert.equal(addFrontMatter('architecture.md', data), data);
   }
   assert.equal(addFrontMatter('other.md', original), original);
+});
+
+test('adds metadata before a horizontal rule and keeps the UTF-8 BOM at the start', () => {
+  for (const source of ['---\n# Architecture\n', '\uFEFF# Architecture\n', '\uFEFF---\r\n# Architecture\r\n']) {
+    const rendered = addFrontMatter('architecture.md', Buffer.from(source)).toString();
+    assert.equal(rendered.startsWith('\uFEFF'), source.startsWith('\uFEFF'));
+    assert.match(rendered, /^(?:\uFEFF)?---\ntitle: Architecture overview\n/);
+    assert.ok(rendered.endsWith(source.replace(/^\uFEFF/, '')));
+    assert.equal((rendered.match(/\uFEFF/g) ?? []).length, source.startsWith('\uFEFF') ? 1 : 0);
+  }
+});
+
+test('extensionless CLI runs a read-only dry run and reports failures', t => {
+  const options = fixture(t);
+  const cli = path.join(import.meta.dirname, 'sync-docs');
+  const output = execFileSync(process.execPath, [cli, '--ref', options.ref, '--dry-run'], {
+    encoding: 'utf8', env: {...process.env, BROKER_DIR: options.brokerDir},
+  });
+  assert.match(output, /Dry run: would sync 4 files/);
+  assert.deepEqual(readdirSync(options.siteDir), []);
+  assert.throws(() => execFileSync(process.execPath, [cli, '--ref', 'main'], {
+    env: {...process.env, BROKER_DIR: options.brokerDir}, stdio: 'pipe',
+  }), error => error.status === 1 && /Docs sync failed:.*full 40-hex/.test(error.stderr.toString()));
 });
 
 test('sync is deterministic, uses committed content and file dates, removes stale files and logs additions', t => {
@@ -128,6 +151,22 @@ test('rejects archived links and a linked destination without writing outside do
   assert.equal(readFileSync(path.join(options.brokerDir, 'outside.txt'), 'utf8'), 'Keep this');
 });
 
+test('rejects a dangling docs-content symlink or a file before staging', t => {
+  const options = fixture(t);
+  const destination = path.join(options.siteDir, 'docs-content');
+  const missing = path.join(options.siteDir, 'missing');
+  symlinkSync(missing, destination);
+  assert.throws(() => syncDocs(options), /docs-content\/ must be a directory, not a link or file/);
+  assert.ok(lstatSync(destination).isSymbolicLink());
+  assert.equal(readlinkSync(destination), missing);
+  assert.deepEqual(readdirSync(options.siteDir), ['docs-content']);
+  rmSync(destination);
+  writeFileSync(destination, 'Keep this file');
+  assert.throws(() => syncDocs(options), /directory/);
+  assert.equal(readFileSync(destination, 'utf8'), 'Keep this file');
+  assert.deepEqual(readdirSync(options.siteDir), ['docs-content']);
+});
+
 function tarEntry(name, type = '0', content = Buffer.from('x')) {
   const header = Buffer.alloc(512);
   header.write(name, 0, 100);
@@ -161,4 +200,17 @@ test('supports long paths from git archive and rejects traversal in PAX paths', 
   length = `${length} ${value}`.length;
   const metadata = tarEntry('pax', 'x', Buffer.from(`${length} ${value}`)).subarray(0, 1024);
   assert.throws(() => readArchive(Buffer.concat([metadata, tarEntry('docs/page.md')])), /path/);
+});
+
+test('rejects unconsumed PAX metadata at a global header, another local header or EOF', () => {
+  const record = 'path=docs/renamed.md\n';
+  let length = record.length + 3;
+  length = `${length} ${record}`.length;
+  const pending = tarEntry('pax', 'x', Buffer.from(`${length} ${record}`)).subarray(0, 1024);
+  const file = tarEntry('docs/original.md').subarray(0, 1024);
+  const global = tarEntry('global', 'g', Buffer.alloc(0)).subarray(0, 512);
+  for (const tail of [global, Buffer.alloc(1024), Buffer.alloc(0), pending]) {
+    assert.throws(() => readArchive(Buffer.concat([file, pending, tail])), /Unconsumed/);
+  }
+  assert.deepEqual([...readArchive(Buffer.concat([global, pending, tarEntry('docs/original.md')])).keys()], ['renamed.md']);
 });
