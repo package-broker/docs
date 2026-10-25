@@ -11,10 +11,14 @@ const config: Config = {
   favicon: 'img/logo.svg',
   url: 'https://package.broker',
   baseUrl: '/',
+  trailingSlash: false,
   organizationName: 'package-broker',
   projectName: 'docs',
   onBrokenLinks: 'throw',
-  markdown: {mermaid: true},
+  markdown: {
+    mermaid: true,
+    hooks: {onBrokenMarkdownLinks: 'throw'},
+  },
   themes: ['@docusaurus/theme-mermaid'],
   i18n: {
     defaultLocale: 'en',

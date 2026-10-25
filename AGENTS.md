@@ -82,7 +82,7 @@ Run from the site repository root (WEB-01, WEB-03):
 
 ```sh
 export NO_UPDATE_NOTIFIER=1
-pnpm install --offline --frozen-lockfile
+pnpm install --frozen-lockfile
 pnpm build
 pnpm typecheck
 jq -e '[.dependencies,.devDependencies]|add|to_entries|all(.[]; .value|test("^[0-9]"))' package.json
@@ -90,11 +90,12 @@ shasum -a 256 -c vendor/design-system/SOURCE.sha256
 node vendor/design-system/scripts/ds-health-check.mjs --strict src
 node vendor/design-system/scripts/contrast-check.mjs
 git rev-list --max-parents=0 HEAD | wc -l
-grep -rn INSERT SECURITY.md
-grep -rEn 'fonts\.(googleapis|gstatic)\.com|cdn\.' build
+! grep -rn INSERT SECURITY.md
+! grep -rEn 'fonts\.(googleapis|gstatic)\.com|cdn\.' build
 ```
 
-The root count must be 1; both grep checks must produce no matches (exit 1).
+The root count must be 1; both negated grep checks must succeed with no matches
+(the underlying grep exits 1).
 Review the diff against the ticket before reporting. Actions from `actions/*`
 and `github/*` use `@vN`; third-party actions use a full SHA with a version
 comment. Network-restricted work must record action versions for an online
