@@ -11,7 +11,7 @@ Inspect `build/.well-known/security.txt` or use `pnpm serve` to check the file
 after building. Production HTTP status and content type must be checked on
 the deployed site.
 
-Source: `/Users/lbajsarowicz/lbajsarowicz/package-broker/site-main/plugins/security-metadata.cjs`.
+Source: `plugins/security-metadata.cjs` (WEB-01).
 
 ## Page metadata and LLM outputs
 
@@ -21,17 +21,18 @@ belong in `src/data/page-metadata.json`; change docs content in the product
 repository and sync it. Stub-only docs are excluded from both LLM outputs.
 Keep factual corrections in `content/llms-hand-written.md` with evidence links.
 
-Source: `/Users/lbajsarowicz/lbajsarowicz/package-broker/site-main/scripts/check-seo.mjs`.
+Sources: `scripts/check-seo.mjs`, `scripts/curate-llms.mjs`, `scripts/check-llms.mjs` (WEB-11, WEB-12).
 
 ## Social card rendering
 
 The build generates 1200 by 630 SVG sources from design-system tokens and
-embedded self-hosted Inter. `static/img/og/render-list.json` maps every source
+self-hosted Inter, stored once beside the SVGs. `static/img/og/render-list.json` maps every source
 to its PNG destination. The orchestrator rasterises these SVGs with a browser
-that loads the embedded font, then places the PNGs at the listed destinations.
-Rebuild after rendering and run `node scripts/og/check.mjs build --require-png`
-before publishing. Every PNG must be 1200 by 630 pixels and at most 300 KB.
-The ordinary build reports missing PNGs so a source-only handoff is possible;
-the strict check fails if any referenced PNG is missing.
+that loads the adjacent font, then places the PNGs at the listed destinations.
+After rendering, run `node scripts/og/record.mjs` to record the SVG, font and PNG
+content hashes in `static/img/og/rendered.json`. Commit the PNGs and manifest
+with their sources. The build never updates the rendered hashes. Every build
+requires every PNG, checks its source and font against the manifest, and checks
+the PNG's recorded hash, 1200 by 630 dimensions and maximum size of 300 KB.
 
-Source: `/Users/lbajsarowicz/lbajsarowicz/package-broker/site-main/scripts/og/check.mjs`.
+Sources: `scripts/og/generate.cjs`, `scripts/og/check.mjs`, `scripts/og/record.mjs` (WEB-11).

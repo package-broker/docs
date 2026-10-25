@@ -1,4 +1,3 @@
-import type {ReactNode} from 'react';
 import Head from '@docusaurus/Head';
 import {useLocation} from '@docusaurus/router';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
@@ -6,9 +5,9 @@ import {usePluginData} from '@docusaurus/useGlobalData';
 
 type Page = {title: string; description: string; image: string};
 
-// Render after the route's own metadata so Helmet replaces short descriptions
-// from synced docs. Docusaurus SiteMetadata remains the sole canonical owner.
-function PageHead() {
+// Mount with the page metadata, after its default Head. Docusaurus
+// SiteMetadata remains the sole canonical owner.
+export default function PageHead() {
   const {pathname: locationPath} = useLocation();
   const pathname = locationPath.replace(/\/$/, '') || '/';
   const {siteConfig: {url, title: siteTitle}} = useDocusaurusContext();
@@ -40,8 +39,4 @@ function PageHead() {
     <meta name="twitter:image" content={`${url}${page.image}`}/>
     <script id="pb-page-schema" type="application/ld+json">{JSON.stringify(schema).replace(/</g, '\\u003c')}</script>
   </Head>;
-}
-
-export default function Root({children}: {children: ReactNode}) {
-  return <>{children}<PageHead/></>;
 }

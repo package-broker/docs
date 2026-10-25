@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "docusaurus start",
-    "build": "docusaurus build && node scripts/check-seo.mjs build && node scripts/check-llms.mjs build && node scripts/og/check.mjs build",
+    "build": "docusaurus build && node scripts/curate-llms.mjs build && node scripts/check-seo.mjs build && node scripts/check-llms.mjs build && node scripts/og/check.mjs build --require-png",
     "test": "node --test scripts/*.test.* tests/*.test.mjs",
     "serve": "docusaurus serve",
     "clear": "docusaurus clear",

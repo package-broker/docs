@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {readFileSync, readdirSync, existsSync} from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {checkCards} from './og/check.mjs';
 
 export const origin = 'https://package.broker';
 export const decode = text => text.replace(/&(?:#(x[0-9a-f]+|\d+)|amp|quot|apos|lt|gt);/gi, (entity, code) => code
@@ -63,11 +64,15 @@ export function inspectPage(html, route) {
   for (const type of ['FAQPage', 'HowTo']) assert.equal(ofType(type).length, 0, `${route}: forbidden ${type}`);
   const expectedType = route === '/' ? 'SoftwareApplication' : route.startsWith('/docs/') ? 'TechArticle' : 'WebPage';
   assert.equal(ofType(expectedType).length, 1, `${route}: expected one ${expectedType}`);
+  const expectedTypes = route === '/' ? ['Organization', 'SoftwareApplication'] : route.startsWith('/docs/')
+    ? ['BreadcrumbList', 'ListItem', 'TechArticle'] : ['WebPage'];
+  const actualTypes = objects.flatMap(object => object['@type'] ?? []);
+  assert.deepEqual([...new Set(actualTypes)].sort(), expectedTypes.sort(), `${route}: unexpected JSON-LD type set`);
   if (route === '/') {
     const app = ofType('SoftwareApplication')[0];
     for (const field of ['name', 'applicationCategory', 'operatingSystem']) assert.ok(app[field], `SoftwareApplication needs ${field}`);
-    for (const object of schemaObjects(app)) for (const field of ['offers', 'aggregateRating', 'review']) {
-      assert.ok(!Object.hasOwn(object, field), `SoftwareApplication must omit ${field}`);
+    for (const object of objects) for (const field of ['offers', 'aggregateRating', 'review']) {
+      assert.ok(!Object.hasOwn(object, field), `Landing page JSON-LD must omit ${field}`);
     }
     assert.equal(ofType('Organization').length, 1, 'Organization belongs on the landing page');
   } else {
@@ -86,6 +91,7 @@ export function excludedFromSitemap(route, html) {
 }
 
 export function checkSeo(outDir) {
+  checkCards(outDir, true);
   const pages = htmlPages(outDir);
   const metadata = pages.map(({html, route}) => inspectPage(html, route));
   assert.equal(new Set(metadata.map(page => page.description)).size, pages.length, 'Descriptions must be unique');
