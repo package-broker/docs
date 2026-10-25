@@ -1,6 +1,7 @@
 import {readFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import {resolve} from 'node:path';
+import {execFileSync} from 'node:child_process';
 import {productFacts, productRevision} from './comparison-product-facts.mjs';
 
 const text = {type: 'string', minLength: 1};
@@ -16,6 +17,8 @@ const criterionIds = ['auth', 'isolation', 'npm', 'sso', 'self-host', 'licence',
 const productIds = ['package-broker', 'satis', 'private-packagist', 'packeton'];
 const cellSchema = object({
   criterionId: {enum: criterionIds}, productId: {enum: productIds}, ...provenance,
+  status: {enum: ['not-documented']},
+  additionalSources: array(object({sourceUrl: url, quote: text}), 1, 3),
   planName: text, priceSourceUrl: url,
 }, ['criterionId', 'productId', ...Object.keys(provenance)]);
 
@@ -77,12 +80,30 @@ export function checkComparison(data, now = new Date()) {
       if (parsed.protocol !== 'https:' || !parsed.hostname || parsed.username || parsed.password) throw new Error(`${label}: source must be an HTTPS URL`);
     }
     if (cell.quote.trim().split(/\s+/u).filter(Boolean).length > 25) throw new Error(`${label}: quote exceeds 25 words`);
+    if (cell.verified && !cell.quote.trim()) throw new Error(`${label}: verified claim needs a non-empty quote`);
+  };
+  const hosts = {
+    satis: ['github.com', 'raw.githubusercontent.com', 'getcomposer.org'],
+    packeton: ['docs.packeton.org', 'packeton.org', 'github.com', 'raw.githubusercontent.com'],
+    'private-packagist': ['packagist.com'],
+  };
+  const competitorSource = (source, id) => {
+    const parsed = new URL(source);
+    if (!hosts[id].includes(parsed.hostname)) throw new Error(`${id}: source must use an allowed competitor hostname`);
+    // Shared GitHub hosts must also identify the competitor's repository.
+    if (['github.com', 'raw.githubusercontent.com'].includes(parsed.hostname)) {
+      const repo = id === 'satis' ? '/composer/satis' : '/vtsykun/packeton';
+      if (parsed.pathname !== repo && !parsed.pathname.startsWith(`${repo}/`)) throw new Error(`${id}: source must identify the competitor repository`);
+    }
   };
   for (const product of data.products) {
     if (product.id === 'package-broker') continue;
     if (!product.sourceUrl || !product.fit || !product.migration) throw new Error(`${product.id}: missing page data`);
     if (product.migration.href !== `/docs/migration/from-${product.id}`) throw new Error(`${product.id}: wrong migration path`);
     review(product.fit, `${product.id}/fit`);
+    if (!product.fit.verified) throw new Error(`${product.id}: fit must be verified`);
+    competitorSource(product.sourceUrl, product.id);
+    competitorSource(product.fit.sourceUrl, product.id);
   }
   for (const row of data.criteria) {
     uniqueIds(row.cells.map(cell => cell.productId), productIds, row.id);
@@ -90,6 +111,13 @@ export function checkComparison(data, now = new Date()) {
       const label = `${cell.productId}/${row.id}`;
       if (cell.criterionId !== row.id) throw new Error(`${label}: criterion id differs from row`);
       review(cell, label);
+      if (cell.status && (cell.verified || cell.value !== 'Not documented' || cell.productId === 'package-broker')) throw new Error(`${label}: invalid documentation status`);
+      if (cell.productId !== 'package-broker') competitorSource(cell.sourceUrl, cell.productId);
+      for (const source of cell.additionalSources ?? []) {
+        review({...cell, ...source, verified: true}, `${label}/additional source`);
+        if (cell.productId === 'package-broker') throw new Error(`${label}: additional source is not in the product allowlist`);
+        competitorSource(source.sourceUrl, cell.productId);
+      }
       if (cell.productId === 'package-broker') {
         const fact = productFacts[row.id];
         if (!cell.verified || ['value', 'sourceUrl', 'quote', 'planName', 'priceSourceUrl'].some(key => cell[key] !== fact[key])) throw new Error(`${label}: claim is not in the sourced product allowlist`);
@@ -108,6 +136,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   try {
     const data = JSON.parse(readFileSync(new URL('../src/data/comparison.json', import.meta.url), 'utf8'));
     console.log(`Comparison gate passed: ${checkComparison(data)} cited cells; product claims match reviewed facts.`);
+    execFileSync(process.execPath, ['--test', fileURLToPath(new URL('./comparison.test.mjs', import.meta.url))], {stdio: 'inherit'});
   } catch (error) {
     console.error(error.message);
     process.exitCode = 1;

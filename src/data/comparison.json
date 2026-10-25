@@ -30,11 +30,11 @@
         "published": false
       },
       "fit": {
-        "value": "Choose Private Packagist Cloud when you want the vendor to host the registry. A hosted service fits teams that cannot operate their own Workers deployment or Node host.",
-        "sourceUrl": "https://packagist.com/pricing",
-        "lastVerified": "2026-10-17",
+        "value": "Choose Private Packagist Self-Hosted when you want its commercial self-hosted edition. Start with a trial agreement, then request a quote.",
+        "sourceUrl": "https://packagist.com/self-hosted",
+        "lastVerified": "2026-10-26",
         "verified": true,
-        "quote": "Cloud"
+        "quote": "limited to the installation of the Subject Matter of the Licence"
       }
     },
     {
@@ -71,10 +71,10 @@
         {
           "criterionId": "isolation",
           "productId": "satis",
-          "value": "One static repository per build; no per-client access control.",
+          "value": "One static repository per build; no per-project access control.",
           "sourceUrl": "https://github.com/composer/satis",
           "lastVerified": "2026-10-17",
-          "verified": true,
+          "verified": false,
           "quote": ""
         },
         {
@@ -89,11 +89,17 @@
         {
           "criterionId": "isolation",
           "productId": "packeton",
-          "value": "Not verified",
-          "sourceUrl": "https://docs.packeton.org/",
-          "lastVerified": "2026-10-17",
-          "verified": false,
-          "quote": ""
+          "value": "Customer users and ACL groups limit access by vendor and version. Credentials are set per repository; per-project credentials are not stated.",
+          "sourceUrl": "https://docs.packeton.org/index.html",
+          "lastVerified": "2026-10-26",
+          "verified": true,
+          "quote": "Customers user and ACL groups and limit access by vendor and versions.",
+          "additionalSources": [
+            {
+              "sourceUrl": "https://docs.packeton.org/usage/credential.html",
+              "quote": "You can overwrite credentials for each repository in UI."
+            }
+          ]
         }
       ]
     },
@@ -116,17 +122,17 @@
           "value": "None built in; access is set at the web server.",
           "sourceUrl": "https://github.com/composer/satis",
           "lastVerified": "2026-10-17",
-          "verified": true,
+          "verified": false,
           "quote": ""
         },
         {
           "criterionId": "sso",
           "productId": "private-packagist",
-          "value": "Not verified",
+          "value": "Sign in through GitHub, GitLab or Bitbucket OAuth. Entra ID, Okta, LDAP, SAML and OIDC work through those platforms; plan tier is not stated.",
           "sourceUrl": "https://packagist.com/docs/centralized-authentication-and-sso",
-          "lastVerified": "2026-10-16",
-          "verified": false,
-          "quote": ""
+          "lastVerified": "2026-10-26",
+          "verified": true,
+          "quote": "Private Packagist does not support a direct integration with these authentication mechanisms without the use of OAuth."
         },
         {
           "criterionId": "sso",
@@ -134,7 +140,7 @@
           "value": "OIDC and LDAP documented.",
           "sourceUrl": "https://docs.packeton.org/",
           "lastVerified": "2026-10-17",
-          "verified": true,
+          "verified": false,
           "quote": ""
         }
       ]
@@ -158,7 +164,7 @@
           "value": "None built in; access is set at the web server.",
           "sourceUrl": "https://github.com/composer/satis",
           "lastVerified": "2026-10-17",
-          "verified": true,
+          "verified": false,
           "quote": ""
         },
         {
@@ -167,7 +173,7 @@
           "value": "Read-only and update tokens for CI.",
           "sourceUrl": "https://packagist.com/docs/setup-ci-cd",
           "lastVerified": "2026-10-16",
-          "verified": true,
+          "verified": false,
           "quote": ""
         },
         {
@@ -176,7 +182,7 @@
           "value": "JWT, LDAP and OIDC.",
           "sourceUrl": "https://docs.packeton.org/",
           "lastVerified": "2026-10-17",
-          "verified": true,
+          "verified": false,
           "quote": ""
         }
       ]
@@ -206,11 +212,12 @@
         {
           "criterionId": "npm",
           "productId": "private-packagist",
-          "value": "Not verified",
+          "value": "Not documented",
           "sourceUrl": "https://packagist.com/docs",
-          "lastVerified": "2026-10-16",
+          "lastVerified": "2026-10-26",
           "verified": false,
-          "quote": ""
+          "quote": "",
+          "status": "not-documented"
         },
         {
           "criterionId": "npm",
@@ -290,11 +297,11 @@
         {
           "criterionId": "licence",
           "productId": "private-packagist",
-          "value": "Not verified",
+          "value": "Commercial licence. Self-Hosted starts with a trial agreement, then a quote.",
           "sourceUrl": "https://packagist.com/self-hosted",
-          "lastVerified": "2026-10-17",
-          "verified": false,
-          "quote": ""
+          "lastVerified": "2026-10-26",
+          "verified": true,
+          "quote": "limited to the installation of the Subject Matter of the Licence"
         },
         {
           "criterionId": "licence",
@@ -328,7 +335,7 @@
           "value": "The cost of your own host.",
           "sourceUrl": "https://github.com/composer/satis",
           "lastVerified": "2026-10-17",
-          "verified": true,
+          "verified": false,
           "quote": "A simple static Composer repository generator.",
           "planName": "Self-hosted (MIT)",
           "priceSourceUrl": "https://github.com/composer/satis"
@@ -350,7 +357,7 @@
           "value": "The cost of your own host.",
           "sourceUrl": "https://github.com/vtsykun/packeton",
           "lastVerified": "2026-10-17",
-          "verified": true,
+          "verified": false,
           "quote": "MIT",
           "planName": "Self-hosted (MIT)",
           "priceSourceUrl": "https://github.com/vtsykun/packeton"

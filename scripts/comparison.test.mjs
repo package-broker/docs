@@ -13,7 +13,7 @@ const reviewDate = new Date('2026-10-26T12:00:00Z');
 const clone = () => structuredClone(data);
 
 test('comparison data has complete provenance and approved product claims', () => {
-  assert.equal(checkComparison(data), 28);
+  assert.equal(checkComparison(data, reviewDate), 28);
 });
 
 test('every cell needs sourceUrl, lastVerified, verified and quote, including unknowns', () => {
@@ -106,7 +106,7 @@ test('unknown cells never render stored claims; both views read the same data', 
   const unknown = {...json.criteria[0].cells[1], verified: false, value: 'Unsupported secret claim'};
   const html = renderToStaticMarkup(React.createElement(CellValue, {cell: unknown, productName: 'Satis', criterion: 'Authentication'}));
   assert.match(html, /Not verified/); assert.doesNotMatch(html, /Unsupported secret claim/);
-  const cell = json.criteria.find(row => row.id === 'isolation').cells[1];
+  const cell = json.criteria.find(row => row.id === 'self-host').cells[1];
   const original = cell.value;
   try {
     cell.value = 'Shared data edit';
@@ -119,17 +119,61 @@ test('unknown cells never render stored claims; both views read the same data', 
   } finally {cell.value = original;}
 });
 
-test('each comparison has a sourced fit case, legal notice and gated migration link', () => {
+test('each comparison has a sourced fit case, legal notice and migration link', () => {
   const {default: Page} = loadComponent('../src/components/compare/ComparisonPage.tsx');
   for (const product of json.products.filter(item => item.id !== 'package-broker')) {
     const render = () => renderToStaticMarkup(React.createElement(Page, {productId: product.id}));
     const html = render();
     assert.match(html, /fits better/); assert.match(html, /trademarks/);
     assert.match(html, /application\/ld\+json/);
-    assert.ok(!html.includes(`href="${product.migration.href}"`));
-    try {
-      product.migration.published = true;
-      assert.ok(render().includes(`href="${product.migration.href}"`));
-    } finally {product.migration.published = false;}
+    assert.ok(html.includes(`href="${product.migration.href}"`));
   }
+});
+
+test('verified cells and fit cases require quotes and competitor sources', () => {
+  for (let row = 0; row < data.criteria.length; row++) for (let cell = 0; cell < 4; cell++) {
+    const altered = clone();
+    Object.assign(altered.criteria[row].cells[cell], {verified: true, quote: '   '});
+    assert.throws(() => checkComparison(altered, reviewDate), /non-empty quote/);
+  }
+  for (let index = 1; index < data.products.length; index++) {
+    for (const [key, value, expected] of [
+      ['verified', false, /fit must be verified/],
+      ['quote', '  ', /non-empty quote/],
+      ['sourceUrl', 'https://example.com/claim', /allowed competitor hostname/],
+    ]) {
+      const altered = clone(); altered.products[index].fit[key] = value;
+      assert.throws(() => checkComparison(altered, reviewDate), expected);
+    }
+  }
+  const wrongRepo = clone(); wrongRepo.products[1].fit.sourceUrl = 'https://github.com/someone/other';
+  assert.throws(() => checkComparison(wrongRepo, reviewDate), /competitor repository/);
+  for (const [key, value, expected] of [
+    ['quote', '', /empty value/],
+    ['quote', Array(26).fill('word').join(' '), /25 words/],
+    ['sourceUrl', 'https://example.com/claim', /allowed competitor hostname/],
+  ]) {
+    const altered = clone();
+    altered.criteria.find(row => row.id === 'isolation').cells[3].additionalSources[0][key] = value;
+    assert.throws(() => checkComparison(altered, reviewDate), expected);
+  }
+});
+
+test('documentation absence, internal citations and summary labels render explicitly', () => {
+  const {default: Table, CellValue} = loadComponent('../src/components/compare/ComparisonTable.tsx');
+  const npm = json.criteria.find(row => row.id === 'npm').cells.find(cell => cell.productId === 'private-packagist');
+  const html = renderToStaticMarkup(React.createElement(CellValue, {cell: npm, productName: 'Private Packagist', criterion: 'npm'}));
+  assert.match(html, /Not documented/);
+  assert.match(html, /href="https:\/\/packagist.com\/docs"/);
+  const isolation = json.criteria.find(row => row.id === 'isolation').cells[3];
+  const access = renderToStaticMarkup(React.createElement(CellValue, {cell: isolation, productName: 'Packeton', criterion: 'Isolation'}));
+  assert.match(access, /href="https:\/\/docs.packeton.org\/usage\/credential.html"/);
+  const summary = renderToStaticMarkup(React.createElement(Table));
+  assert.match(summary, /href="\/docs\/decisions\/secrets-and-tokens"/);
+  assert.doesNotMatch(summary, /href="https:\/\/package.broker\/docs\//);
+  assert.match(summary, /<strong>Authentication: <\/strong>/);
+  assert.match(summary, /<strong>SSO: <\/strong>/);
+  assert.doesNotMatch(summary, /class="pb-table__value pb-compare__cell"><span class="pb-table__value/);
+  const invalid = clone(); invalid.criteria.find(row => row.id === 'npm').cells[2].verified = true;
+  assert.throws(() => checkComparison(invalid, reviewDate), /non-empty quote|invalid documentation status/);
 });
