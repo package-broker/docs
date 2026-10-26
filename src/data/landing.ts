@@ -31,6 +31,7 @@ export const footerLinks = [
   {label: 'Code of conduct', href: `${repository}/blob/main/CODE_OF_CONDUCT.md`},
   {label: 'GitHub', href: repository},
   {label: 'Discussions', href: `${repository}/discussions`},
+  {label: 'Privacy', to: '/privacy'},
 ];
 
 // [verify command] Source: origin/main:packages/cli/src/cli.ts (USAGE), README.md,

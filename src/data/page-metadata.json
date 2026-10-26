@@ -29,6 +29,11 @@
     "description": "Report a vulnerability, review token scopes and the audit log, and check data residency. You operate the registry and choose its deployment controls.",
     "cardSupport": "Security"
   },
+  "/privacy": {
+    "title": "Privacy at Package Broker",
+    "description": "Read how package.broker measures visits with Google Analytics only after you accept, what the four events contain, and how to withdraw consent.",
+    "cardSupport": "Privacy"
+  },
   "/search": {
     "title": "Search the documentation",
     "description": "Search Package Broker documentation for deployment instructions, registry architecture, token scopes and decisions about Composer and npm packages.",
