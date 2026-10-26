@@ -1,0 +1,39 @@
+.dock.dock {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: var(--pb-z-toast);
+  display: grid;
+  justify-items: center;
+  padding: var(--pb-space-3);
+  background: none;
+  pointer-events: none;
+}
+
+.dock > * {
+  width: min(100%, var(--pb-size-prose-max));
+  pointer-events: auto;
+}
+
+.banner {
+  padding: var(--pb-space-3) var(--pb-space-4);
+}
+
+.banner h2 {
+  margin: 0 0 var(--pb-space-1);
+  font-size: var(--pb-font-size-md);
+}
+
+.banner :global(.pb-consent__actions) :global(.pb-btn) {
+  min-height: var(--pb-size-control-md);
+}
+
+.banner p {
+  margin: 0 0 var(--pb-space-2);
+  font-size: var(--pb-font-size-sm);
+  line-height: var(--pb-font-line-height-snug);
+}
+
+.status {
+  margin: 0;
+  border: var(--pb-space-px) solid var(--pb-color-border-control);
+}

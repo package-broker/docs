@@ -54,6 +54,15 @@
     "maxBytes": 307200
   },
   {
+    "route": "/privacy",
+    "type": "generic",
+    "source": "static/img/og/privacy.svg",
+    "output": "static/img/og/privacy.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
     "route": "/search",
     "type": "generic",
     "source": "static/img/og/search.svg",

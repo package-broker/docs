@@ -14,6 +14,9 @@ const config: Config = {
   url: 'https://package.broker',
   baseUrl: '/',
   trailingSlash: false,
+  customFields: {
+    ga4MeasurementId: (process.env.GA4_MEASUREMENT_ID ?? '').trim(),
+  },
   organizationName: 'package-broker',
   projectName: 'docs',
   onBrokenLinks: 'throw',
