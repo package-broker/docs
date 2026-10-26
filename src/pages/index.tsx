@@ -31,9 +31,9 @@ export default function Home() {
       <div className="pb-site">
         <main id="main" tabIndex={-1}>
           <div className="pb-wrap"><div className="pb-section pb-section--first pb-hero-grid">
-            <section className="pb-hero" id="hero" aria-labelledby="hero-title">
+            <section className={`pb-hero ${styles.hero}`} id="hero" aria-labelledby="hero-title">
               <p className="pb-eyebrow">Private Composer and npm registry for Magento and PHP agencies</p>
-              <h1 id="hero-title">One token per developer. Client keys stay in the broker, not on laptops.</h1>
+              <h1 id="hero-title" className={styles.headline}><span>One token per developer.</span> <span className={styles.highlight}>Client keys stay in the broker,</span> <span>not on laptops.</span></h1>
               <p className="pb-hero__sub">Marketplace and vendor keys are stored per client project; developers and CI get broker tokens. Every archive installed through the broker is stored by the broker, so deploys keep working when a vendor repository is down.</p>
               <ul className={styles.benefits}>
                 <li><OffboardingIcon size="sm"/><span><strong>Offboarding through your identity provider:</strong> remove someone from the group and access ends within 24 hours; no vendor keys on laptops to rotate.</span></li>

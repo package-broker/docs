@@ -3,3 +3,8 @@
 .actions { margin-top: var(--pb-space-6); }
 .legend { margin-top: var(--pb-space-3); }
 .seats { display: flex; gap: var(--pb-space-4); align-items: flex-start; }
+.hero { container-type: inline-size; }
+/* The middle line is 14.4em wide in Inter bold; the size keeps it on one line at any column width. */
+.hero h1.headline { max-width: none; font-size: min(var(--pb-font-size-4xl), 100cqi / 14.8); }
+.hero h1.headline > span { display: block; white-space: nowrap; }
+.highlight { color: var(--pb-color-brand); }
