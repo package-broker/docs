@@ -1,5 +1,6 @@
 import type {ReactNode} from 'react';
 import {repository} from '../../data/landing';
+import styles from './Operations.module.css';
 
 const adminKeyAccess = 'Organization admins and the master key holder can use every client’s keys; rotate them when an admin leaves.';
 
@@ -14,8 +15,8 @@ const rows: {label: string; workers: ReactNode; docker: ReactNode}[] = [
 
 export default function Operations() {
   return (
-    <div className="pb-site-table pb-container">
-      <table className="pb-table" role="table">
+    <div className={`pb-site-table pb-container ${styles.container}`}>
+      <table className={`pb-table pb-table--keep ${styles.table}`} role="table">
         <caption>Workers and Docker deployment requirements and operator responsibilities</caption>
         <thead role="rowgroup"><tr role="row"><th id="runtime-item" scope="col" role="columnheader">Item</th><th id="runtime-workers" scope="col" role="columnheader">Cloudflare Workers</th><th id="runtime-node" scope="col" role="columnheader">Docker / Node</th></tr></thead>
         <tbody role="rowgroup">{rows.map((row, index) => <tr role="row" key={row.label}>

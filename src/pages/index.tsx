@@ -76,7 +76,8 @@ export default function Home() {
           <Section id="status" title="Status and maintainer">
             <p>{releaseStatus}. {marketplaceStatus} Maintained by <a className="pb-link" href="https://github.com/lbajsarowicz">lbajsarowicz</a>, AGPL-3.0-only. If the project stops, your deployment keeps running: the code is AGPL and your data stays in your own D1 and R2, or SQLite and your blob store.</p>
             <p>To evaluate alone you do not need an identity provider: setup creates a local administrator protected by a password and an authenticator app.</p>
-            <p><a className="pb-link" href={`${repository}/releases`}>Watch the repository</a> for the first release.</p>
+            <p>Removing someone from a group ends their access after the revalidation window; service tokens they created for CI stay valid until you revoke them. <Link className="pb-link" to="/docs/decisions/identity-and-sessions">Session and membership revalidation</Link>.</p>
+            <p>Package Broker 1.x is no longer maintained (<a className="pb-link" href="https://github.com/package-broker/server">package-broker/server</a>). <a className="pb-link" href={`${repository}/releases`}>Watch the repository</a> for the first 2.0 release.</p>
           </Section>
 
           <div className="pb-wrap"><div className="pb-section"><Quickstart/></div></div>
