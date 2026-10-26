@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import {readFileSync, readdirSync, existsSync} from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {createRequire} from 'node:module';
+const {definition, runtimes, licence, repositoryUrl, organizationUrl, maintainer} = createRequire(import.meta.url)('../src/data/entity.ts');
 import {checkCards} from './og/check.mjs';
 
 export const origin = 'https://package.broker';
@@ -74,8 +76,14 @@ export function inspectPage(html, route) {
     for (const object of objects) for (const field of ['offers', 'aggregateRating', 'review']) {
       assert.ok(!Object.hasOwn(object, field), `Landing page JSON-LD must omit ${field}`);
     }
+    assert.equal(app.license, licence.url);
+    assert.deepEqual(app.sameAs, [repositoryUrl]);
+    assert.equal(app.description, definition);
+    assert.equal(app.operatingSystem, runtimes);
+    assert.deepEqual(app.author, {'@type': 'Person', ...maintainer});
+    assert.deepEqual(ofType('Organization')[0].sameAs, [organizationUrl, repositoryUrl]);
     assert.equal(ofType('Organization').length, 1, 'Organization belongs on the landing page');
-    assert.deepEqual(app.maintainer, {'@type': 'Person', name: 'lbajsarowicz', url: 'https://github.com/lbajsarowicz'}, 'SoftwareApplication names its maintainer');
+    assert.deepEqual(app.maintainer, {'@type': 'Person', ...maintainer}, 'SoftwareApplication names its maintainer');
   } else {
     assert.equal(ofType('Organization').length, 0, `${route}: Organization belongs only on /`);
     assert.equal(ofType('SoftwareApplication').length, 0, `${route}: SoftwareApplication belongs only on /`);

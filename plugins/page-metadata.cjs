@@ -3,6 +3,7 @@ const overrides = require('../src/data/page-metadata.json');
 const {generateCards} = require('../scripts/og/generate.cjs');
 const {writeFile} = require('node:fs/promises');
 const path = require('node:path');
+const {syncDates} = require('./sync-dates.cjs');
 
 module.exports = function pageMetadata(context) {
   let snapshot;
@@ -10,6 +11,7 @@ module.exports = function pageMetadata(context) {
     name: 'page-metadata',
     async allContentLoaded({allContent, actions}) {
       const pages = Object.fromEntries(Object.entries(overrides).filter(([route]) => !route.startsWith('/docs/')).map(([route, page]) => [route, {...page}]));
+      const dates = syncDates(context.siteDir);
       const planned = new Set(plannedDocFiles(context.siteDir).map(file => `@site/docs-content/${file}`));
       const docs = Object.values(allContent['docusaurus-plugin-content-docs'] ?? {}).flatMap(content => content.loadedVersions.flatMap(v => v.docs));
       for (const doc of docs) {
@@ -18,7 +20,11 @@ module.exports = function pageMetadata(context) {
           title: doc.title,
           description: doc.description,
           ...overrides[route],
+          source: doc.source.replace('@site/docs-content/', ''),
+          corpusTitle: doc.title,
           planned: planned.has(doc.source),
+          noIndex: route === '/docs/CONTRIBUTING-DOCS',
+          dateModified: dates[doc.source.replace('@site/docs-content/', '')]?.lastCommitDate,
         };
       }
       for (const content of Object.values(allContent['docusaurus-plugin-content-pages'] ?? {})) {

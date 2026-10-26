@@ -27,6 +27,7 @@ const rules = readFileSync(new URL('./static/_redirects', import.meta.url), 'utf
 const kept = JSON.parse(readFileSync(new URL('./tests/kept-paths.json', import.meta.url)));
 const targets = new Set(['/', '/sitemap.xml', ...kept, ...rules.map(rule => rule[1])]);
 globalThis.fetch = async input => {
+  if (targets.has(String(input))) return new Response('', {status: 200});
   const route = new URL(input).pathname;
   const rule = rules.find(([from]) => from === route) ?? (route.startsWith('/blog/') ? rules.find(([from]) => from === '/blog/*') : undefined);
   if (rule) return new Response(null, {status: 301, headers: {location: rule[1]}});

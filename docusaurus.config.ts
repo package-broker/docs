@@ -2,6 +2,7 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import {assertDocsSynced, isPlannedDoc} from './scripts/docs-content.cjs';
 import {docsLinks, footerLinks} from './src/data/landing';
+import {sitemapItems} from './plugins/sync-dates.cjs';
 import {llmsOptions} from './scripts/llms-options.cjs';
 
 // Read on every config load: a missing sync must never render an empty docs site.
@@ -69,7 +70,8 @@ const config: Config = {
         sitemap: {
           changefreq: 'weekly',
           priority: 0.5,
-          ignorePatterns: ['/tags/**', '/docs/tags/**', '/404', '/404.html', '/search'],
+          createSitemapItems: sitemapItems,
+          ignorePatterns: ['/docs/CONTRIBUTING-DOCS', '/tags/**', '/docs/tags/**', '/404', '/404.html', '/search'],
           filename: 'sitemap.xml',
         },
       } satisfies Preset.Options,

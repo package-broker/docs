@@ -62,7 +62,7 @@ function readMap() {
     const [from, to, status] = fields;
     assert.equal(status, '301', `Permanent redirect required: ${line}`);
     assert.match(from, /^\//);
-    assert.match(to, /^\/(?!\/)/, 'Targets must stay on this site');
+    assert.ok(/^\/(?!\/)/.test(to) || to === 'https://github.com/package-broker/broker/blob/main/CONTRIBUTING.md', 'Only the contributing guide may leave this site');
     assert.notEqual(from, to, `Self redirect: ${line}`);
     return {from, to};
   });
@@ -114,7 +114,7 @@ test('v1 file and sidebar inventory is fully covered without redirect chains', (
   }
   for (const route of [quickstart, '/docs/getting-started/quickstart-docker']) assert.ok(map.kept.includes(route));
   for (const {from, to} of map.rules) {
-    if (!base) assert.ok(built(to), `Missing target in build for ${from}: ${to}`);
+    if (!base && to.startsWith('/')) assert.ok(built(to), `Missing target in build for ${from}: ${to}`);
     assert.equal(map.resolve(to), undefined, `Redirect chain from ${from} through ${to}`);
   }
   if (!base) {
@@ -148,7 +148,7 @@ test('legacy ref lookup uses a local or fetched v1-archive only', () => {
   ]);
 });
 
-const canonicalRoutes = [...new Set(['/', ...map.kept, ...map.rules.map(rule => rule.to)])];
+const canonicalRoutes = [...new Set(['/', ...map.kept, ...map.rules.map(rule => rule.to).filter(to => to.startsWith('/'))])];
 const canonicalUrl = route => `https://package.broker${route}`;
 function checkCanonical(html, route) {
   const canonical = html.match(/<link\b(?=[^>]*\brel="canonical")(?=[^>]*\bhref="([^"]+)")[^>]*>/)?.[1];
@@ -214,4 +214,12 @@ test('deployed v1 URLs return exact redirects and targets return 200', {skip: !b
   }
   for (const route of ['/', '/sitemap.xml']) assert.equal((await request(route)).status, 200, route);
   assert.equal((await request('/unknown-page-redirect-check')).status, 404, 'Unknown URLs use the 404 page');
+});
+
+test('README aliases and obsolete v1 routes go directly to the closest 2.0 destination', () => {
+  const expected = {'/getting-started/quickstart-docker': '/docs/getting-started/quickstart-docker', '/getting-started/quickstart-cloudflare': '/docs/getting-started/quickstart-cloudflare', '/reference/api': '/docs/architecture', '/intro': '/docs/architecture', '/docs/intro': '/docs/architecture', '/docs/contributing/index': 'https://github.com/package-broker/broker/blob/main/CONTRIBUTING.md', '/docs/troubleshooting/index': '/docs/getting-started/quickstart-cloudflare'};
+  expected['/docs/getting-started/quickstart-kubernetes'] = '/docs/getting-started/quickstart-docker';
+  for (const [route, to] of Object.entries(expected)) for (const slash of ['', '/']) {
+    assert.equal(map.resolve(`${route}${slash}`)?.to, to);
+  }
 });
