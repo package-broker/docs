@@ -1,0 +1,79 @@
+# Workers static assets: https://developers.cloudflare.com/workers/static-assets/redirects/
+# Exact v1 paths precede dynamic aliases. Reasons are in the deployment report.
+# Existing 2.0 documents keep their canonical paths; never redirect to themselves.
+
+/docs /docs/getting-started/quickstart-cloudflare 301
+/docs/STYLE_GUIDE /docs/getting-started/quickstart-cloudflare 301
+/docs/administration/tokens /docs/reference/access-model 301
+/docs/comparison /compare/private-packagist 301
+/docs/compliance/audit-logging /docs/security-and-residency 301
+/docs/compliance/iso-27001-compliance /docs/security-and-residency 301
+/docs/concepts/architecture /docs/architecture 301
+/docs/concepts/authentication /docs/reference/access-model 301
+/docs/concepts/caching-storage /docs/architecture 301
+/docs/concepts/repositories /docs/guides/mirror-vendor-repositories 301
+/docs/contributing /docs/CONTRIBUTING-DOCS 301
+/docs/deployment/overview /docs/getting-started/quickstart-cloudflare 301
+/docs/getting-started/composer-101 /docs/clients/composer 301
+/docs/getting-started/glossary /docs/getting-started/quickstart-cloudflare 301
+/docs/getting-started/quickstart-kubernetes /docs/getting-started/quickstart-cloudflare 301
+/docs/installation/docker-compose /docs/getting-started/quickstart-docker 301
+/docs/installation/docker /docs/getting-started/quickstart-docker 301
+/docs/migration/legal-notice /compare/private-packagist 301
+/docs/operations/backups-restore /docs/operations/backup-and-upgrades 301
+/docs/operations/scaling /docs/architecture 301
+/docs/reference/cli /docs/getting-started/quickstart-cloudflare 301
+/docs/reference/configuration /docs/getting-started/quickstart-cloudflare 301
+/docs/reference/roadmap /docs/getting-started/quickstart-cloudflare 301
+/docs/soc2-compliance /docs/security-and-residency 301
+/docs/troubleshooting /docs/getting-started/quickstart-cloudflare 301
+/docs/use-cases/eshop-extension-vendor /docs/reference/access-model 301
+
+# Generated v1 sidebar indexes are URLs too.
+/docs/use-cases /agencies 301
+/docs/migration /docs/migration/from-satis 301
+/docs/concepts /docs/architecture 301
+/docs/reference /docs/reference/access-model 301
+# /docs/troubleshooting and /docs/contributing are already covered above.
+
+# Blog archives, tags, feeds and the post all return to the landing page.
+/blog / 301
+/blog/* / 301
+
+# v1 Docusaurus also served trailing slashes; go straight to canonical targets.
+/docs/ /docs/getting-started/quickstart-cloudflare 301
+/docs/STYLE_GUIDE/ /docs/getting-started/quickstart-cloudflare 301
+/docs/administration/tokens/ /docs/reference/access-model 301
+/docs/comparison/ /compare/private-packagist 301
+/docs/compliance/audit-logging/ /docs/security-and-residency 301
+/docs/compliance/iso-27001-compliance/ /docs/security-and-residency 301
+/docs/concepts/architecture/ /docs/architecture 301
+/docs/concepts/authentication/ /docs/reference/access-model 301
+/docs/concepts/caching-storage/ /docs/architecture 301
+/docs/concepts/repositories/ /docs/guides/mirror-vendor-repositories 301
+/docs/contributing/ /docs/CONTRIBUTING-DOCS 301
+/docs/deployment/overview/ /docs/getting-started/quickstart-cloudflare 301
+/docs/getting-started/composer-101/ /docs/clients/composer 301
+/docs/getting-started/glossary/ /docs/getting-started/quickstart-cloudflare 301
+/docs/getting-started/quickstart-kubernetes/ /docs/getting-started/quickstart-cloudflare 301
+/docs/installation/docker-compose/ /docs/getting-started/quickstart-docker 301
+/docs/installation/docker/ /docs/getting-started/quickstart-docker 301
+/docs/migration/legal-notice/ /compare/private-packagist 301
+/docs/operations/backups-restore/ /docs/operations/backup-and-upgrades 301
+/docs/operations/scaling/ /docs/architecture 301
+/docs/reference/cli/ /docs/getting-started/quickstart-cloudflare 301
+/docs/reference/configuration/ /docs/getting-started/quickstart-cloudflare 301
+/docs/reference/roadmap/ /docs/getting-started/quickstart-cloudflare 301
+/docs/soc2-compliance/ /docs/security-and-residency 301
+/docs/troubleshooting/ /docs/getting-started/quickstart-cloudflare 301
+/docs/use-cases/eshop-extension-vendor/ /docs/reference/access-model 301
+/docs/use-cases/ /agencies 301
+/docs/migration/ /docs/migration/from-satis 301
+/docs/concepts/ /docs/architecture 301
+/docs/reference/ /docs/reference/access-model 301
+/blog/ / 301
+/docs/getting-started/quickstart-cloudflare/ /docs/getting-started/quickstart-cloudflare 301
+/docs/getting-started/quickstart-docker/ /docs/getting-started/quickstart-docker 301
+/docs/migration/from-private-packagist/ /docs/migration/from-private-packagist 301
+/docs/migration/from-satis/ /docs/migration/from-satis 301
+/docs/reference/api/ /docs/reference/api 301

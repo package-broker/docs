@@ -1,0 +1,120 @@
+name: Preview site
+
+# Never use pull_request_target to execute PR code with deployment credentials.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  NO_UPDATE_NOTIFIER: '1'
+  WRANGLER_SEND_METRICS: 'false'
+
+jobs:
+  eligibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      enabled: ${{ steps.check.outputs.enabled }}
+    steps:
+      # No PR code runs while checking whether credentials are available.
+      - name: Check preview eligibility
+        id: check
+        env:
+          SAME_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+          ACTOR: ${{ github.actor }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$SAME_REPOSITORY" != 'true' ]]; then
+            echo 'Preview skipped: pull request comes from a fork.' >> "$GITHUB_STEP_SUMMARY"
+          elif [[ "$ACTOR" == 'dependabot[bot]' ]]; then
+            echo 'Preview skipped: Dependabot cannot deploy previews.' >> "$GITHUB_STEP_SUMMARY"
+          elif [[ -z "$CLOUDFLARE_API_TOKEN" ]]; then
+            echo 'Preview skipped: CLOUDFLARE_API_TOKEN is not configured or available.' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'enabled=true' >> "$GITHUB_OUTPUT"
+            echo 'Preview enabled: repository pull request with deployment credentials.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  preview:
+    needs: eligibility
+    if: needs.eligibility.outputs.enabled == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      url: ${{ steps.upload.outputs.url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Enable Corepack
+        run: corepack enable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: pnpm
+      - name: Build and test
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm build
+          pnpm typecheck
+          pnpm test
+      - name: Upload preview version
+        id: upload
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm exec wrangler versions upload 2>&1 | tee "$RUNNER_TEMP/wrangler-preview.log"
+          node --input-type=module <<'NODE'
+          import {readFileSync, appendFileSync} from 'node:fs';
+          import {stripVTControlCharacters} from 'node:util';
+          const log = stripVTControlCharacters(readFileSync(`${process.env.RUNNER_TEMP}/wrangler-preview.log`, 'utf8'));
+          const urls = [...log.matchAll(/^Version Preview URL: (https:\/\/[a-z0-9-]+\.[a-z0-9-]+\.workers\.dev)\s*$/gm)];
+          if (urls.length !== 1) throw new Error('Wrangler did not return one version preview URL. Check that preview URLs are enabled.');
+          appendFileSync(process.env.GITHUB_OUTPUT, `url=${urls[0][1]}\n`);
+          NODE
+      - name: Check preview redirects and targets
+        env:
+          BASE_URL: ${{ steps.upload.outputs.url }}
+        run: node --test tests/redirects.test.mjs
+
+  comment:
+    needs: preview
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pull-requests: write
+    steps:
+      # No checkout or PR code in the job with comment permissions.
+      - uses: actions/github-script@v7
+        env:
+          PREVIEW_URL: ${{ needs.preview.outputs.url }}
+        with:
+          script: |
+            const marker = '<!-- package-broker-site-preview -->';
+            const url = process.env.PREVIEW_URL;
+            if (!/^https:\/\/[a-z0-9-]+\.[a-z0-9-]+\.workers\.dev$/.test(url)) {
+              throw new Error('Invalid Worker preview URL');
+            }
+            const body = `${marker}\n[Site preview](${url})\n\nRedirect and target checks passed for this version.`;
+            const params = {...context.repo, issue_number: context.issue.number};
+            const comments = await github.paginate(github.rest.issues.listComments, params);
+            const previous = comments.find(comment => comment.user?.login === 'github-actions[bot]' && comment.body?.includes(marker));
+            if (previous) {
+              await github.rest.issues.updateComment({...context.repo, comment_id: previous.id, body});
+            } else {
+              await github.rest.issues.createComment({...params, body});
+            }

@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "package-broker-site",
+  "compatibility_date": "2026-10-26",
+  "workers_dev": true,
+  "preview_urls": true,
+  "assets": {
+    "directory": "./build",
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}
