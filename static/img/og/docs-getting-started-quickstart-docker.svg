@@ -4,9 +4,22 @@
 <desc id="description">The Docker quickstart is planned for Package Broker 2.0. Read the runtime decisions for Node hosting requirements while the guide is being written.</desc>
 <defs><style>@font-face{font-family:Inter;src:url(inter-latin-wght-normal.woff2) format('woff2');font-weight:100 900}text{font-family:Inter,sans-serif}</style></defs>
 <rect width="1200" height="630" fill="#f9fafb"/>
-<rect width="8" height="630" fill="#105bbe"/>
-<text x="64" y="88" font-size="24" font-weight="600" fill="#121921">Package Broker</text>
-<text x="64" y="148" font-size="20" fill="#105bbe">Documentation · Planned guide</text>
-<text x="64" y="240" font-size="48" font-weight="700" fill="#121921"><tspan x="64" dy="0">Quickstart: Docker</tspan></text>
-<text x="64" y="566" font-size="20" fill="#565e69">package.broker</text>
+<rect width="1200" height="8" fill="#d45003"/>
+<svg x="64" y="40" width="80" height="80" viewBox="0 0 200 200" fill="none" aria-hidden="true"><g>
+<circle cx="100" cy="180" r="6" stroke="#d45003" stroke-width="3" fill="none" />
+<path d="M100 174 L100 110" stroke="#d45003" stroke-width="4" stroke-linecap="round" />
+<circle cx="100" cy="110" r="6" stroke="#d45003" stroke-width="3" fill="#f9fafb" />
+</g>
+<g>
+<path d="M100 104 L100 40" stroke="#105bbe" stroke-width="4" stroke-linecap="round" />
+<circle cx="100" cy="34" r="6" stroke="#105bbe" stroke-width="3" fill="none" />
+<path d="M100 110 C70 110 60 100 60 70 L60 40" stroke="#105bbe" stroke-width="4" stroke-linecap="round" fill="none" />
+<circle cx="60" cy="34" r="6" stroke="#105bbe" stroke-width="3" fill="none" />
+<path d="M100 110 C130 110 140 100 140 70 L140 40" stroke="#105bbe" stroke-width="4" stroke-linecap="round" fill="none" />
+<circle cx="140" cy="34" r="6" stroke="#105bbe" stroke-width="3" fill="none" />
+</g></svg>
+<text x="168" y="96" font-size="36" font-weight="600" fill="#121921">Package Broker</text>
+<text data-role="headline" x="64" y="232" font-size="72" font-weight="700" fill="#121921"><tspan x="64" dy="0">Quickstart: Docker</tspan></text>
+<text data-role="support" x="64" y="294" font-size="30" fill="#105bbe">Documentation: Getting started</text>
+<text x="64" y="598" font-size="24" fill="#565e69">package.broker</text>
 </svg>
