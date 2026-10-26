@@ -14,7 +14,7 @@
         "published": false
       },
       "fit": {
-        "value": "Choose Satis when you need a static Composer repository and already manage web-server access. Its build produces files you can serve from your own host.",
+        "value": "Choose Satis when static Composer files are enough and you already protect them on your web server. To keep client outputs separate, build and protect a separate output for each client. You do not need a running registry application for that setup.",
         "sourceUrl": "https://raw.githubusercontent.com/composer/satis/main/README.md",
         "lastVerified": "2026-10-17",
         "verified": true,
@@ -30,11 +30,11 @@
         "published": false
       },
       "fit": {
-        "value": "Choose Private Packagist Self-Hosted when you want its commercial self-hosted edition. Start with a trial agreement, then request a quote.",
-        "sourceUrl": "https://packagist.com/self-hosted",
-        "lastVerified": "2026-10-26",
+        "value": "Choose Private Packagist Cloud when you would rather pay for a hosted Composer service than operate your agency\u2019s registry. Its pricing counts users and suborganizations.",
+        "sourceUrl": "https://packagist.com/pricing",
+        "lastVerified": "2026-10-17",
         "verified": true,
-        "quote": "limited to the installation of the Subject Matter of the Licence"
+        "quote": "First 3 users and 3 suborganizations included"
       }
     },
     {
@@ -46,7 +46,7 @@
         "published": false
       },
       "fit": {
-        "value": "Choose Packeton when you need a self-hosted PHP package repository under the MIT licence. Its README documents running a Docker container.",
+        "value": "Choose Packeton when your agency needs a self-hosted PHP package repository, prefers the MIT licence and wants its documented Docker deployment.",
         "sourceUrl": "https://raw.githubusercontent.com/vtsykun/packeton/master/README.md",
         "lastVerified": "2026-10-17",
         "verified": true,
@@ -71,11 +71,11 @@
         {
           "criterionId": "isolation",
           "productId": "satis",
-          "value": "One static repository per build; no per-project access control.",
+          "value": "Static Composer repository output.",
           "sourceUrl": "https://github.com/composer/satis",
           "lastVerified": "2026-10-17",
-          "verified": false,
-          "quote": ""
+          "verified": true,
+          "quote": "A simple static Composer repository generator."
         },
         {
           "criterionId": "isolation",
@@ -332,11 +332,11 @@
         {
           "criterionId": "price",
           "productId": "satis",
-          "value": "The cost of your own host.",
+          "value": "MIT software you host; budget for hosting and operations.",
           "sourceUrl": "https://github.com/composer/satis",
           "lastVerified": "2026-10-17",
-          "verified": false,
-          "quote": "A simple static Composer repository generator.",
+          "verified": true,
+          "quote": "MIT",
           "planName": "Self-hosted (MIT)",
           "priceSourceUrl": "https://github.com/composer/satis"
         },
@@ -354,10 +354,10 @@
         {
           "criterionId": "price",
           "productId": "packeton",
-          "value": "The cost of your own host.",
+          "value": "MIT software you host; budget for hosting and operations.",
           "sourceUrl": "https://github.com/vtsykun/packeton",
           "lastVerified": "2026-10-17",
-          "verified": false,
+          "verified": true,
           "quote": "MIT",
           "planName": "Self-hosted (MIT)",
           "priceSourceUrl": "https://github.com/vtsykun/packeton"
