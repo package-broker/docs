@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {checkSeo, inspectPage, htmlPages} from '../scripts/check-seo.mjs';
+import {checkSeo, inspectPage, htmlPages, decode} from '../scripts/check-seo.mjs';
 import {checkLlms} from '../scripts/check-llms.mjs';
 import {checkCards} from '../scripts/og/check.mjs';
 import {curateLlms} from '../scripts/curate-llms.mjs';
@@ -167,4 +167,59 @@ test('social card gate rejects missing, stale, oversized and malformed PNGs', ()
     writeFileSync(manifestPath, JSON.stringify(manifest));
     assert.throws(() => checkCards(outDir), /cover every card/);
   });
+});
+
+test('comparison hub and footer expose every comparison and migration guide with checked dates', () => {
+  const pages = htmlPages('build');
+  const hub = pages.find(page => page.route === '/compare').html;
+  const data = require('../src/data/comparison.json');
+  const agencyFooter = pages.find(page => page.route === '/agencies').html.split('<footer')[1];
+  const privatePackagistTitle = curated['/compare/private-packagist'].title;
+  assert.ok(privatePackagistTitle.length <= 45);
+  assert.match(privatePackagistTitle, /^Self-hosted Private Packagist alternative$/);
+  for (const product of data.products.filter(product => product.id !== 'package-broker')) {
+    assert.ok(hub.includes(`href="/compare/${product.id}"`));
+    assert.ok(hub.includes(`href="${product.migration.href}"`));
+    assert.ok(hub.includes(`datetime="${product.fit.lastVerified}"`));
+    assert.ok(agencyFooter.includes(`href="/compare/${product.id}"`));
+    const comparison = pages.find(page => page.route === `/compare/${product.id}`).html;
+    assert.ok(comparison.includes(`Package Broker and ${product.name}, compared</h1>`));
+    const hero = decode(comparison.match(/<div class="pb-hero pb-hero--page">([\s\S]*?)<\/div>/)[1]).replace(/<[^>]+>/g, '');
+    assert.ok(hero.includes(product.intro));
+    assert.ok(hero.toLowerCase().includes(curated[`/compare/${product.id}`].title.toLowerCase()));
+    const fit = decode(comparison.match(/<aside class="pb-compare-fit"[\s\S]*?<p>([\s\S]*?)<\/p>/)[1]);
+    assert.equal(fit, product.fit.value);
+    assert.doesNotMatch(fit, /alternative/i);
+    const label = product.id === 'private-packagist' ? 'Private Packagist pricing' : `${product.name} documentation`;
+    assert.ok(hub.includes(`>${label}</a>`));
+    const nav = comparison.match(/<nav[^>]+aria-label="Main"[\s\S]*?<\/nav>/)[0];
+    assert.match(nav, /aria-current="page" href="\/compare"/);
+  }
+  assert.match(hub, /aria-current="page" href="\/compare"/);
+  const status = hub.match(/<p class="pb-page-meta">([\s\S]*?)<\/p>/)[1].replace(/<!--[\s\S]*?-->/g, '');
+  assert.equal(status, 'Package Broker 2.0 is in development; no tagged release yet.');
+  const agenciesNav = pages.find(page => page.route === '/agencies').html.match(/<nav[^>]+aria-label="Main"[\s\S]*?<\/nav>/)[0];
+  assert.doesNotMatch(agenciesNav, /aria-current="page" href="\/compare"/);
+});
+
+test('pricing explains hosting and agencies provide six native answers, follow and help routes', () => {
+  const pages = htmlPages('build');
+  const pricing = pages.find(page => page.route === '/pricing').html;
+  assert.match(pricing, /<h1>What it costs<\/h1>/);
+  assert.match(pricing, /No licence fee and no per-user, per-project or per-client charge/);
+  assert.match(pricing, /From USD 5 a month on Workers Paid/);
+  assert.match(pricing, /href="https:\/\/developers.cloudflare.com\/workers\/platform\/pricing\/"/);
+  assert.match(pricing, /checked <time dateTime="2026-10-25">2026-10-25<\/time>|checked <time datetime="2026-10-25">2026-10-25<\/time>/);
+  const agencies = pages.find(page => page.route === '/agencies').html;
+  assert.match(agencies, /class="pb-faq"/);
+  assert.equal((agencies.match(/class="pb-faq__answer"/g) ?? []).length, 6);
+  assert.ok(agencies.includes('Lifecycle expiry is optional and applies only to public proxy packages, never to vendor-repository archives.'));
+  assert.ok(!agencies.includes('Your self-hosted deployment keeps running.'));
+  assert.equal((agencies.match(/<details\b/g) ?? []).length, 6);
+  assert.equal((agencies.match(/<summary\b/g) ?? []).length, 6);
+  for (const destination of ['/pricing', '/compare/satis', '/compare/packeton', '/docs/guides/mirror-vendor-repositories', 'https://github.com/package-broker/broker/releases.atom', 'https://github.com/package-broker/broker/issues', 'https://github.com/package-broker/broker/discussions', 'mailto:hi@package.broker']) {
+    assert.ok(agencies.includes(`href="${destination}"`), destination);
+  }
+  assert.match(decode(agencies), /Watch → Custom → Releases/);
+  assert.doesNotMatch(pricing + agencies, /"offers"|"FAQPage"|"HowTo"/);
 });

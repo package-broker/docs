@@ -61,7 +61,9 @@ export function LandingHeader() {
         <span className="pb-site-nav-toggle__label">Menu</span>
       </button>
       <nav className="pb-site-nav" id="landing-nav" aria-label="Main">
-        <ul>{headerLinks.map(({label, ...destination}) => <li key={label}><Link {...destination} aria-current={'to' in destination && destination.to?.replace(/\/+$/, '') === pathname.replace(/\/+$/, '') ? 'page' : undefined} onClick={close}>{label}</Link></li>)}</ul>
+        <ul>{headerLinks.map(({label, ...destination}) => <li key={label}><Link {...destination} aria-current={'to' in destination && (label === 'Compare'
+          ? pathname === '/compare' || pathname.startsWith('/compare/')
+          : destination.to?.replace(/\/+$/, '') === pathname.replace(/\/+$/, '')) ? 'page' : undefined} onClick={close}>{label}</Link></li>)}</ul>
       </nav>
     </header>
   );

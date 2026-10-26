@@ -72,6 +72,24 @@
     "maxBytes": 307200
   },
   {
+    "route": "/compare",
+    "type": "generic",
+    "source": "static/img/og/compare.svg",
+    "output": "static/img/og/compare.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/pricing",
+    "type": "generic",
+    "source": "static/img/og/pricing.svg",
+    "output": "static/img/og/pricing.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
     "route": "/docs/architecture",
     "type": "docs",
     "source": "static/img/og/docs-architecture.svg",

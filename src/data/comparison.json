@@ -19,7 +19,8 @@
         "lastVerified": "2026-10-17",
         "verified": true,
         "quote": "A simple static Composer repository generator."
-      }
+      },
+      "intro": "A Satis alternative for private Composer packages: compare Package Broker’s running registry with static repository output."
     },
     {
       "id": "private-packagist",
@@ -30,12 +31,13 @@
         "published": true
       },
       "fit": {
-        "value": "Choose Private Packagist Cloud when you would rather pay for a hosted Composer service than operate your agency\u2019s registry. Its pricing counts users and suborganizations.",
+        "value": "Choose Private Packagist Cloud when you would rather pay for a hosted Composer service than operate your agency’s registry. Its pricing counts users and suborganizations.",
         "sourceUrl": "https://packagist.com/pricing",
         "lastVerified": "2026-10-17",
         "verified": true,
         "quote": "First 3 users and 3 suborganizations included"
-      }
+      },
+      "intro": "A self-hosted Private Packagist alternative: review Package Broker’s access model and hosting responsibilities."
     },
     {
       "id": "packeton",
@@ -51,7 +53,8 @@
         "lastVerified": "2026-10-17",
         "verified": true,
         "quote": "Run as Docker container"
-      }
+      },
+      "intro": "A Packeton alternative for Composer and npm: compare Package Broker’s project access model and runtime choices."
     }
   ],
   "criteria": [
