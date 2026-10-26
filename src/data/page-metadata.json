@@ -45,19 +45,19 @@
   },
   "/docs/ci/github-actions": {
     "title": "GitHub Actions",
-    "description": "The GitHub Actions guide is planned for Package Broker 2.0. Read the architecture and token decisions while the CI authentication recipe is being written."
+    "description": "Install Composer and npm dependencies in GitHub Actions from a broker project, with a read-only service token stored in repository secrets."
   },
   "/docs/ci/gitlab-ci": {
     "title": "GitLab CI",
-    "description": "The GitLab CI guide is planned for Package Broker 2.0. Read the architecture and token decisions while the CI authentication recipe is being written."
+    "description": "Install Composer and npm dependencies in GitLab CI from a broker project, with masked CI/CD variables and lock-file cache keys."
   },
   "/docs/clients/composer": {
     "title": "Composer",
-    "description": "The Composer client guide is planned for Package Broker 2.0. Read the registry and token decisions while the client configuration guide is being written."
+    "description": "Configure Composer 2 for a Magento, Symfony or Laravel application to install packages through a Package Broker project URL with a token."
   },
   "/docs/clients/npm-pnpm-yarn": {
     "title": "npm, pnpm and yarn",
-    "description": "The npm, pnpm and yarn guide is planned for Package Broker 2.0. Read the registry and token decisions while the client configuration guide is being written."
+    "description": "Map an npm package scope to one Package Broker project, then install its packages with npm, pnpm or yarn using a token."
   },
   "/docs/decisions": {
     "title": "Architecture decisions",
@@ -85,31 +85,31 @@
   },
   "/docs/getting-started/quickstart-cloudflare": {
     "title": "Quickstart: Cloudflare",
-    "description": "The Cloudflare Workers quickstart is planned for Package Broker 2.0. Read the runtime decisions for deployment requirements while the guide is being written."
+    "description": "Deploy Package Broker on Cloudflare Workers, create your first project and source, and install a private Composer package."
   },
   "/docs/getting-started/quickstart-docker": {
     "title": "Quickstart: Docker",
-    "description": "The Docker quickstart is planned for Package Broker 2.0. Read the runtime decisions for Node hosting requirements while the guide is being written."
+    "description": "Build and run Package Broker with Docker, create your first project and source, and install a private Composer package."
   },
   "/docs/guides/mirror-vendor-repositories": {
     "title": "Vendor repositories as sources",
-    "description": "The vendor repository sources guide is planned for Package Broker 2.0. Read the source ownership decisions while the configuration guide is being written."
+    "description": "Connect a vendor Composer repository to one client project, store that project’s vendor credentials, and check installs and access."
   },
   "/docs/migration/from-packeton": {
     "title": "Migrate from Packeton",
-    "description": "The Packeton migration guide is planned for Package Broker 2.0. Read the comparison and registry decisions while the migration steps are being written."
+    "description": "Recreate Packeton package sources and access, rehearse an install, switch one project and roll back."
   },
   "/docs/migration/from-private-packagist": {
     "title": "Migrate from Private Packagist",
-    "description": "The Private Packagist migration guide is planned for Package Broker 2.0. Read the comparison and registry decisions while the steps are being written."
+    "description": "Import a Private Packagist snapshot, map teams and release dates, rehearse Composer installs and cut over with a rollback plan."
   },
   "/docs/migration/from-satis": {
     "title": "Migrate from Satis",
-    "description": "The Satis migration guide is planned for Package Broker 2.0. Read the comparison and registry decisions while the migration steps are being written."
+    "description": "Recreate Satis sources, rehearse a Composer install, switch one project and roll back."
   },
   "/docs/operations/backup-and-upgrades": {
     "title": "Backup and upgrades",
-    "description": "The backup and upgrades guide is planned for Package Broker 2.0. Read the deployment decisions while the operations instructions are being written."
+    "description": "Back up application state and keys, restore to an empty deployment, and plan upgrades and master key rotation."
   },
   "/docs/operations/restore-rehearsal": {
     "title": "Restore rehearsal",
@@ -117,7 +117,7 @@
   },
   "/docs/reference/access-model": {
     "title": "Access model",
-    "description": "The access model guide is planned for Package Broker 2.0. Read the identity and token decisions for the design of roles, grants and project boundaries."
+    "description": "How organization and project grants, identity provider groups and token scopes decide who can install which packages in Package Broker."
   },
   "/docs/reference/api": {
     "title": "API reference",
@@ -158,5 +158,28 @@
   "/docs/decisions/registry-and-sources": {
     "title": "Registry and sources",
     "description": "Decisions on supported ecosystems, source ownership and precedence, proxies and retention, migration, GitHub integration and catalogue dates."
+  },
+  "/docs/reference/install-speed": {
+    "title": "Install speed",
+    "description": "How Package Broker measures Composer install and resolve times: the pinned fixture project, the harness and how to read the results."
+  },
+  "/docs/troubleshooting/magento-http-401": {
+    "title": "The 'https://repo.magento.com/packages.json' URL required authentication (HTTP 401).",
+    "cardTitle": "Magento Composer HTTP 401",
+    "description": "Check a Magento Composer HTTP 401 and distinguish direct Marketplace access from broker source authentication."
+  },
+  "/docs/troubleshooting/magento-invalid-credentials": {
+    "title": "Invalid credentials (HTTP 401) for 'https://repo.magento.com/packages.json', aborting.",
+    "cardTitle": "Magento invalid credentials (HTTP 401)",
+    "description": "Resolve rejected Magento Marketplace Composer credentials, including reports described as could not authenticate."
+  },
+  "/docs/troubleshooting/invalid-auth-json": {
+    "title": "\"<path>\" does not contain valid JSON",
+    "cardTitle": "auth.json is not valid JSON",
+    "description": "Check malformed Composer auth.json without printing Magento credentials, broker tokens or parser excerpts."
+  },
+  "/docs/operations/observability": {
+    "title": "Observability",
+    "description": "Send broker telemetry through OpenTelemetry Collector to an OTLP backend."
   }
 }

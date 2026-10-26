@@ -52,7 +52,7 @@ function cardCopy(route, page, type) {
     lines: ['One token', 'per developer.'],
     support,
   };
-  return {title: page.title, support};
+  return {title: page.cardTitle ?? page.title, support};
 }
 
 function logoMark(logo, color) {

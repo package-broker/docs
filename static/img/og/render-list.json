@@ -279,6 +279,15 @@
     "maxBytes": 307200
   },
   {
+    "route": "/docs/operations/observability",
+    "type": "docs",
+    "source": "static/img/og/docs-operations-observability.svg",
+    "output": "static/img/og/docs-operations-observability.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
     "route": "/docs/operations/restore-rehearsal",
     "type": "docs",
     "source": "static/img/og/docs-operations-restore-rehearsal.svg",
@@ -306,6 +315,15 @@
     "maxBytes": 307200
   },
   {
+    "route": "/docs/reference/install-speed",
+    "type": "docs",
+    "source": "static/img/og/docs-reference-install-speed.svg",
+    "output": "static/img/og/docs-reference-install-speed.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
     "route": "/docs/reference/plugin-authoring",
     "type": "docs",
     "source": "static/img/og/docs-reference-plugin-authoring.svg",
@@ -328,6 +346,33 @@
     "type": "docs",
     "source": "static/img/og/docs-security-and-residency.svg",
     "output": "static/img/og/docs-security-and-residency.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/troubleshooting/invalid-auth-json",
+    "type": "docs",
+    "source": "static/img/og/docs-troubleshooting-invalid-auth-json.svg",
+    "output": "static/img/og/docs-troubleshooting-invalid-auth-json.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/troubleshooting/magento-http-401",
+    "type": "docs",
+    "source": "static/img/og/docs-troubleshooting-magento-http-401.svg",
+    "output": "static/img/og/docs-troubleshooting-magento-http-401.png",
+    "width": 1200,
+    "height": 630,
+    "maxBytes": 307200
+  },
+  {
+    "route": "/docs/troubleshooting/magento-invalid-credentials",
+    "type": "docs",
+    "source": "static/img/og/docs-troubleshooting-magento-invalid-credentials.svg",
+    "output": "static/img/og/docs-troubleshooting-magento-invalid-credentials.png",
     "width": 1200,
     "height": 630,
     "maxBytes": 307200

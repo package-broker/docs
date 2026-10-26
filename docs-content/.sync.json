@@ -1,29 +1,29 @@
 {
-  "sha": "8055d818d50081f708b6fb8850c3f6226d3247af",
+  "sha": "5b30c58d04f85294206f372dfcb3440c0a63df05",
   "files": {
     "CONTRIBUTING-DOCS.md": {
-      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+      "lastCommitDate": "2026-10-26T04:43:04Z"
     },
     "architecture.md": {
-      "lastCommitDate": "2026-10-20T04:56:51Z"
+      "lastCommitDate": "2026-10-26T15:19:31Z"
     },
     "ci/_category_.json": {
       "lastCommitDate": "2026-10-17T00:17:17+02:00"
     },
     "ci/github-actions.md": {
-      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+      "lastCommitDate": "2026-10-25T23:52:51Z"
     },
     "ci/gitlab-ci.md": {
-      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+      "lastCommitDate": "2026-10-25T23:52:51Z"
     },
     "clients/_category_.json": {
       "lastCommitDate": "2026-10-17T00:17:17+02:00"
     },
     "clients/composer.md": {
-      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+      "lastCommitDate": "2026-10-25T23:52:51Z"
     },
     "clients/npm-pnpm-yarn.md": {
-      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+      "lastCommitDate": "2026-10-25T23:52:51Z"
     },
     "decisions/2026-10-17-composite-org-foreign-keys.md": {
       "lastCommitDate": "2026-10-22T00:32:59Z"
@@ -59,34 +59,58 @@
       "lastCommitDate": "2026-10-17T00:17:17+02:00"
     },
     "getting-started/quickstart-cloudflare.md": {
-      "lastCommitDate": "2026-10-20T20:40:22Z"
+      "lastCommitDate": "2026-10-26T15:19:33Z"
     },
     "getting-started/quickstart-docker.md": {
-      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+      "lastCommitDate": "2026-10-26T15:19:33Z"
     },
     "guides/_category_.json": {
       "lastCommitDate": "2026-10-17T00:17:17+02:00"
     },
     "guides/mirror-vendor-repositories.md": {
-      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+      "lastCommitDate": "2026-10-26T03:51:54Z"
     },
     "migration/_category_.json": {
       "lastCommitDate": "2026-10-17T00:17:17+02:00"
     },
     "migration/from-packeton.md": {
-      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+      "lastCommitDate": "2026-10-26T04:38:40Z"
     },
     "migration/from-private-packagist.md": {
-      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+      "lastCommitDate": "2026-10-26T15:19:35Z"
     },
     "migration/from-satis.md": {
-      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+      "lastCommitDate": "2026-10-26T04:38:40Z"
     },
     "operations/_category_.json": {
       "lastCommitDate": "2026-10-17T00:17:17+02:00"
     },
     "operations/backup-and-upgrades.md": {
-      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+      "lastCommitDate": "2026-10-26T04:43:04Z"
+    },
+    "operations/observability.md": {
+      "lastCommitDate": "2026-10-26T00:45:13Z"
+    },
+    "operations/otel-collector/elasticsearch.yaml": {
+      "lastCommitDate": "2026-10-25T23:27:10Z"
+    },
+    "operations/otel-collector/graylog.yaml": {
+      "lastCommitDate": "2026-10-25T23:27:10Z"
+    },
+    "operations/otel-collector/influxdb.yaml": {
+      "lastCommitDate": "2026-10-25T23:27:10Z"
+    },
+    "operations/otel-collector/ingress-auth.yaml": {
+      "lastCommitDate": "2026-10-25T23:27:10Z"
+    },
+    "operations/otel-collector/loki.yaml": {
+      "lastCommitDate": "2026-10-25T23:27:10Z"
+    },
+    "operations/otel-collector/prometheus.yaml": {
+      "lastCommitDate": "2026-10-25T23:27:10Z"
+    },
+    "operations/otel-collector/tempo.yaml": {
+      "lastCommitDate": "2026-10-25T23:27:10Z"
     },
     "operations/restore-rehearsal.md": {
       "lastCommitDate": "2026-10-20T18:30:59Z"
@@ -95,10 +119,13 @@
       "lastCommitDate": "2026-10-17T00:17:17+02:00"
     },
     "reference/access-model.md": {
-      "lastCommitDate": "2026-10-17T00:17:17+02:00"
+      "lastCommitDate": "2026-10-26T03:51:54Z"
     },
     "reference/api.md": {
       "lastCommitDate": "2026-10-22T10:36:40Z"
+    },
+    "reference/install-speed.md": {
+      "lastCommitDate": "2026-10-25T23:57:40Z"
     },
     "reference/plugin-authoring.md": {
       "lastCommitDate": "2026-10-18T21:54:03Z"
@@ -109,8 +136,20 @@
     "security-and-residency.md": {
       "lastCommitDate": "2026-10-24T06:36:20Z"
     },
+    "troubleshooting/_category_.json": {
+      "lastCommitDate": "2026-10-26T04:43:04Z"
+    },
+    "troubleshooting/invalid-auth-json.md": {
+      "lastCommitDate": "2026-10-26T04:43:04Z"
+    },
+    "troubleshooting/magento-http-401.md": {
+      "lastCommitDate": "2026-10-26T04:43:04Z"
+    },
+    "troubleshooting/magento-invalid-credentials.md": {
+      "lastCommitDate": "2026-10-26T04:43:04Z"
+    },
     "workers-install.md": {
-      "lastCommitDate": "2026-10-22T09:32:41Z"
+      "lastCommitDate": "2026-10-26T04:43:04Z"
     }
   }
 }

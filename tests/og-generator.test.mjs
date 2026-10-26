@@ -10,7 +10,8 @@ const {generateCards, wrapTitle, titleWidth, cardLayout, guardTitle} = require('
 const tokens = require('../vendor/design-system/tokens.json');
 
 test('social titles keep readable type and reject overflow instead of truncating', () => {
-  for (const {title} of Object.values(require('../src/data/page-metadata.json'))) {
+  for (const page of Object.values(require('../src/data/page-metadata.json'))) {
+    const title = page.cardTitle ?? page.title;
     const {titleSize, maxWidth} = cardLayout(tokens);
     const lines = wrapTitle(title, titleSize, maxWidth);
     assert.equal(lines.join(' '), title);

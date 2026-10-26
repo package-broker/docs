@@ -45,22 +45,22 @@
     "pngSha256": "3635520f36dd9e918da3cdcf9b1c872334269b103bfad723098571e973c4ace4"
   },
   "static/img/og/docs-ci-github-actions.png": {
-    "sourceSha256": "a56a88e87a965d0f1f2269ef227796c78e4b92ccca0df1a55786fa6de6c680e8",
+    "sourceSha256": "daa6aabbe2974c1283453612b09c7e1a1fad1a267510a60805bce46ed96c9f85",
     "fontSha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
     "pngSha256": "2e3446cb5c5ed965aaff93a003748228e71579944ce9fdf7a4acf58fc69a8449"
   },
   "static/img/og/docs-ci-gitlab-ci.png": {
-    "sourceSha256": "1f80e404bfa7071dec273a22055ff9b2699161b4d0fe9f70b1bbce018178761d",
+    "sourceSha256": "982785b08b77e4b633cd0b1533356e97e55ad7e9a6661f2ca63c2dfdb3550987",
     "fontSha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
     "pngSha256": "e5456ca26cb9c55e6b5c0d624ce4ac4cef43ccd3b8381cb4d4d4f6ea09cf40bd"
   },
   "static/img/og/docs-clients-composer.png": {
-    "sourceSha256": "710b8e24c83dc26f58bb7eaa6018773aa1128dab3506de6936ad7a75cffc90b5",
+    "sourceSha256": "06417adfb2dbb7e2f3b3e5ab6a31bb726339974c6fa2de8e1892e0e4892ecb1e",
     "fontSha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
     "pngSha256": "a599edc26647b063022a0c63b1dde3b7d6238b26c2c9adf515e0e9f7001ae098"
   },
   "static/img/og/docs-clients-npm-pnpm-yarn.png": {
-    "sourceSha256": "1987de2054f08134623fc150c8170728f0b1f4d643f23d08f0aa7b8b64eab3fb",
+    "sourceSha256": "814c1e4955824634d4634cf67441261bd32d97f092f61ff11a395e0274aff571",
     "fontSha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
     "pngSha256": "add41f1789a7278f6cc74f4eb866997c1de81c35472e2ed139eb7f44d3eebecb"
   },
@@ -120,39 +120,44 @@
     "pngSha256": "4ccfdc35a4de4081525fe69f06d6ba04809d34baa7f7a087800206612cb01fb9"
   },
   "static/img/og/docs-getting-started-quickstart-cloudflare.png": {
-    "sourceSha256": "58e60c8f136e1d645c299476df4d5aee289e184dccb921fa3175b63da36b4463",
+    "sourceSha256": "de21f206ac2404ba2474e58d8aa57e51933944093d45296b32fb97f4e8885a44",
     "fontSha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
     "pngSha256": "38d48d977c6992368fff845acc275dacc451eb7aa806b3daa8fd379972fec2fc"
   },
   "static/img/og/docs-getting-started-quickstart-docker.png": {
-    "sourceSha256": "4b26e8f73d0857ea5527deb6e10a551e61f8fcc62f85aa2a695a3c239211b24d",
+    "sourceSha256": "4b7961363ea4da86425def0b6abbdb4171d595b29678bc76e98288ee8c82e216",
     "fontSha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
     "pngSha256": "54a57fc1a87c41436ecd83c4f1527123c9927a73a58a8fe07e251a30eec2ab1b"
   },
   "static/img/og/docs-guides-mirror-vendor-repositories.png": {
-    "sourceSha256": "a2fd451d6bfe24a567601963b15318d4b7f3dcd39504a28f1bc422a08877190a",
+    "sourceSha256": "4bf43ba9f83fd98200b2b25e2b330d3b5616fc0d79c647d5230fc3ab78796060",
     "fontSha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
     "pngSha256": "b2d6b5e811707450cdb31ef1c32bb98203f53e3a437181aed44d7c9392e9f615"
   },
   "static/img/og/docs-migration-from-packeton.png": {
-    "sourceSha256": "ff46a8f3b4e3ca6729e0ff42d345dcd0ea5debee34a3921cea34258fb686f40b",
+    "sourceSha256": "a9e97ce713e1ecc5bdcb36750b0cdc2c067c4a99ce02fc99c6083d243dfb1eec",
     "fontSha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
     "pngSha256": "b117bf4e56ca2617a9dbc725dc77416747ea2371ca7780b2bd10e7548733d0ae"
   },
   "static/img/og/docs-migration-from-private-packagist.png": {
-    "sourceSha256": "c7989f59720ee59c31285c0c7c31d03c00f13bd4e92196a136fe715f42ba20aa",
+    "sourceSha256": "3abf7278c20e2bd8552f5257994f163e3e1a37ec4510438a37f7971c5dc86061",
     "fontSha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
     "pngSha256": "de3943bc3faa12f59f466252903cb62ef07139f64c08511f686dd4119cab25d2"
   },
   "static/img/og/docs-migration-from-satis.png": {
-    "sourceSha256": "0b02f2b723cb4956cfe7adffdc0bdec490541db0bf9770cae45804625ca994bf",
+    "sourceSha256": "2675f2334b0f3a7eea8a4449f2f4d7fc71cb88354e5b486ef25a7f155a72c714",
     "fontSha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
     "pngSha256": "58ba20f50a14612c63227b61e01801bf80ab90d1a35cd9d07cce8961ffe10cb2"
   },
   "static/img/og/docs-operations-backup-and-upgrades.png": {
-    "sourceSha256": "e22518445c55892b884cf10d37e6977cd05d3fbb95975aec9478e7596c61f3a8",
+    "sourceSha256": "5d59db39dbcc9792b5187adc188a8822995f1c7264849b680901f29ab2130c72",
     "fontSha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
     "pngSha256": "df6c1694a83a882723434e359a495a0c5418dd24f5deeb2e7d2ae4730cb31a82"
+  },
+  "static/img/og/docs-operations-observability.png": {
+    "sourceSha256": "013576d2f0845428852a755eb0d3eeb2a648db670f14f9bcc05152d3c1dfd519",
+    "fontSha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
+    "pngSha256": "16d6c6bfd50c33d0a760d437aa2c63c6b07b1cdf8726f24f2bee6184bfae4bb3"
   },
   "static/img/og/docs-operations-restore-rehearsal.png": {
     "sourceSha256": "eee40299658c32156c93a71a40b926f8e5487672f9fd09d2416211ea195c6c33",
@@ -160,7 +165,7 @@
     "pngSha256": "b3b11dc4cbd02e59a3d1c7aa336dd2fe1e58d71490274d963b091e61ba1cca37"
   },
   "static/img/og/docs-reference-access-model.png": {
-    "sourceSha256": "a346814afadbf440340efe65d5823b9bbe618a2f35af25de1fe84f43d8daf8e0",
+    "sourceSha256": "ae97f9fa5e182ba9232964c23ab6fb2c96009d016583f3a7cd98172844aa1d2f",
     "fontSha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
     "pngSha256": "f89e325090150fa15e41cca6926cae3706b7b7e12749a82be00f67edab87c185"
   },
@@ -168,6 +173,11 @@
     "sourceSha256": "19362f6fee8fec8eb8754c1f57546fa6e6a09e6705391be9ab40081bf06b1969",
     "fontSha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
     "pngSha256": "6d8536c35339631bf544da6491c963461821c240e8a0bd1e01308ae2204816d2"
+  },
+  "static/img/og/docs-reference-install-speed.png": {
+    "sourceSha256": "29a3b8501d7772ea6ee7dee3ce18904a288bec5e37c114c44afdc33efe257e06",
+    "fontSha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
+    "pngSha256": "379015c3a6382ff64e0cb2f16e6b497e70a3ad6a9f6d1023690b5d27c9d5bdce"
   },
   "static/img/og/docs-reference-plugin-authoring.png": {
     "sourceSha256": "c3c67c71399d7153fd6a9b59906fae65ef5f00e6c96367247ca3bf6bef06d269",
@@ -183,6 +193,21 @@
     "sourceSha256": "26b1a9240e6697572ee7abfed10daa1e0442a1a149e181c7989a18b4922517b7",
     "fontSha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
     "pngSha256": "0967463b016796651882a48e02420248e74d5205e0dba79088df4a4ee6d5c7ff"
+  },
+  "static/img/og/docs-troubleshooting-invalid-auth-json.png": {
+    "sourceSha256": "0b4ce8e659d853b93abf50b5dc17bc1fa22b75b14327227b9b0c72b7b5826510",
+    "fontSha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
+    "pngSha256": "31b7f0e7546e6a3e93dc60df85813f4793842ce4bad59e5d050251841acc8e0e"
+  },
+  "static/img/og/docs-troubleshooting-magento-http-401.png": {
+    "sourceSha256": "fbc2c618502f99f291e109c892a1dc13e626c1ad22248ecd5fc0f4ae90a6302f",
+    "fontSha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
+    "pngSha256": "0ef3f8167ea993aad6f054a46b54b15afc0443b6678b1b6685cf8085f1de0b86"
+  },
+  "static/img/og/docs-troubleshooting-magento-invalid-credentials.png": {
+    "sourceSha256": "150ff6dc0ceb830a296aaa5b5385a779753d33722005d96a736c6f07c0b6978d",
+    "fontSha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
+    "pngSha256": "4950d52f998ebddc0a9b3cf75c5a54995df624356bb3068c63a0fab401b93da6"
   },
   "static/img/og/docs-workers-install.png": {
     "sourceSha256": "734dd0438a404b051bb0c4fc6b56eb4102c6fe0447e8ac72d6bcf2ce713720ef",
