@@ -1,6 +1,6 @@
 .benefits { display: grid; gap: var(--pb-space-3); margin: var(--pb-space-5) 0 0; padding: 0; list-style: none; }
 .benefits li { display: flex; gap: var(--pb-space-3); align-items: flex-start; }
-.actions { margin-top: var(--pb-space-6); }
+.actions { margin-top: var(--pb-space-6); align-items: flex-start; }
 .legend { margin-top: var(--pb-space-3); }
 .seats { display: flex; gap: var(--pb-space-4); align-items: flex-start; }
 .hero { container-type: inline-size; }
@@ -8,3 +8,8 @@
 .hero h1.headline { max-width: none; font-size: min(var(--pb-font-size-4xl), 100cqi / 14.8); }
 .hero h1.headline > span { display: block; white-space: nowrap; }
 .highlight { color: var(--pb-color-brand); }
+
+.releaseNotification { max-width: 100%; border: var(--pb-space-px) solid var(--pb-color-border-control); border-radius: var(--pb-radius-lg); padding: var(--pb-space-3) var(--pb-space-4); }
+.releaseNotification summary { cursor: pointer; font-weight: var(--pb-font-weight-semibold); }
+.releaseNotification ol { margin-top: var(--pb-space-3); }
+.releaseNotification p:last-child { margin-bottom: 0; }

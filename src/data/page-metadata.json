@@ -1,7 +1,7 @@
 {
   "/": {
-    "title": "Private Composer and npm registry",
-    "description": "Private Composer and npm registry for Magento and PHP agencies: one token per developer, client keys in the broker, stored archives for deploys.",
+    "title": "Self-hosted private Composer and npm registry",
+    "description": "A self-hosted private Composer and npm registry with role-based access per project: one token per developer, vendor keys kept in the broker.",
     "cardSupport": "Client keys stay in the broker, not on laptops."
   },
   "/agencies": {
