@@ -1,11 +1,12 @@
 import {useRef, useState, type KeyboardEvent} from 'react';
 import Link from '@docusaurus/Link';
 import {Copy} from 'lucide-react';
+import {runtimes as runtimeOptions} from '../../data/entity';
 import {dockerCommands, dockerQuickstart, dockerQuickstartPublished, releaseStatus, repository, workersCommands, workersQuickstartDoc, workersQuickstartPublished} from '../../data/landing';
 
 const runtimes = [
-  {id: 'workers', label: 'Workers', commands: workersCommands, href: workersQuickstartDoc, published: workersQuickstartPublished},
-  {id: 'docker', label: 'Docker', commands: dockerCommands, href: dockerQuickstart, published: dockerQuickstartPublished},
+  {id: 'workers', label: 'Cloudflare Workers', commands: workersCommands, href: workersQuickstartDoc, published: workersQuickstartPublished},
+  {id: 'docker', label: 'Node host (Docker)', commands: dockerCommands, href: dockerQuickstart, published: dockerQuickstartPublished},
 ];
 
 export default function Quickstart() {
@@ -35,7 +36,7 @@ export default function Quickstart() {
   return (
     <section className="pb-quickstart" id="quickstart" aria-labelledby="qs-title">
       <h2 id="qs-title">Quickstart</h2>
-      <p>Choose a runtime. Install Node 24 and pnpm, then clone the broker repository with the commands below.</p>
+      <p>Choose {runtimeOptions}, then clone the broker repository with the commands below.</p>
       <p className="pb-legend">{releaseStatus}. Build from source.</p>
       <div className="pb-tabs">
         <div role="tablist" aria-label="Runtime">
@@ -50,13 +51,23 @@ export default function Quickstart() {
         {runtimes.map((runtime, index) => (
           <div key={runtime.id} role="tabpanel" id={`panel-${runtime.id}`} aria-labelledby={`tab-${runtime.id}`}
             tabIndex={0} hidden={selected !== index}>
+            <p><strong>Before you start:</strong></p>
+            <ul>
+              <li>Git, Node 24 or later, pnpm, PHP compatible with your package and Composer 2.</li>
+              <li>A private Composer package and its vendor credentials.</li>
+              {runtime.id === 'workers' ? <>
+                <li>Workers Paid, Queues, R2 and Analytics Engine enabled; an account Workers subdomain registered in the dashboard.</li>
+                <li>An account API token with Workers Scripts Edit, D1 Edit, Workers R2 Storage Edit, Queues Edit and Account Analytics Read permissions.</li>
+              </> : <li>Docker Engine or Desktop with a running daemon and Linux container support.</li>}
+            </ul>
+            <p><Link className="pb-link" to={`${runtime.href}#what-you-need`}>{runtime.label} prerequisites</Link></p>
             {runtime.id === 'workers' ? (
-              <p>Needs the Workers Paid plan, with <code>CLOUDFLARE_ACCOUNT_ID</code> and <code>CLOUDFLARE_API_TOKEN</code> set in your environment. Use paths outside the checkout for the master key and setup token files; setup creates them for a new deployment.</p>
+              <p>Set <code>CLOUDFLARE_ACCOUNT_ID</code> and <code>CLOUDFLARE_API_TOKEN</code> in your environment. Use paths outside the checkout for the master key and setup token files; setup creates them for a new deployment.</p>
             ) : (
               <p>Container image publishing (GHCR) is planned; build the image from the repository. Generate a master key with <code>pnpm pb secrets generate-master-key</code> and store it for recovery before starting.</p>
             )}
             <div className="pb-code">
-              <div className="pb-code__bar"><span>Shell, {runtime.id === 'workers' ? 'Cloudflare Workers' : 'Docker build and run'}</span>
+              <div className="pb-code__bar"><span>Shell, {runtime.id === 'workers' ? 'Cloudflare Workers' : 'Node host (Docker) build and run'}</span>
                 <button type="button" className="pb-btn pb-btn--ghost pb-btn--sm" aria-label={`Copy ${runtime.label} commands`}
                   onClick={() => void copy(runtime)}><Copy className="pb-icon pb-icon--sm" aria-hidden="true"/><span>Copy</span></button>
               </div>
