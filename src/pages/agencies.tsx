@@ -61,7 +61,7 @@ export default function Agencies() {
     <PageSection id="start" title="Try one client project before switching the agency">
       <div className="pb-cta-band">
         <p>Evaluate alone with a local administrator and a token; no identity provider is needed for that first trial. Connect your identity provider for the team, then check one project’s source selection and install access before moving more clients.</p>
-        <p>Migration guides are being written. Ask about your current setup before switching.</p>
+        <p>Migration guides cover <Link className="pb-link" to="/docs/migration/from-private-packagist">Private Packagist</Link>, <Link className="pb-link" to="/docs/migration/from-satis">Satis</Link> and <Link className="pb-link" to="/docs/migration/from-packeton">Packeton</Link>. Ask about your current setup before switching.</p>
         <div className="pb-actions"><Link className="pb-btn pb-btn--primary" to={workersQuickstart}>Start the quickstart</Link><a className="pb-btn" href={`mailto:${contacts.support}`}>Ask about your setup</a><a className="pb-link" href={`${repository}/releases`}>Watch releases on GitHub</a></div>
       </div>
     </PageSection>

@@ -1,7 +1,7 @@
 export const repository = 'https://github.com/package-broker/broker';
 // Enable full-guide links after their synced content replaces the stub.
-export const workersQuickstartPublished = false;
-export const dockerQuickstartPublished = false;
+export const workersQuickstartPublished = true;
+export const dockerQuickstartPublished = true;
 export const workersQuickstartDoc = '/docs/getting-started/quickstart-cloudflare';
 export const workersQuickstart = workersQuickstartPublished ? workersQuickstartDoc : '/#quickstart';
 export const dockerQuickstart = '/docs/getting-started/quickstart-docker';

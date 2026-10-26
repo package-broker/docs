@@ -11,7 +11,7 @@
       "sourceUrl": "https://github.com/composer/satis",
       "migration": {
         "href": "/docs/migration/from-satis",
-        "published": false
+        "published": true
       },
       "fit": {
         "value": "Choose Satis when static Composer files are enough and you already protect them on your web server. To keep client outputs separate, build and protect a separate output for each client. You do not need a running registry application for that setup.",
@@ -27,7 +27,7 @@
       "sourceUrl": "https://packagist.com/docs",
       "migration": {
         "href": "/docs/migration/from-private-packagist",
-        "published": false
+        "published": true
       },
       "fit": {
         "value": "Choose Private Packagist Cloud when you would rather pay for a hosted Composer service than operate your agency\u2019s registry. Its pricing counts users and suborganizations.",
@@ -43,7 +43,7 @@
       "sourceUrl": "https://docs.packeton.org/",
       "migration": {
         "href": "/docs/migration/from-packeton",
-        "published": false
+        "published": true
       },
       "fit": {
         "value": "Choose Packeton when your agency needs a self-hosted PHP package repository, prefers the MIT licence and wants its documented Docker deployment.",
