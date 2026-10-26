@@ -86,6 +86,7 @@ function loadComponent(relative) {
   const module = {exports: {}};
   const localRequire = createRequire(filename);
   const load = specifier => {
+    if (specifier.endsWith('.module.css')) return {__esModule: true, default: {page: 'comparison-page'}};
     if (specifier === '@docusaurus/Link') return ({to, ...props}) => React.createElement('a', {...props, href: to});
     if (specifier === '@docusaurus/Head') return ({children}) => children;
     if (specifier === '../marketing/MarketingLayout') return {
@@ -93,7 +94,7 @@ function loadComponent(relative) {
       default: ({children}) => React.createElement('main', null, children),
       PageSection: ({id, title, children}) => React.createElement('section', {id}, React.createElement('h2', null, title), children),
     };
-    if (specifier === '../../data/landing') return {workersQuickstart: '/#quickstart'};
+    if (specifier === '../../data/landing') return {workersQuickstart: '/#quickstart', repository: 'https://example.com/test-repository'};
     if (specifier === './ComparisonTable' || specifier === '../compare/ComparisonTable') return loadComponent('../src/components/compare/ComparisonTable.tsx');
     return localRequire(specifier);
   };
@@ -105,7 +106,7 @@ test('unknown cells never render stored claims; both views read the same data', 
   const {default: Table, CellValue} = loadComponent('../src/components/compare/ComparisonTable.tsx');
   const unknown = {...json.criteria[0].cells[1], verified: false, value: 'Unsupported secret claim'};
   const html = renderToStaticMarkup(React.createElement(CellValue, {cell: unknown, productName: 'Satis', criterion: 'Authentication'}));
-  assert.match(html, /Not verified/); assert.doesNotMatch(html, /Unsupported secret claim/);
+  assert.match(html, /Unknown: not confirmed by the recorded source/); assert.doesNotMatch(html, /Unsupported secret claim/);
   const cell = json.criteria.find(row => row.id === 'self-host').cells[1];
   const original = cell.value;
   try {
@@ -119,14 +120,23 @@ test('unknown cells never render stored claims; both views read the same data', 
   } finally {cell.value = original;}
 });
 
-test('each comparison has a sourced fit case, legal notice and migration link', () => {
+test('each comparison has both fit cases, legal notice and a published migration destination', () => {
   const {default: Page} = loadComponent('../src/components/compare/ComparisonPage.tsx');
   for (const product of json.products.filter(item => item.id !== 'package-broker')) {
     const render = () => renderToStaticMarkup(React.createElement(Page, {productId: product.id}));
     const html = render();
     assert.match(html, /fits better/); assert.match(html, /trademarks/);
     // Shared site Head metadata is checked against built HTML in tests/seo.test.mjs.
-    assert.ok(html.includes(`href="${product.migration.href}"`));
+    assert.match(html, /When Package Broker fits better/);
+    assert.match(html, /one personal token/);
+    assert.match(html, /freelancer/);
+    assert.match(html, /Versions already installed through the broker/);
+    assert.match(html, /No seat counting/);
+    if (product.migration.published) assert.ok(html.includes(`href="${product.migration.href}"`));
+    else {
+      assert.ok(!html.includes(`href="${product.migration.href}"`));
+      assert.match(html, /href="https:\/\/example.com\/test-repository\/discussions"/);
+    }
   }
 });
 
