@@ -10,7 +10,7 @@
     "cardSupport": "For agencies"
   },
   "/compare/private-packagist": {
-    "title": "Self-hosted Private Packagist alternative compared",
+    "title": "Self-hosted Private Packagist alternative",
     "description": "Compare Package Broker and Private Packagist on authentication, project isolation, npm, SSO, hosting and licence. Read sources and checked dates.",
     "cardSupport": "Compare"
   },

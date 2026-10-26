@@ -69,17 +69,3 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
-
-.faq details {
-  padding-block: var(--pb-space-4);
-  border-bottom: var(--pb-space-px) solid var(--pb-color-border);
-}
-
-.faq summary {
-  cursor: pointer;
-  font-weight: var(--pb-font-weight-semibold);
-}
-
-.faq details p {
-  margin-block: var(--pb-space-4) 0;
-}

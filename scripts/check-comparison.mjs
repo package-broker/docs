@@ -28,7 +28,7 @@ export const comparisonSchema = {
   ...object({
     productRevision: {...text, pattern: '^[0-9a-f]{40}$'},
     products: array(object({
-      id: {enum: productIds}, name: text, sourceUrl: url,
+      id: {enum: productIds}, name: text, sourceUrl: url, intro: text,
       migration: object({href: {...text, pattern: '^/docs/migration/from-(satis|private-packagist|packeton)$'}, published: {type: 'boolean'}}),
       fit: object(provenance),
     }, ['id', 'name']), 4),
