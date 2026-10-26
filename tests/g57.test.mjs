@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync, writeFileSync, mkdirSync, mkdtempSync, rmSync} from 'node:fs';
 import path from 'node:path';
+import {tmpdir} from 'node:os';
 import {checkCorpusLinks, checkIndexVocabulary} from '../scripts/check-llms.mjs';
 import {createRequire} from 'node:module';
 import {rewriteDocLinks, rewriteCorpusLinks} from '../scripts/curate-llms.mjs';
@@ -112,7 +113,7 @@ test('only negated v1 free-tier claims are exempt from the vocabulary gate', () 
 
 test('sync dates fail clearly when invalid and sitemap dates remain in memory', async () => {
   const {syncDates, createSyncMetadata} = require('../plugins/sync-dates.cjs');
-  const site = mkdtempSync(path.resolve('node_modules/.g57-dates-'));
+  const site = mkdtempSync(path.join(tmpdir(), 'g57-dates-'));
   try {
     mkdirSync(path.join(site, 'docs-content'));
     const manifest = path.join(site, 'docs-content/.sync.json');
