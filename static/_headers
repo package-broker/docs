@@ -14,5 +14,5 @@
 /llms-full.txt
   Content-Type: text/plain; charset=utf-8
 
-https://*.workers.dev/*
+https://:worker.:subdomain.workers.dev/*
   X-Robots-Tag: noindex
