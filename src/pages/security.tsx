@@ -1,4 +1,5 @@
 import Link from '@docusaurus/Link';
+import useBrokenLinks from '@docusaurus/useBrokenLinks';
 import MarketingLayout, {PageSection} from '../components/marketing/MarketingLayout';
 import {operatorResponsibilities, privateReportingUrl, productFile, publishedClaim, securityPolicyUrl, tokenKinds} from '../data/security-claims';
 import contacts from '../data/contacts.json';
@@ -10,6 +11,8 @@ function Claim({id, className}: {id: string; className?: string}) {
 }
 
 export default function Security() {
+  const {collectAnchor} = useBrokenLinks();
+  ['disclosure', 'residency', 'operator'].forEach(collectAnchor);
   return <MarketingLayout title="Security at Package Broker" description={publishedClaim('overview').text}>
     <div className="pb-hero pb-hero--page"><p className="pb-eyebrow">Security</p><h1>Security at Package Broker</h1><Claim id="overview" className="pb-hero__sub"/><Claim id="release-status" className="pb-page-meta"/></div>
     <PageSection id="disclosure" title="Reporting a vulnerability">

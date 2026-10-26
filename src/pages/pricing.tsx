@@ -17,7 +17,7 @@ export default function Pricing() {
     <PageSection id="operations" title="What you run">
       <p>Workers deployments use Workers, D1, R2, Queues and Cron Triggers. Node deployments use the Node bundle, SQLite and a filesystem blob store, or an S3-compatible bucket.</p>
       <p>You own backups, master key recovery, upgrades and the identity provider. On Node, you also operate the host. Organization admins and the master key holder can use every client’s keys; rotate them when an admin leaves.</p>
-      <p><Link className="pb-link" to="/security">Security model and operator responsibilities</Link> · <Link className="pb-link" to="/agencies#cost">Costs for your agency</Link></p>
+      <p><Link className="pb-link" to="/security#operator">Security model and operator responsibilities</Link> · <Link className="pb-link" to="/agencies#cost">Costs for your agency</Link></p>
     </PageSection>
   </MarketingLayout>;
 }
