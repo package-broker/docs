@@ -1,0 +1,6 @@
+.notice {
+  padding: var(--pb-space-4) var(--pb-space-6);
+  border-block: var(--pb-space-px) solid var(--pb-color-border);
+  font-size: var(--pb-font-size-sm);
+}
+.notice p { margin: var(--pb-space-2) 0; }

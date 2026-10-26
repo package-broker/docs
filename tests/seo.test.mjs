@@ -168,3 +168,19 @@ test('social card gate rejects missing, stale, oversized and malformed PNGs', ()
     assert.throws(() => checkCards(outDir), /cover every card/);
   });
 });
+
+test('LLM gate rejects stale Facts and contributor instructions in either output', () => {
+  withBuildFixture(outDir => {
+    for (const file of ['llms.txt', 'llms-full.txt']) {
+      const dest = path.join(outDir, file);
+      const original = readFileSync(dest, 'utf8');
+      writeFileSync(dest, original.replace('## Facts', '## Old facts'));
+      assert.throws(() => checkLlms(outDir), /generated Facts/);
+      writeFileSync(dest, original);
+    }
+    const fullPath = path.join(outDir, 'llms-full.txt');
+    const {pages} = JSON.parse(readFileSync(path.join(outDir, 'page-metadata.json'), 'utf8'));
+    writeFileSync(fullPath, `${readFileSync(fullPath, 'utf8')}\n## ${pages['/docs/CONTRIBUTING-DOCS'].corpusTitle}\nInternal writing rules.\n`);
+    assert.throws(() => checkLlms(outDir), /Contributor instructions/);
+  });
+});

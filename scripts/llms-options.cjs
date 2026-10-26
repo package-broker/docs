@@ -1,6 +1,32 @@
 const {readFileSync, readdirSync} = require('node:fs');
 const path = require('node:path');
+const {definition, runtimes, licence, repositoryUrl, organizationUrl, maintainer} = require('../src/data/entity.ts');
+const {releaseStatus} = require('../src/data/landing.ts');
+const comparison = require('../src/data/comparison.json');
 const pages = require('../src/data/page-metadata.json');
+
+const {contributorDoc} = require('../plugins/doc-policy.cjs');
+const excludedDoc = contributorDoc.route;
+const costFacts = 'No licence fee and no per-user, per-project or per-client charge. You pay for hosting and operations, from USD 5 a month on Workers Paid plus usage, or your own Node host.';
+
+function factsBlock() {
+  const rows = comparison.products.filter(product => product.fit).map(product =>
+    `| [${product.name}](${product.fit.sourceUrl}) | ${product.fit.value} | ${product.fit.lastVerified} |`);
+  return `## Facts
+
+- ${definition}
+- Runtimes: ${runtimes}.
+- Release status: ${releaseStatus}.
+- Licence: [${licence.name}](${licence.url}).
+- Repository: ${repositoryUrl}. Organization: ${organizationUrl}. Maintainer: [${maintainer.name}](${maintainer.url}).
+- Costs: ${costFacts} See [Hosting and costs](https://package.broker/#cost) (checked 2026-10-26).
+
+### Comparison summary
+
+| Alternative | Fit | Checked |
+| --- | --- | --- |
+${rows.join('\n')}`;
+}
 
 function plannedDocFiles(siteDir = path.join(__dirname, '..')) {
   const docsDir = path.join(siteDir, 'docs-content');
@@ -11,7 +37,7 @@ function plannedDocFiles(siteDir = path.join(__dirname, '..')) {
 }
 
 function llmsOptions(siteDir = path.join(__dirname, '..')) {
-  const ignoreFiles = plannedDocFiles(siteDir);
+  const ignoreFiles = [...plannedDocFiles(siteDir), contributorDoc.filename];
   const handWritten = readFileSync(path.join(siteDir, 'content/llms-hand-written.md'), 'utf8').trim();
   // The installed plugin reads Markdown, not React marketing pages. Build this
   // section from the same metadata used in their HTML instead of indexing TSX.
@@ -22,15 +48,15 @@ function llmsOptions(siteDir = path.join(__dirname, '..')) {
     docsDir: [{path: 'docs-content', routeBasePath: 'docs', label: 'Documentation'}],
     ignoreFiles,
     title: 'Package Broker',
-    description: 'Self-host private Composer and npm packages on Cloudflare Workers or Node with project grants and one token policy. Package Broker 2.0 is in development.',
+    description: definition,
     generateLLMsTxt: true,
     generateLLMsFullTxt: true,
     includeBlog: false,
     addMdExtension: false,
     excludeImports: true,
-    rootContent: `${handWritten}\n\n## Website\n\n${marketing.join('\n')}`,
-    fullRootContent: handWritten,
+    rootContent: `${factsBlock()}\n\n${handWritten}\n\n## Website\n\n${marketing.join('\n')}`,
+    fullRootContent: `${factsBlock()}\n\n${handWritten}`,
   };
 }
 
-module.exports = {llmsOptions, plannedDocFiles};
+module.exports = {llmsOptions, plannedDocFiles, factsBlock, excludedDoc, costFacts};

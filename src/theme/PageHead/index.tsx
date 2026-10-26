@@ -3,7 +3,9 @@ import {useLocation} from '@docusaurus/router';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import {usePluginData} from '@docusaurus/useGlobalData';
 
-type Page = {title: string; description: string; image: string};
+import {definition, operatingSystems, licence, repositoryUrl, organizationUrl, maintainer} from '@site/src/data/entity';
+
+type Page = {title: string; description: string; image: string; noIndex?: boolean; dateModified?: string};
 
 // Mount with the page metadata, after its default Head. Docusaurus
 // SiteMetadata remains the sole canonical owner.
@@ -17,15 +19,17 @@ export default function PageHead() {
   const schema = pathname === '/' ? {
     '@context': 'https://schema.org',
     '@graph': [
-      {'@type': 'SoftwareApplication', name: siteTitle, applicationCategory: 'DeveloperApplication', operatingSystem: 'Cloudflare Workers, Node.js', url, description: page.description, maintainer: {'@type': 'Person', name: 'lbajsarowicz', url: 'https://github.com/lbajsarowicz'}},
-      {'@type': 'Organization', name: siteTitle, url, logo: `${url}/img/logo.svg`},
+      {'@type': 'SoftwareApplication', name: siteTitle, applicationCategory: 'DeveloperApplication', operatingSystem: operatingSystems, url, description: definition, license: licence.url, sameAs: [repositoryUrl], author: {'@type': 'Person', ...maintainer}, maintainer: {'@type': 'Person', ...maintainer}},
+      {'@type': 'Organization', name: siteTitle, url, logo: `${url}/img/logo.svg`, sameAs: [organizationUrl, repositoryUrl]},
     ],
   } : {
     '@context': 'https://schema.org',
     '@type': pathname.startsWith('/docs/') ? 'TechArticle' : 'WebPage',
+    ...(page.dateModified ? {dateModified: page.dateModified} : {}),
     name: page.title, headline: page.title, description: page.description, url: `${url}${pathname}`,
   };
   return <Head>
+    {page.noIndex && <meta name="robots" content="noindex, follow"/>}
     <title>{title}</title>
     <meta name="description" content={page.description}/>
     <meta property="og:title" content={title}/>

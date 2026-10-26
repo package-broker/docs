@@ -3,13 +3,16 @@ const overrides = require('../src/data/page-metadata.json');
 const {generateCards} = require('../scripts/og/generate.cjs');
 const {writeFile} = require('node:fs/promises');
 const path = require('node:path');
+const {contributorDoc} = require('./doc-policy.cjs');
+const {syncDates} = require('./sync-dates.cjs');
 
-module.exports = function pageMetadata(context) {
+module.exports = function pageMetadata(context, options = {}) {
   let snapshot;
   return {
     name: 'page-metadata',
     async allContentLoaded({allContent, actions}) {
       const pages = Object.fromEntries(Object.entries(overrides).filter(([route]) => !route.startsWith('/docs/')).map(([route, page]) => [route, {...page}]));
+      const dates = syncDates(context.siteDir);
       const planned = new Set(plannedDocFiles(context.siteDir).map(file => `@site/docs-content/${file}`));
       const docs = Object.values(allContent['docusaurus-plugin-content-docs'] ?? {}).flatMap(content => content.loadedVersions.flatMap(v => v.docs));
       for (const doc of docs) {
@@ -18,7 +21,11 @@ module.exports = function pageMetadata(context) {
           title: doc.title,
           description: doc.description,
           ...overrides[route],
+          source: doc.source.replace('@site/docs-content/', ''),
+          corpusTitle: doc.title,
           planned: planned.has(doc.source),
+          noIndex: route === contributorDoc.route,
+          dateModified: dates[doc.source.replace('@site/docs-content/', '')]?.lastCommitDate,
         };
       }
       for (const content of Object.values(allContent['docusaurus-plugin-content-pages'] ?? {})) {
@@ -34,6 +41,7 @@ module.exports = function pageMetadata(context) {
         }
         page.image = `/img/og/${route === '/' ? 'landing' : route.slice(1).replace(/[^a-z0-9-]/gi, '-')}.png`;
       }
+      options.onPagesLoaded?.(pages);
       actions.setGlobalData({pages});
       snapshot = {pages, docRoutes: docs.map(doc => doc.permalink.replace(/\/$/, ''))};
       await generateCards(context.siteDir, pages);

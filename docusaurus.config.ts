@@ -2,10 +2,14 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import {assertDocsSynced, isPlannedDoc} from './scripts/docs-content.cjs';
 import {docsLinks, footerLinks} from './src/data/landing';
+import {createSyncMetadata} from './plugins/sync-dates.cjs';
+import {contributorDoc} from './plugins/doc-policy.cjs';
 import {llmsOptions} from './scripts/llms-options.cjs';
 
 // Read on every config load: a missing sync must never render an empty docs site.
 assertDocsSynced();
+
+const syncMetadata = createSyncMetadata();
 
 const config: Config = {
   title: 'Package Broker',
@@ -26,7 +30,7 @@ const config: Config = {
   plugins: [
     './plugins/security-metadata.cjs',
     './plugins/comparison-validation.cjs',
-    './plugins/page-metadata.cjs',
+    ['./plugins/page-metadata.cjs', {onPagesLoaded: syncMetadata.setPages}],
     ['docusaurus-plugin-llms', llmsOptions()],
   ],
   i18n: {
@@ -69,7 +73,8 @@ const config: Config = {
         sitemap: {
           changefreq: 'weekly',
           priority: 0.5,
-          ignorePatterns: ['/tags/**', '/docs/tags/**', '/404', '/404.html', '/search'],
+          createSitemapItems: syncMetadata.sitemapItems,
+          ignorePatterns: [contributorDoc.route, '/tags/**', '/docs/tags/**', '/404', '/404.html', '/search'],
           filename: 'sitemap.xml',
         },
       } satisfies Preset.Options,

@@ -12,11 +12,11 @@
 /docs/concepts/authentication /docs/reference/access-model 301
 /docs/concepts/caching-storage /docs/architecture 301
 /docs/concepts/repositories /docs/guides/mirror-vendor-repositories 301
-/docs/contributing /docs/CONTRIBUTING-DOCS 301
+/docs/contributing https://github.com/package-broker/broker/blob/main/CONTRIBUTING.md 301
 /docs/deployment/overview /docs/getting-started/quickstart-cloudflare 301
 /docs/getting-started/composer-101 /docs/clients/composer 301
 /docs/getting-started/glossary /docs/getting-started/quickstart-cloudflare 301
-/docs/getting-started/quickstart-kubernetes /docs/getting-started/quickstart-cloudflare 301
+/docs/getting-started/quickstart-kubernetes /docs/getting-started/quickstart-docker 301
 /docs/installation/docker-compose /docs/getting-started/quickstart-docker 301
 /docs/installation/docker /docs/getting-started/quickstart-docker 301
 /docs/migration/legal-notice /compare/private-packagist 301
@@ -51,11 +51,11 @@
 /docs/concepts/authentication/ /docs/reference/access-model 301
 /docs/concepts/caching-storage/ /docs/architecture 301
 /docs/concepts/repositories/ /docs/guides/mirror-vendor-repositories 301
-/docs/contributing/ /docs/CONTRIBUTING-DOCS 301
+/docs/contributing/ https://github.com/package-broker/broker/blob/main/CONTRIBUTING.md 301
 /docs/deployment/overview/ /docs/getting-started/quickstart-cloudflare 301
 /docs/getting-started/composer-101/ /docs/clients/composer 301
 /docs/getting-started/glossary/ /docs/getting-started/quickstart-cloudflare 301
-/docs/getting-started/quickstart-kubernetes/ /docs/getting-started/quickstart-cloudflare 301
+/docs/getting-started/quickstart-kubernetes/ /docs/getting-started/quickstart-docker 301
 /docs/installation/docker-compose/ /docs/getting-started/quickstart-docker 301
 /docs/installation/docker/ /docs/getting-started/quickstart-docker 301
 /docs/migration/legal-notice/ /compare/private-packagist 301
@@ -77,3 +77,18 @@
 /docs/migration/from-private-packagist/ /docs/migration/from-private-packagist 301
 /docs/migration/from-satis/ /docs/migration/from-satis 301
 /docs/reference/api/ /docs/reference/api 301
+
+/getting-started/quickstart-docker /docs/getting-started/quickstart-docker 301
+/getting-started/quickstart-docker/ /docs/getting-started/quickstart-docker 301
+/getting-started/quickstart-cloudflare /docs/getting-started/quickstart-cloudflare 301
+/getting-started/quickstart-cloudflare/ /docs/getting-started/quickstart-cloudflare 301
+/reference/api /docs/reference/api 301
+/reference/api/ /docs/reference/api 301
+/intro /docs/architecture 301
+/intro/ /docs/architecture 301
+/docs/intro /docs/architecture 301
+/docs/intro/ /docs/architecture 301
+/docs/contributing/index https://github.com/package-broker/broker/blob/main/CONTRIBUTING.md 301
+/docs/contributing/index/ https://github.com/package-broker/broker/blob/main/CONTRIBUTING.md 301
+/docs/troubleshooting/index /docs/getting-started/quickstart-cloudflare 301
+/docs/troubleshooting/index/ /docs/getting-started/quickstart-cloudflare 301
