@@ -42,7 +42,7 @@ export default function Privacy() {
       <p>The site relies on your consent for Google Analytics. It does not treat Google Analytics as exempt from consent, so it asks first and keeps asking only if you have not chosen. You can refuse without losing access to anything on the site.</p>
     </PageSection>
     <PageSection id="retention" title="Retention">
-      <p>Retention follows the shortest option Google Analytics offers; ask <a className="pb-link" href={`mailto:${privacyAddress}`}>{privacyAddress}</a> for the current setting. Your consent choice stays in your browser until you change it or clear site data.</p>
+      <p>The maintainer sets data retention on the Google Analytics property; ask <a className="pb-link" href={`mailto:${privacyAddress}`}>{privacyAddress}</a> for the current setting. Your consent choice stays in your browser until you change it or clear site data.</p>
     </PageSection>
   </MarketingLayout>;
 }
