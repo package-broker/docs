@@ -11,7 +11,7 @@ export function checkLlms(outDir) {
   const index = readFileSync(path.join(outDir, 'llms.txt'), 'utf8');
   const full = readFileSync(path.join(outDir, 'llms-full.txt'), 'utf8');
   for (const [name, text] of [['llms.txt', index], ['llms-full.txt', full]]) {
-    assert.doesNotMatch(text, /\b(T|PB-|G0)\d+/i, `${name}: internal task ID`);
+    assert.doesNotMatch(text, /\b(T|PB-|G0)\d+/, `${name}: internal task ID`);
     assert.doesNotMatch(text, internalIds, `${name}: internal task ID`);
   }
   const prose = index.replace(/\]\([^)]+\)/g, ']');

@@ -74,6 +74,8 @@ test('LLM gate rejects internal IDs in both files, raw summaries and banned prod
         writeFileSync(dest, `${original}\n${id}\n`);
         assert.throws(() => checkLlms(outDir), /internal task ID/);
       }
+      writeFileSync(dest, `${original}\nt716 t741b pb-12 g06-32 doc1 t3.small\n`);
+      checkLlms(outDir);
       writeFileSync(dest, original);
     }
     const dest = path.join(outDir, 'llms.txt');
@@ -92,13 +94,14 @@ test('LLM gate rejects internal IDs in both files, raw summaries and banned prod
 test('LLM post-processing replaces internal references while preserving corpus limitations', () => {
   withBuildFixture(outDir => {
     const dest = path.join(outDir, 'llms-full.txt');
-    writeFileSync(dest, `${readFileSync(dest, 'utf8')}\nT716 preserves access checks. T741b adds no migration. PB-12, G06-32 and DOC1 are pending.\n`);
+    writeFileSync(dest, `${readFileSync(dest, 'utf8')}\nT716 preserves access checks. T741b adds no migration. PB-12, G06-32 and DOC1 are pending.\nt716 t741b pb-12 g06-32 doc1 t3.small\n`);
     curateLlms(outDir);
     checkLlms(outDir);
     const result = readFileSync(dest, 'utf8');
     assert.match(result, /preserves access checks/);
     assert.match(result, /adds no migration/);
     assert.match(result, /are pending/);
+    assert.match(result, /t716 t741b pb-12 g06-32 doc1 t3\.small/);
   });
 });
 
