@@ -7,7 +7,7 @@ export const workersQuickstart = workersQuickstartPublished ? workersQuickstartD
 export const dockerQuickstart = '/docs/getting-started/quickstart-docker';
 export const comparisonsPublished = true;
 export const agenciesPublished = true;
-export const releaseStatus = '2.0.0-rc.X, pre-release; no tagged release yet';
+export const releaseStatus = '2.0 is in development; no tagged release yet';
 
 export const docsLinks = [
   {label: 'Docs', to: '/docs/architecture'},
@@ -34,8 +34,10 @@ export const footerLinks = [
 ];
 
 // [verify command] Source: origin/main:packages/cli/src/cli.ts (USAGE), README.md,
-// docs/workers-install.md. Run in a broker source checkout; WEB-14 verifies deployment.
-export const workersCommands = `pnpm install --frozen-lockfile
+// docs/workers-install.md; clone URL from docs/decisions/release-and-versioning.md. Run in a broker source checkout; WEB-14 verifies deployment.
+export const workersCommands = `git clone https://github.com/package-broker/broker.git
+cd broker
+pnpm install --frozen-lockfile
 pnpm build
 pnpm pb cloudflare setup \\
   --worker-name <worker-name> \\
@@ -46,9 +48,11 @@ pnpm pb cloudflare setup \\
   --token-file <setup-token-file>`;
 
 // [verify command] Source: origin/main:Dockerfile (runtime CLI, port and volume),
-// packages/cli/src/cli.ts (USAGE), commands/admin.ts (key and setup-token output).
+// packages/cli/src/cli.ts (USAGE), commands/admin.ts (key and setup-token output); clone URL from docs/decisions/release-and-versioning.md.
 // Run in a broker source checkout. Wait for /health/ready before admin bootstrap.
-export const dockerCommands = `docker build -t package-broker .
+export const dockerCommands = `git clone https://github.com/package-broker/broker.git
+cd broker
+docker build -t package-broker .
 pnpm install --frozen-lockfile
 pnpm build
 pnpm pb secrets generate-master-key
@@ -71,7 +75,7 @@ export const claims = [
     title: 'Per-project isolation by SSO group, with per-project source credentials',
     mechanism: 'Identity provider groups grant access to projects, and each project selects sources with credentials for that client.',
     prevents: "A package bought for client A reaching client B’s developers when each client has its own project and sources.",
-    label: 'Access model reference', href: '/docs/reference/access-model',
+    label: 'How per-client isolation works', href: '/agencies',
   },
   {
     title: 'Composer and npm under one token policy',

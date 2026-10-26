@@ -2,7 +2,7 @@ import Link from '@docusaurus/Link';
 import MarketingLayout, {PageSection} from '../components/marketing/MarketingLayout';
 import IsolationDiagram from '../components/agencies/IsolationDiagram';
 import ScenarioTable from '../components/agencies/ScenarioTable';
-import {agency, accessModel, vendorSources, sourceDecision, identityDecision, tokenDecision} from '../data/agencies';
+import {agency, sourceDecision, identityDecision, tokenDecision} from '../data/agencies';
 import {workersQuickstart} from '../data/landing';
 
 export default function Agencies() {
@@ -12,7 +12,7 @@ export default function Agencies() {
       <p className="pb-eyebrow">For agencies</p>
       <h1>For agencies: one project per client</h1>
       <p className="pb-hero__sub">Keep purchased extensions in a client’s project with project-owned sources, separate source credentials and a service token bound to that project.</p>
-      <div className="pb-actions"><Link className="pb-btn pb-btn--primary" to={workersQuickstart}>Deployment quickstart</Link><Link className="pb-btn" to={accessModel}>Access model reference</Link></div>
+      <div className="pb-actions"><Link className="pb-btn pb-btn--primary" to={workersQuickstart}>Deployment quickstart</Link><Link className="pb-btn" to={identityDecision}>Identity and project grants</Link></div>
     </div>
     <PageSection id="scenario" title="The scenario">
       <p>Your agency buys a Magento extension for each of three clients. A shared credential set can make a purchased package available to every build using that set. Give each client a project and keep its purchased package source inside that project.</p>
@@ -22,7 +22,7 @@ export default function Agencies() {
     </PageSection>
     <PageSection id="mechanisms" title="How the isolation works">
       <div className="pb-split"><ol>
-        <li><strong>Grant access to groups or e-mails.</strong> Use OIDC identity provider groups such as <code>{first.group}</code>, or grant an individual e-mail address access to a project. There are no local groups. <Link className="pb-link" to={identityDecision}>Identity and grants</Link>.</li>
+        <li><strong>Grant access to groups or e-mails.</strong> Use OIDC identity provider groups such as <code>{first.group}</code>, or grant an individual e-mail address access to a project. Group membership stays in your identity provider; the broker has no local groups and no passwords for your developers; they sign in through your identity provider. <Link className="pb-link" to={identityDecision}>Identity and grants</Link>.</li>
         <li><strong>Choose source ownership.</strong> Sources and credentials can belong to the organization or a project. Keep client purchases project-owned; organization-owned sources can supply shared packages. <Link className="pb-link" to={sourceDecision}>Source ownership</Link>.</li>
         <li><strong>Use separate source credentials.</strong> {agency.clients.map((row, index) => <span key={row.project}>{index > 0 && '; '}<code>{row.project}</code> owns <code>{row.source}</code> with credential set {row.credential}</span>)}. <Link className="pb-link" to={sourceDecision}>Project sources and credentials</Link>.</li>
         <li><strong>Bind CI tokens to the project.</strong> Issue a service token with <code>read</code> scope for each project. A token bound to one project does not grant access to another. Personal tokens can cover several selected projects. <Link className="pb-link" to={tokenDecision}>Token kinds and project binding</Link>.</li>
@@ -37,7 +37,7 @@ export default function Agencies() {
     <PageSection id="magento-keys" title={<><code>{agency.sourceHost}</code> keys per project</>}>
       <p>Configure a separate Composer source for each client’s purchased extensions. The source owns its credential set; the project owns the source. <Link className="pb-link" to={sourceDecision}>Composer sources and ownership</Link>.</p>
       <ol className="pb-steps"><li><h3>Add the source</h3><p>Add <code>{agency.sourceHost}</code> as project <code>{first.project}</code>’s source <code>{first.source}</code>.</p></li><li><h3>Store the key pair</h3><p>{agency.clients.map(row => <span key={row.project}>Use {row.client}’s credential set {row.credential} on <code>{row.source}</code>. </span>)}</p></li><li><h3>Install with a project token</h3><p>Give CI a service token with <code>read</code> scope bound to <code>{first.project}</code>.</p></li></ol>
-      <p><Link className="pb-link" to={vendorSources}>Vendor sources guide</Link> (planned documentation) · <Link className="pb-link" to={tokenDecision}>Service token policy</Link></p>
+      <p><Link className="pb-link" to={tokenDecision}>Service token policy</Link></p>
     </PageSection>
     <PageSection id="npm-boundary" title="npm follows the same boundary">
       <p>The npm registry URL is <code>/&lt;project&gt;/npm/</code>. Use that project’s URL in <code>.npmrc</code> and a service token bound to the project. Source precedence and project access apply to both Composer and npm. <Link className="pb-link" to={identityDecision}>Project URLs</Link> · <Link className="pb-link" to={sourceDecision}>Registry resolution</Link>.</p>
@@ -46,14 +46,13 @@ export default function Agencies() {
       <p>The example grants each group install access only to its project. It uses no organization-wide grants or shared purchased package sources. <Link className="pb-link" to={identityDecision}>Group and e-mail grants</Link>.</p>
       <ScenarioTable/>
       <p>Broker-side grant removal and token revocation apply on the next request. Identity provider group changes have a separate revalidation window; do not treat group removal as immediate revocation. <Link className="pb-link" to={identityDecision}>Session and membership revalidation</Link>.</p>
-      <p><Link className="pb-link" to={accessModel}>Access model reference</Link> (planned documentation).</p>
     </PageSection>
     <PageSection id="ci-tokens" title="CI tokens: read scope, one project">
       <ul className="pb-feature-grid"><li><div className="pb-card"><h3><code>pb_svc_</code> service token</h3><p>Use a service principal bound to one project for CI. Choose <code>read</code> scope for installs; organization-wide service principals require organization administration rights.</p></div></li><li><div className="pb-card"><h3><code>pb_pat_</code> personal token</h3><p>Use a personal token for a developer’s selected projects, or all projects their grants allow. A personal token can cover more than one project.</p></div></li></ul>
       <p>Re-authentication is required to create a token. Expiry follows the configured token lifetime policy. <Link className="pb-link" to={tokenDecision}>Token policy and revocation</Link>.</p>
     </PageSection>
     <PageSection id="start" title="Create the first project">
-      <div className="pb-cta-band"><p>Start with a deployment, connect your identity provider and give the first client its own project.</p><div className="pb-actions"><Link className="pb-btn pb-btn--primary" to={workersQuickstart}>Deployment quickstart</Link><Link className="pb-btn" to={identityDecision}>Identity and project grants</Link></div></div>
+      <div className="pb-cta-band"><p>Try the deployment on your own first; connect your identity provider when you give the first client its own project.</p><div className="pb-actions"><Link className="pb-btn pb-btn--primary" to={workersQuickstart}>Deployment quickstart</Link><Link className="pb-btn" to={identityDecision}>Identity and project grants</Link></div></div>
     </PageSection>
   </MarketingLayout>;
 }

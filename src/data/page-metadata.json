@@ -1,7 +1,7 @@
 {
   "/": {
     "title": "Private Composer and npm registry",
-    "description": "Self-host private Composer and npm packages with project isolation, OIDC groups and one token policy. Deploy on Cloudflare Workers or Node under AGPL-3.0-only."
+    "description": "Self-hosted Composer and npm registry for PHP and Magento teams: one project per client, identity provider groups, one token policy. No licence fee."
   },
   "/agencies": {
     "title": "For agencies: one project per client",

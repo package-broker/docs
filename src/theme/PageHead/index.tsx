@@ -17,7 +17,7 @@ export default function PageHead() {
   const schema = pathname === '/' ? {
     '@context': 'https://schema.org',
     '@graph': [
-      {'@type': 'SoftwareApplication', name: siteTitle, applicationCategory: 'DeveloperApplication', operatingSystem: 'Cloudflare Workers, Node.js', url, description: page.description},
+      {'@type': 'SoftwareApplication', name: siteTitle, applicationCategory: 'DeveloperApplication', operatingSystem: 'Cloudflare Workers, Node.js', url, description: page.description, maintainer: {'@type': 'Person', name: 'lbajsarowicz', url: 'https://github.com/lbajsarowicz'}},
       {'@type': 'Organization', name: siteTitle, url, logo: `${url}/img/logo.svg`},
     ],
   } : {
