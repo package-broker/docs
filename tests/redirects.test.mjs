@@ -217,7 +217,9 @@ test('deployed v1 URLs return exact redirects and targets return 200', {skip: !b
 });
 
 test('README aliases and obsolete v1 routes go directly to the closest 2.0 destination', () => {
-  const expected = {'/getting-started/quickstart-docker': '/docs/getting-started/quickstart-docker', '/getting-started/quickstart-cloudflare': '/docs/getting-started/quickstart-cloudflare', '/reference/api': '/docs/architecture', '/intro': '/docs/architecture', '/docs/intro': '/docs/architecture', '/docs/contributing/index': 'https://github.com/package-broker/broker/blob/main/CONTRIBUTING.md', '/docs/troubleshooting/index': '/docs/getting-started/quickstart-cloudflare'};
+  const expected = {'/getting-started/quickstart-docker': '/docs/getting-started/quickstart-docker', '/getting-started/quickstart-cloudflare': '/docs/getting-started/quickstart-cloudflare', '/reference/api': '/docs/reference/api', '/intro': '/docs/architecture', '/docs/intro': '/docs/architecture', '/docs/contributing/index': 'https://github.com/package-broker/broker/blob/main/CONTRIBUTING.md', '/docs/troubleshooting/index': '/docs/getting-started/quickstart-cloudflare'};
+  expected['/docs/contributing'] = 'https://github.com/package-broker/broker/blob/main/CONTRIBUTING.md';
+  assert.ok(map.rules.every(rule => rule.to !== '/docs/CONTRIBUTING-DOCS'));
   expected['/docs/getting-started/quickstart-kubernetes'] = '/docs/getting-started/quickstart-docker';
   for (const [route, to] of Object.entries(expected)) for (const slash of ['', '/']) {
     assert.equal(map.resolve(`${route}${slash}`)?.to, to);

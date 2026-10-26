@@ -3,7 +3,7 @@ import {readFileSync, readdirSync, existsSync} from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createRequire} from 'node:module';
-const {definition, runtimes, licence, repositoryUrl, organizationUrl, maintainer} = createRequire(import.meta.url)('../src/data/entity.ts');
+const {definition, operatingSystems, licence, repositoryUrl, organizationUrl, maintainer} = createRequire(import.meta.url)('../src/data/entity.ts');
 import {checkCards} from './og/check.mjs';
 
 export const origin = 'https://package.broker';
@@ -79,7 +79,7 @@ export function inspectPage(html, route) {
     assert.equal(app.license, licence.url);
     assert.deepEqual(app.sameAs, [repositoryUrl]);
     assert.equal(app.description, definition);
-    assert.equal(app.operatingSystem, runtimes);
+    assert.equal(app.operatingSystem, operatingSystems);
     assert.deepEqual(app.author, {'@type': 'Person', ...maintainer});
     assert.deepEqual(ofType('Organization')[0].sameAs, [organizationUrl, repositoryUrl]);
     assert.equal(ofType('Organization').length, 1, 'Organization belongs on the landing page');

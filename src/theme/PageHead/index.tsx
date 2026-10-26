@@ -3,7 +3,7 @@ import {useLocation} from '@docusaurus/router';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import {usePluginData} from '@docusaurus/useGlobalData';
 
-import {definition, runtimes, licence, repositoryUrl, organizationUrl, maintainer} from '@site/src/data/entity';
+import {definition, operatingSystems, licence, repositoryUrl, organizationUrl, maintainer} from '@site/src/data/entity';
 
 type Page = {title: string; description: string; image: string; noIndex?: boolean; dateModified?: string};
 
@@ -19,7 +19,7 @@ export default function PageHead() {
   const schema = pathname === '/' ? {
     '@context': 'https://schema.org',
     '@graph': [
-      {'@type': 'SoftwareApplication', name: siteTitle, applicationCategory: 'DeveloperApplication', operatingSystem: runtimes, url, description: definition, license: licence.url, sameAs: [repositoryUrl], author: {'@type': 'Person', ...maintainer}, maintainer: {'@type': 'Person', ...maintainer}},
+      {'@type': 'SoftwareApplication', name: siteTitle, applicationCategory: 'DeveloperApplication', operatingSystem: operatingSystems, url, description: definition, license: licence.url, sameAs: [repositoryUrl], author: {'@type': 'Person', ...maintainer}, maintainer: {'@type': 'Person', ...maintainer}},
       {'@type': 'Organization', name: siteTitle, url, logo: `${url}/img/logo.svg`, sameAs: [organizationUrl, repositoryUrl]},
     ],
   } : {

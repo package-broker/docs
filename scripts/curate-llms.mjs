@@ -10,26 +10,43 @@ const {llmsOptions, excludedDoc} = require('./llms-options.cjs');
 // Include suffixed task numbers and decision/document task identifiers, too.
 export const internalIds = /\b(?:T\d+[a-z]*|PB-\d+|G0\d+(?:-\d+)*|DOC\d+)\b/;
 
+export function mapProseLines(text, transform) {
+  let fence;
+  return text.split('\n').map(line => {
+    const marker = line.match(/^\s*(`{3,}|~{3,})(.*)$/);
+    if (fence) {
+      if (marker && marker[1][0] === fence[0] && marker[1].length >= fence.length && !marker[2].trim()) fence = undefined;
+      return line;
+    }
+    if (marker) {
+      fence = marker[1];
+      return line;
+    }
+    return transform(line);
+  }).join('\n');
+}
+
 export function rewriteDocLinks(text, source, pages) {
   const rewrite = target => {
-    if (/^(?:[a-z][a-z0-9+.-]*:|#|\/\/)/i.test(target)) return target;
-    const match = target.match(/^([^?#]+)([?#].*)?$/);
-    if (!match || (match[1].startsWith('/') && !/\.mdx?$/i.test(match[1]))) return target;
-    const file = match[1].startsWith('/') ? match[1].slice(1)
-      : path.posix.normalize(path.posix.join('docs', path.posix.dirname(source), match[1]));
-    if (file.startsWith('docs/') && !/\.mdx?$/i.test(match[1])) return target;
-    const suffix = match[2] ?? '';
+    if (/^[a-z][a-z0-9+.-]*:/i.test(target)) return target;
+    if (target.startsWith('//')) return `https:${target}`;
+    if (target.startsWith('#')) {
+      const entry = Object.entries(pages).find(([, page]) => page.source === source);
+      assert.ok(entry, `Missing route for ${source}`);
+      return `https://package.broker${entry[0]}${target}`;
+    }
+    const [, pathname, suffix = ''] = target.match(/^([^?#]+)([?#].*)?$/) ?? [];
+    if (!pathname) return target;
+    const file = pathname.startsWith('/') ? pathname.slice(1)
+      : path.posix.normalize(path.posix.join('docs', path.posix.dirname(source), pathname));
     const entry = Object.entries(pages).find(([, page]) => `docs/${page.source}` === file);
-    return entry ? `https://package.broker${entry[0]}${suffix}`
-      : `https://github.com/package-broker/broker/blob/main/${file}${suffix}`;
+    if (entry) return `https://package.broker${entry[0]}${suffix}`;
+    if (pathname.startsWith('/')) return `https://package.broker${target}`;
+    return `https://github.com/package-broker/broker/blob/main/${file}${suffix}`;
   };
-  let fenced = false;
-  return text.split('\n').map(line => {
-    if (/^\s*(```|~~~)/.test(line)) fenced = !fenced;
-    if (fenced) return line;
-    return line.replace(/(\]\(<?)([^\s)>]+)(>?)(?=[\s)])/g, (_, open, target, close) => `${open}${rewrite(target)}${close}`)
-      .replace(/^(\s*\[[^\]]+\]:\s*<?)([^\s>]+)/, (_, open, target) => `${open}${rewrite(target)}`);
-  }).join('\n');
+  return mapProseLines(text, line => line
+    .replace(/(\]\(<?)([^\s)>]+)(>?)(?=[\s)])/g, (_, open, target, close) => `${open}${rewrite(target)}${close}`)
+    .replace(/^(\s*\[[^\]]+\]:\s*<?)([^\s>]+)/, (_, open, target) => `${open}${rewrite(target)}`));
 }
 
 export function rewriteCorpusLinks(full, pages) {

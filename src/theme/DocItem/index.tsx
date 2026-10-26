@@ -12,7 +12,7 @@ export default function DocItem(props: Props) {
   return <>
     <aside className={styles.notice} aria-label="Release status">
       <p>Package Broker {releaseStatus}. <Link to="/#quickstart">Start the quickstart</Link> · <Link to="/#status">Get notified</Link></p>
-      <p>Last updated: {modified ? <time dateTime={modified}>{new Date(modified).toISOString().slice(0, 10)}</time> : 'Not measured'}</p>
+      {modified && <p>Last updated: <time dateTime={modified}>{new Date(modified).toISOString().slice(0, 10)}</time></p>}
     </aside>
     <OriginalDocItem {...props}/>
     <aside className={styles.notice} aria-label="Next steps">

@@ -12,7 +12,7 @@
 /docs/concepts/authentication /docs/reference/access-model 301
 /docs/concepts/caching-storage /docs/architecture 301
 /docs/concepts/repositories /docs/guides/mirror-vendor-repositories 301
-/docs/contributing /docs/CONTRIBUTING-DOCS 301
+/docs/contributing https://github.com/package-broker/broker/blob/main/CONTRIBUTING.md 301
 /docs/deployment/overview /docs/getting-started/quickstart-cloudflare 301
 /docs/getting-started/composer-101 /docs/clients/composer 301
 /docs/getting-started/glossary /docs/getting-started/quickstart-cloudflare 301
@@ -51,7 +51,7 @@
 /docs/concepts/authentication/ /docs/reference/access-model 301
 /docs/concepts/caching-storage/ /docs/architecture 301
 /docs/concepts/repositories/ /docs/guides/mirror-vendor-repositories 301
-/docs/contributing/ /docs/CONTRIBUTING-DOCS 301
+/docs/contributing/ https://github.com/package-broker/broker/blob/main/CONTRIBUTING.md 301
 /docs/deployment/overview/ /docs/getting-started/quickstart-cloudflare 301
 /docs/getting-started/composer-101/ /docs/clients/composer 301
 /docs/getting-started/glossary/ /docs/getting-started/quickstart-cloudflare 301
@@ -82,8 +82,8 @@
 /getting-started/quickstart-docker/ /docs/getting-started/quickstart-docker 301
 /getting-started/quickstart-cloudflare /docs/getting-started/quickstart-cloudflare 301
 /getting-started/quickstart-cloudflare/ /docs/getting-started/quickstart-cloudflare 301
-/reference/api /docs/architecture 301
-/reference/api/ /docs/architecture 301
+/reference/api /docs/reference/api 301
+/reference/api/ /docs/reference/api 301
 /intro /docs/architecture 301
 /intro/ /docs/architecture 301
 /docs/intro /docs/architecture 301

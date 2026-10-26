@@ -4,11 +4,28 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {htmlPages, origin} from './check-seo.mjs';
 import {createRequire} from 'node:module';
-import {internalIds} from './curate-llms.mjs';
+import {internalIds, mapProseLines} from './curate-llms.mjs';
 
 const {factsBlock, excludedDoc} = createRequire(import.meta.url)('./llms-options.cjs');
 
 const siteDir = fileURLToPath(new URL('../', import.meta.url));
+
+export function checkIndexVocabulary(index) {
+  const prose = index.split('\n').map(line => {
+    const text = line.replace(/\]\([^)]+\)/g, ']');
+    return /\bclaims?\b/i.test(text) && /\b(?:does|do) not apply to 2\.0\b/i.test(text)
+      ? text.replace(/\bfree tier\b/gi, 'v1 tier') : text;
+  }).join('\n');
+  assert.doesNotMatch(prose, /\b(?:org|account|deployed-account|upstream|mirror|free|zero-ops|enterprise-ready|powerful|seamless)\b/i, 'LLM index contains a banned product term');
+}
+
+export function checkCorpusLinks(full) {
+  mapProseLines(full, line => {
+    const links = [...line.matchAll(/\]\(<?([^\s)>]+)/g), ...line.matchAll(/^\s*\[[^\]]+\]:\s*<?([^\s>]+)/g)];
+    for (const [, target] of links) assert.match(target, /^[a-z][a-z0-9+.-]*:/i, `Corpus links must be absolute: ${target}`);
+    return line;
+  });
+}
 
 export function checkLlms(outDir) {
   const index = readFileSync(path.join(outDir, 'llms.txt'), 'utf8');
@@ -20,8 +37,7 @@ export function checkLlms(outDir) {
     assert.doesNotMatch(text, /\b(T|PB-|G0)\d+/, `${name}: internal task ID`);
     assert.doesNotMatch(text, internalIds, `${name}: internal task ID`);
   }
-  const prose = index.replace('Cloudflare free tier, Kubernetes, one-click template and `npx package-broker init` claims do not apply to 2.0.', 'v1 deployment claims do not apply to 2.0.').replace(/\]\([^)]+\)/g, ']');
-  assert.doesNotMatch(prose, /\b(?:org|account|deployed-account|upstream|mirror|free|zero-ops|enterprise-ready|powerful|seamless)\b/i, 'LLM index contains a banned product term');
+  checkIndexVocabulary(index);
   const handWritten = readFileSync(path.join(siteDir, 'content/llms-hand-written.md'), 'utf8').trim();
   assert.match(index, /^# Package Broker\n/);
   assert.match(index, /^> .+/m);
@@ -30,9 +46,7 @@ export function checkLlms(outDir) {
   assert.ok(full.includes(handWritten), 'Corpus must include the complete hand-written block');
   assert.doesNotMatch(index, /\[deployment\]/, 'Deployment link must be inline');
   assert.ok(!full.includes('Coming in 2.0'), 'Stub content must not enter the corpus');
-  const proseCorpus = full.replace(/^\s*(```|~~~)[\s\S]*?^\s*\1.*$/gm, '');
-  assert.doesNotMatch(proseCorpus, /\]\(<?(?![a-z][a-z0-9+.-]*:)[^\s)]*\.mdx?(?:[?#][^)]*)?>?\)/i, 'Corpus Markdown links must be absolute');
-  assert.doesNotMatch(proseCorpus, /^\s*\[[^\]]+\]:\s*<?(?![a-z][a-z0-9+.-]*:)[^\s>]*\.mdx?(?:[?#][^\s>]*)?/im, 'Corpus reference links must be absolute');
+  checkCorpusLinks(full);
   const size = Buffer.byteLength(full);
   assert.ok(size > 0 && size <= 2 * 1024 * 1024, 'Split an LLM corpus over 2 MB by section');
   const entries = [...index.matchAll(/^- \[([^\]]+)\]\((https:\/\/package\.broker[^)]*)\): (.+)$/gm)];

@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
+import {readFileSync, writeFileSync, mkdirSync, mkdtempSync, rmSync} from 'node:fs';
+import path from 'node:path';
+import {checkCorpusLinks, checkIndexVocabulary} from '../scripts/check-llms.mjs';
 import {createRequire} from 'node:module';
 import {rewriteDocLinks, rewriteCorpusLinks} from '../scripts/curate-llms.mjs';
 import {htmlPages, inspectPage, schemaObjects} from '../scripts/check-seo.mjs';
@@ -24,8 +26,8 @@ test('relative Markdown links use doc routes, preserve fragments and send reposi
   assert.match(result, /https:\/\/github.com\/package-broker\/broker\/blob\/main\/LICENSE\)/);
   assert.match(result, /\[ref\]: https:\/\/package.broker\/docs\/start#token/);
   assert.match(result, /\[external\]\(https:\/\/example.com\/README.md\)/);
-  assert.match(result, /\[anchor\]\(#local\)/);
-  assert.match(result, /\[agencies\]\(\/agencies\)/);
+  assert.match(result, /\[anchor\]\(https:\/\/package.broker\/docs\/custom-slug#local\)/);
+  assert.match(result, /\[agencies\]\(https:\/\/package.broker\/agencies\)/);
   assert.match(result, /```sh\n\[x\]\(\.\.\/start.md\)/);
   assert.equal(rewriteCorpusLinks('## Guide\n\n[start](../start.md#install)\n\n## Start\n\n[guide](guides/README.md)', pages), '## Guide\n\n[start](https://package.broker/docs/start#install)\n\n## Start\n\n[guide](https://package.broker/docs/custom-slug)');
 });
@@ -76,4 +78,78 @@ test('landing schema gate rejects missing licence and repository identity links'
     assert.notEqual(changed, html);
     assert.throws(() => inspectPage(changed, '/'));
   }
+});
+
+test('corpus links cover site routes and non-Markdown files in docs', () => {
+  const input = '[collector](./otel-collector/config.yaml#pipeline) [docs](/docs/start#next) [site](/agencies)\n[ref]: ./otel-collector/processor.yaml';
+  const output = rewriteDocLinks(input, 'guides/README.md', pages);
+  assert.ok(output.includes('https://github.com/package-broker/broker/blob/main/docs/guides/otel-collector/config.yaml#pipeline'));
+  assert.ok(output.includes('https://github.com/package-broker/broker/blob/main/docs/guides/otel-collector/processor.yaml'));
+  assert.ok(output.includes('https://package.broker/docs/start#next'));
+  assert.ok(output.includes('https://package.broker/agencies'));
+  checkCorpusLinks(output);
+  for (const target of ['./config.yaml', '../start.md', '/docs/start', '/agencies', '#section', '//example.com/path']) {
+    for (const input of [`[link](${target})`, `[ref]: ${target}`]) assert.throws(() => checkCorpusLinks(input), /must be absolute/);
+    checkCorpusLinks(`\`\`\`md\n[link](${target})\n\`\`\``);
+  }
+  const fenced = '~~~~md\n[link](./config.yaml)\n```\n[other](/agencies)\n~~~~';
+  assert.equal(rewriteDocLinks(fenced, 'guides/README.md', pages), fenced);
+  checkCorpusLinks(fenced);
+});
+
+test('only negated v1 free-tier claims are exempt from the vocabulary gate', () => {
+  for (const line of [
+    'The old free tier claim does not apply to 2.0.',
+    'Claims about the predecessor’s Cloudflare free tier and template do not apply to 2.0.',
+  ]) checkIndexVocabulary(line);
+  for (const line of [
+    'The Cloudflare free tier works.',
+    'The free tier claim does not apply to 2.0. The software is free.',
+    'The old free tier works.\nThe claim does not apply to 2.0.',
+    'A powerful free tier claim does not apply to 2.0.',
+  ]) assert.throws(() => checkIndexVocabulary(line), /banned product term/);
+});
+
+test('sync dates fail clearly when invalid and sitemap dates remain in memory', async () => {
+  const {syncDates, createSyncMetadata} = require('../plugins/sync-dates.cjs');
+  const site = mkdtempSync(path.resolve('node_modules/.g57-dates-'));
+  try {
+    mkdirSync(path.join(site, 'docs-content'));
+    const manifest = path.join(site, 'docs-content/.sync.json');
+    writeFileSync(manifest, JSON.stringify({files: {'start.md': {lastCommitDate: 'not a date'}}}));
+    assert.throws(() => syncDates(site), /Invalid lastCommitDate for start\.md.*not a date/);
+    await assert.rejects(require('../plugins/page-metadata.cjs')({siteDir: site}).allContentLoaded({allContent: {}, actions: {}}), /Invalid lastCommitDate for start\.md/);
+    writeFileSync(manifest, JSON.stringify({files: {'start.md': {lastCommitDate: '2026-10-26T04:43:04Z'}, 'undated.md': {}}}));
+    const dates = syncDates(site);
+    const metadata = createSyncMetadata();
+    metadata.setPages({'/docs/custom-slug': {dateModified: dates['start.md'].lastCommitDate}});
+    const items = await metadata.sitemapItems({siteConfig: {generatedFilesDir: path.join(site, 'custom-generated')}, defaultCreateSitemapItems: async () => [
+      {url: 'https://package.broker/docs/custom-slug'}, {url: 'https://package.broker/agencies'},
+    ]});
+    assert.equal(items[0].lastmod, dates['start.md'].lastCommitDate);
+    assert.equal(items[1].lastmod, null);
+    assert.equal(dates['undated.md'].lastCommitDate, undefined);
+  } finally { rmSync(site, {recursive: true, force: true}); }
+});
+
+test('DocItem omits the Last updated line when metadata has no date', () => {
+  const ts = require('typescript');
+  const React = require('react');
+  const {renderToStaticMarkup} = require('react-dom/server');
+  let dateModified;
+  const componentModule = {exports: {}};
+  const code = ts.transpileModule(readFileSync('src/theme/DocItem/index.tsx', 'utf8'), {compilerOptions: {module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true}}).outputText;
+  const mockRequire = name => {
+    if (name === '@theme-original/DocItem') return () => null;
+    if (name === '@docusaurus/Link') return ({to, children}) => React.createElement('a', {href: to}, children);
+    if (name === '@docusaurus/useGlobalData') return {usePluginData: () => ({pages: {'/docs/undated': {dateModified}}})};
+    if (name === '@site/src/data/landing') return {releaseStatus};
+    if (name === './styles.module.css') return {notice: 'notice'};
+    return require(name);
+  };
+  new Function('require', 'module', 'exports', code)(mockRequire, componentModule, componentModule.exports);
+  const render = () => renderToStaticMarkup(React.createElement(componentModule.exports.default, {content: {metadata: {permalink: '/docs/undated'}}}));
+  assert.doesNotMatch(render(), /Last updated|<time/);
+  dateModified = '2026-10-26T04:43:04Z';
+  assert.match(render(), /Last updated: <time dateTime="2026-10-26T04:43:04Z">2026-10-26/);
 });

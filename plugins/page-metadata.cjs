@@ -3,9 +3,10 @@ const overrides = require('../src/data/page-metadata.json');
 const {generateCards} = require('../scripts/og/generate.cjs');
 const {writeFile} = require('node:fs/promises');
 const path = require('node:path');
+const {contributorDoc} = require('./doc-policy.cjs');
 const {syncDates} = require('./sync-dates.cjs');
 
-module.exports = function pageMetadata(context) {
+module.exports = function pageMetadata(context, options = {}) {
   let snapshot;
   return {
     name: 'page-metadata',
@@ -23,7 +24,7 @@ module.exports = function pageMetadata(context) {
           source: doc.source.replace('@site/docs-content/', ''),
           corpusTitle: doc.title,
           planned: planned.has(doc.source),
-          noIndex: route === '/docs/CONTRIBUTING-DOCS',
+          noIndex: route === contributorDoc.route,
           dateModified: dates[doc.source.replace('@site/docs-content/', '')]?.lastCommitDate,
         };
       }
@@ -40,6 +41,7 @@ module.exports = function pageMetadata(context) {
         }
         page.image = `/img/og/${route === '/' ? 'landing' : route.slice(1).replace(/[^a-z0-9-]/gi, '-')}.png`;
       }
+      options.onPagesLoaded?.(pages);
       actions.setGlobalData({pages});
       snapshot = {pages, docRoutes: docs.map(doc => doc.permalink.replace(/\/$/, ''))};
       await generateCards(context.siteDir, pages);

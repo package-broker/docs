@@ -5,7 +5,8 @@ const {releaseStatus} = require('../src/data/landing.ts');
 const comparison = require('../src/data/comparison.json');
 const pages = require('../src/data/page-metadata.json');
 
-const excludedDoc = '/docs/CONTRIBUTING-DOCS';
+const {contributorDoc} = require('../plugins/doc-policy.cjs');
+const excludedDoc = contributorDoc.route;
 const costFacts = 'No licence fee and no per-user, per-project or per-client charge. You pay for hosting and operations, from USD 5 a month on Workers Paid plus usage, or your own Node host.';
 
 function factsBlock() {
@@ -36,7 +37,7 @@ function plannedDocFiles(siteDir = path.join(__dirname, '..')) {
 }
 
 function llmsOptions(siteDir = path.join(__dirname, '..')) {
-  const ignoreFiles = [...plannedDocFiles(siteDir), 'CONTRIBUTING-DOCS.md'];
+  const ignoreFiles = [...plannedDocFiles(siteDir), contributorDoc.filename];
   const handWritten = readFileSync(path.join(siteDir, 'content/llms-hand-written.md'), 'utf8').trim();
   // The installed plugin reads Markdown, not React marketing pages. Build this
   // section from the same metadata used in their HTML instead of indexing TSX.
