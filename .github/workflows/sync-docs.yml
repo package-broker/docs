@@ -37,7 +37,7 @@ jobs:
           ref: main
           path: .broker-docs-source
           fetch-depth: 0
-          token: ${{ secrets.BROKER_DOCS_READ_TOKEN }}
+          token: ${{ secrets.BROKER_DOCS_READ_TOKEN || github.token }}
           persist-credentials: false
 
       - name: Set up Node
