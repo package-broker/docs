@@ -3,14 +3,68 @@ const path = require('node:path');
 
 const escapeXml = value => value.replace(/[<>&"']/g, char => ({'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&apos;'}[char]));
 
-function wrapTitle(title) {
-  const lines = [''];
-  for (const word of title.split(/\s+/)) {
-    if (`${lines.at(-1)} ${word}`.trim().length > 34) lines.push(word);
-    else lines[lines.length - 1] = `${lines.at(-1)} ${word}`.trim();
+// Approximate Inter bold advances in em.
+// Keep a fixed type size: an overlong title needs editing, never tiny text.
+function titleWidth(text, size) {
+  return [...text].reduce((width, char) => width + (
+    /[—…]/.test(char) ? 1 : /[MW@%]/.test(char) ? 1 : /[mw]/.test(char) ? 0.9 :
+    /[ilI.,:;'!| ]/.test(char) ? 0.3 : /[A-Z]/.test(char) ? 0.72 : 0.6
+  ) * size, 0);
+}
+
+function cardLayout(tokens, type) {
+  const fontSize = key => tokens.font.size[key].$value.value * 16;
+  const margin = tokens.space['16'].$value.value;
+  return {
+    margin, maxWidth: 1200 - margin * 2,
+    // Double the catalogue display scale for the social canvas.
+    titleSize: fontSize(type === 'landing' ? '5xl' : '4xl') * 2,
+    supportSize: fontSize('3xl'),
+  };
+}
+
+const defaults = cardLayout(require('../../vendor/design-system/tokens.json'));
+
+function guardTitle(lines, size, maxWidth) {
+  if (!lines.length || lines.length > 3 || lines.some(line => !line.trim() || titleWidth(line, size) > maxWidth)) {
+    throw new Error(`Social card title needs editing: ${lines.join(' ')}`);
   }
-  if (lines.length > 4) throw new Error(`Social card title needs editing: ${title}`);
   return lines;
+}
+
+function wrapTitle(title, size = defaults.titleSize, maxWidth = defaults.maxWidth) {
+  const lines = [];
+  for (const word of title.trim().split(/\s+/)) {
+    if (titleWidth(word, size) > maxWidth) throw new Error(`Social card title needs editing: ${title}`);
+    const candidate = [lines.at(-1), word].filter(Boolean).join(' ');
+    if (!lines.length || titleWidth(candidate, size) > maxWidth) lines.push(word);
+    else lines[lines.length - 1] = candidate;
+  }
+  return guardTitle(lines, size, maxWidth);
+}
+
+function cardCopy(route, page, type) {
+  const section = route.split('/')[2];
+  const sectionName = {decisions: 'Decisions', reference: 'Reference', 'getting-started': 'Getting started'}[section] ?? 'Guides';
+  const support = page.cardSupport ?? `Documentation: ${sectionName}`;
+  if (type === 'landing') return {
+    title: 'One token per developer.',
+    lines: ['One token', 'per developer.'],
+    support,
+  };
+  return {title: page.title, support};
+}
+
+function logoMark(logo, color) {
+  // Keep the public logo geometry; resolve its palette to the light card tokens.
+  return logo.replace(/<svg[^>]*>|<\/svg>/g, '')
+    .replace(/<defs>[\s\S]*?<\/defs>/, '')
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/ filter="[^"]*"/g, '')
+    .replace(/#FF8C42/gi, color('brand'))
+    .replace(/#4DA6FF/gi, color('accent'))
+    .replace(/#1b1b1d/gi, color('bg'))
+    .split('\n').map(line => line.trim()).filter(Boolean).join('\n');
 }
 
 async function generateCards(siteDir, pages) {
@@ -19,29 +73,35 @@ async function generateCards(siteDir, pages) {
   const color = key => tokens.color[key].$value.hex;
   const space = key => tokens.space[key].$value.value;
   const fontSize = key => tokens.font.size[key].$value.value * 16;
-  const margin = space('16');
-  const titleSize = fontSize('5xl');
-  const lineHeight = titleSize * tokens.font['line-height'].tight.$value;
+  const logo = await readFile(path.join(siteDir, 'static/img/logo.svg'), 'utf8');
   const folder = path.join(siteDir, 'static/img/og');
   await mkdir(folder, {recursive: true});
   await writeFile(path.join(folder, 'inter-latin-wght-normal.woff2'), font);
   const renderList = [];
   for (const [route, page] of Object.entries(pages)) {
     const type = route === '/' ? 'landing' : route.startsWith('/docs/') ? 'docs' : route.startsWith('/compare/') ? 'comparison' : 'generic';
-    const label = {landing: 'Private Composer and npm packages', docs: 'Documentation', comparison: 'Compare package registries', generic: 'Package Broker'}[type];
-    const title = wrapTitle(page.title);
+    const copy = cardCopy(route, page, type);
+    const {margin, maxWidth, titleSize, supportSize} = cardLayout(tokens, type);
+    const lineHeight = Number((titleSize * tokens.font['line-height'].tight.$value).toFixed(2));
+    const title = copy.lines ? guardTitle(copy.lines, titleSize, maxWidth) : wrapTitle(copy.title, titleSize, maxWidth);
+    if (titleWidth(copy.support, supportSize) > maxWidth) {
+      throw new Error(`Social card supporting line needs editing: ${copy.support}`);
+    }
+    const titleY = space('20') * 2 + titleSize;
+    const supportY = titleY + (title.length - 1) * lineHeight + space('8') + supportSize;
     const filename = page.image.slice('/img/og/'.length).replace(/\.png$/, '.svg');
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
 <!-- Generated by scripts/og/generate.cjs from vendored design-system tokens and self-hosted Inter. Rasterise with a browser that loads the adjacent WOFF2. -->
-<title id="title">${escapeXml(page.title)} | Package Broker</title>
+<title id="title">${escapeXml(copy.title)} | Package Broker</title>
 <desc id="description">${escapeXml(page.description)}</desc>
 <defs><style>@font-face{font-family:Inter;src:url(inter-latin-wght-normal.woff2) format('woff2');font-weight:100 900}text{font-family:Inter,sans-serif}</style></defs>
 <rect width="1200" height="630" fill="${color('bg')}"/>
-<rect width="${space('2')}" height="630" fill="${color('accent')}"/>
-<text x="${margin}" y="${margin + fontSize('2xl')}" font-size="${fontSize('2xl')}" font-weight="${tokens.font.weight.semibold.$value}" fill="${color('text')}">Package Broker</text>
-<text x="${margin}" y="${margin + space('16') + fontSize('xl')}" font-size="${fontSize('xl')}" fill="${color('accent')}">${escapeXml(label)}${page.planned ? ' · Planned guide' : ''}</text>
-<text x="${margin}" y="${margin + space('16') * 2 + titleSize}" font-size="${titleSize}" font-weight="${tokens.font.weight.bold.$value}" fill="${color('text')}">${title.map((line, index) => `<tspan x="${margin}" dy="${index === 0 ? 0 : lineHeight}">${escapeXml(line)}</tspan>`).join('')}</text>
-<text x="${margin}" y="${630 - margin}" font-size="${fontSize('xl')}" fill="${color('text-muted')}">package.broker</text>
+<rect width="1200" height="${space('2')}" fill="${color('brand')}"/>
+<svg x="${margin}" y="${space('10')}" width="${space('20')}" height="${space('20')}" viewBox="0 0 200 200" fill="none" aria-hidden="true">${logoMark(logo, color)}</svg>
+<text x="${margin + space('20') + space('6')}" y="${space('20') + space('4')}" font-size="${fontSize('4xl')}" font-weight="${tokens.font.weight.semibold.$value}" fill="${color('text')}">Package Broker</text>
+<text data-role="headline" x="${margin}" y="${titleY}" font-size="${titleSize}" font-weight="${tokens.font.weight.bold.$value}" fill="${color('text')}">${title.map((line, index) => `<tspan x="${margin}" dy="${index === 0 ? 0 : lineHeight}">${escapeXml(line)}</tspan>`).join('')}</text>
+<text data-role="support" x="${margin}" y="${supportY}" font-size="${supportSize}" fill="${color('accent')}">${escapeXml(copy.support)}</text>
+<text x="${margin}" y="${630 - space('8')}" font-size="${fontSize('2xl')}" fill="${color('text-muted')}">package.broker</text>
 </svg>
 `;
     await writeFile(path.join(folder, filename), svg);
@@ -50,4 +110,4 @@ async function generateCards(siteDir, pages) {
   await writeFile(path.join(folder, 'render-list.json'), `${JSON.stringify(renderList, null, 2)}\n`);
 }
 
-module.exports = {generateCards};
+module.exports = {generateCards, wrapTitle, titleWidth, cardLayout, guardTitle};

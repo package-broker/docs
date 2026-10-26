@@ -76,3 +76,28 @@ export function parseOklch(text) {
 export function serialisedComponents(components, alpha) {
   return parseOklch(formatOklch(components, alpha)).components;
 }
+
+// Tiny sRGB excursions within GAMUT_EPSILON still trigger CSS processors' P3 fallbacks.
+export function needsP3Fallback(value) {
+  return oklchToLinearSrgb(serialisedComponents(value.components, value.alpha)).some((v) => v < 0 || v > 1);
+}
+
+export function formatDisplayP3(value) {
+  const rgb = oklchToLinearSrgb(serialisedComponents(value.components, value.alpha));
+  // Linear sRGB -> XYZ D65 -> linear Display P3 (CSS Color 4 matrices).
+  const xyz = [
+    [0.4123907992659595, 0.357584339383878, 0.1804807884018343],
+    [0.2126390058715104, 0.715168678767756, 0.0721923153607337],
+    [0.0193308187155919, 0.1191947797946259, 0.9505321522496606],
+  ].map((row) => row.reduce((sum, c, i) => sum + c * rgb[i], 0));
+  const channels = [
+    [2.493496911941425, -0.9313836179191239, -0.402710784450717],
+    [-0.8294889695615747, 1.7626640603183463, 0.0236246858419436],
+    [0.0358458302437845, -0.0761723892680418, 0.9568845240076872],
+  ].map((row) => row.reduce((sum, c, i) => sum + c * xyz[i], 0));
+  if (channels.some((v) => v < -GAMUT_EPSILON || v > 1 + GAMUT_EPSILON)) {
+    throw new Error('token is outside Display P3; reduce its chroma in tokens.json');
+  }
+  const base = channels.map((v) => num(encode(clamp01(v)), 6)).join(' ');
+  return `color(display-p3 ${base}${value.alpha === undefined || value.alpha === 1 ? '' : ` / ${num(value.alpha, 2)}`})`;
+}

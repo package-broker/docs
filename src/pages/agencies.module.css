@@ -1,0 +1,71 @@
+.page .hero {
+  max-width: none;
+  align-items: center;
+}
+
+.heroCopy {
+  display: grid;
+  gap: var(--pb-space-4);
+  min-width: 0;
+}
+
+.tokenMap {
+  margin: 0;
+  display: grid;
+  gap: var(--pb-space-5);
+  padding: var(--pb-space-6);
+  border: var(--pb-space-px) solid var(--pb-color-border);
+  border-radius: var(--pb-radius-xl);
+  background: var(--pb-color-surface-raised);
+}
+
+.tokenMap p {
+  margin: 0;
+}
+
+.tokenMap strong {
+  color: var(--pb-color-accent);
+}
+
+.projects {
+  display: grid;
+  gap: var(--pb-space-3);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.projects li {
+  padding: var(--pb-space-3);
+  border: var(--pb-space-px) solid var(--pb-color-border);
+  border-inline-start: var(--pb-space-1) solid var(--pb-color-accent-solid);
+  border-radius: var(--pb-radius-md);
+  background: var(--pb-color-surface-subtle);
+}
+
+.page :global(.pb-diagram) {
+  margin-inline: 0;
+  max-width: none;
+}
+
+.page :global(.pb-diagram__clients svg) {
+  max-width: calc(var(--pb-space-20) * 3.5);
+  margin-inline: auto;
+}
+
+.page :global(.pb-cta-band) {
+  max-width: none;
+  border-color: var(--pb-color-accent-solid);
+  background: var(--pb-color-accent-subtle);
+}
+
+.page :global(.pb-diagram .pb-legend) code {
+  background: var(--pb-color-surface-raised);
+  border: var(--pb-space-px) solid var(--pb-color-border);
+}
+
+@media (min-width: 1024px) {
+  .page :global(.pb-diagram__clients) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

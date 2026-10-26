@@ -1,7 +1,7 @@
 import {useRef, useState, type KeyboardEvent} from 'react';
 import Link from '@docusaurus/Link';
 import {Copy} from 'lucide-react';
-import {dockerCommands, dockerQuickstart, dockerQuickstartPublished, repository, workersCommands, workersQuickstartDoc, workersQuickstartPublished} from '../../data/landing';
+import {dockerCommands, dockerQuickstart, dockerQuickstartPublished, releaseStatus, repository, workersCommands, workersQuickstartDoc, workersQuickstartPublished} from '../../data/landing';
 
 const runtimes = [
   {id: 'workers', label: 'Workers', commands: workersCommands, href: workersQuickstartDoc, published: workersQuickstartPublished},
@@ -35,8 +35,8 @@ export default function Quickstart() {
   return (
     <section className="pb-quickstart" id="quickstart" aria-labelledby="qs-title">
       <h2 id="qs-title">Quickstart</h2>
-      <p>Choose a runtime. Start in a checkout of the broker repository with Node 24 and pnpm.</p>
-      <p className="pb-legend"><span className="pb-badge pb-badge--warning">Pre-release</span> Build from source; no tagged release yet.</p>
+      <p>Choose a runtime. Install Node 24 and pnpm, then clone the broker repository with the commands below.</p>
+      <p className="pb-legend">{releaseStatus}. Build from source.</p>
       <div className="pb-tabs">
         <div role="tablist" aria-label="Runtime">
           {runtimes.map((runtime, index) => (

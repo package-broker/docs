@@ -40,6 +40,7 @@ Docs retain the Docusaurus navbar with Docs, GitHub and Security links.
 
 New marketing components belong in the source component catalogue before
 site use (WEB-10); the growth mocks are visual references.
+One-off page illustrations (inline SVG figures used on a single page) may live in src/components/landing/visuals as CSS modules on design-system tokens; reusable components still go to the design-system catalogue first (DEC-G21).
 
 ## Copy rules
 

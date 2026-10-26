@@ -1,0 +1,8 @@
+.page :global(.pb-table--compare .pb-col-pb) {
+  background: var(--pb-color-surface-subtle);
+  border-inline-start: var(--pb-space-1) solid var(--pb-color-accent-solid);
+}
+
+.page :global(.pb-cta-band) {
+  max-width: none;
+}

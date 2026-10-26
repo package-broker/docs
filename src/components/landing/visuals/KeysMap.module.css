@@ -1,0 +1,220 @@
+.root {
+  display: grid;
+  gap: var(--pb-space-3);
+  margin: 0;
+}
+
+@media (min-width: 1024px) {
+  .root {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: stretch;
+  }
+}
+
+.side {
+  display: grid;
+  align-content: start;
+  gap: var(--pb-space-4);
+  min-width: 0;
+  padding: var(--pb-space-5);
+  border: var(--pb-space-px) solid var(--pb-color-border);
+  border-radius: var(--pb-radius-lg);
+  background: var(--pb-color-surface);
+}
+
+.sideBroker {
+  background: var(--pb-color-surface-raised);
+}
+
+.heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--pb-space-2);
+  row-gap: var(--pb-space-1);
+  margin: 0;
+  color: var(--pb-color-text);
+  font-size: var(--pb-font-size-lg);
+  font-weight: var(--pb-font-weight-semibold);
+}
+
+.headingNote {
+  color: var(--pb-color-text-muted);
+  font-size: var(--pb-font-size-sm);
+  font-weight: var(--pb-font-weight-regular);
+}
+
+.dotDanger,
+.dotBrand {
+  width: var(--pb-space-2);
+  height: var(--pb-space-2);
+  border-radius: var(--pb-radius-full);
+  background: var(--pb-color-status-danger-fg);
+}
+
+.dotBrand {
+  background: var(--pb-color-brand);
+}
+
+.wide {
+  display: none;
+}
+
+.narrow {
+  width: 100%;
+  max-width: calc(var(--pb-space-20) * 6);
+  margin-inline: auto;
+}
+
+@media (min-width: 1024px) {
+  .wide {
+    display: block;
+  }
+
+  .narrow {
+    display: none;
+  }
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.divider {
+  display: grid;
+  place-items: center;
+  color: var(--pb-color-text-muted);
+}
+
+.divWide {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .divWide {
+    display: block;
+  }
+
+  .divNarrow {
+    display: none;
+  }
+}
+
+.holderDanger,
+.holderToken,
+.holderQuiet {
+  fill: var(--pb-color-surface-raised);
+  stroke: var(--pb-color-border-control);
+  stroke-width: calc(1.5 * var(--pb-space-px));
+}
+
+.holderQuiet {
+  fill: var(--pb-color-surface-subtle);
+  stroke-dasharray: var(--pb-space-1) var(--pb-space-1);
+}
+
+.icon {
+  color: var(--pb-color-text-muted);
+}
+
+.title {
+  fill: var(--pb-color-text);
+  font-family: var(--pb-font-family-sans);
+  font-size: var(--pb-font-size-md);
+  font-weight: var(--pb-font-weight-medium);
+}
+
+.sub,
+.token {
+  fill: var(--pb-color-text-muted);
+  font-family: var(--pb-font-family-mono);
+  font-size: var(--pb-font-size-sm);
+}
+
+.token {
+  fill: var(--pb-color-accent);
+  font-weight: var(--pb-font-weight-semibold);
+}
+
+.subDanger {
+  font-family: var(--pb-font-family-mono);
+  font-size: var(--pb-font-size-sm);
+  fill: var(--pb-color-status-danger-fg);
+}
+
+.chipLoose,
+.chipSafe {
+  fill: var(--pb-color-status-danger-bg);
+  stroke: var(--pb-color-status-danger-border);
+  stroke-width: calc(1.5 * var(--pb-space-px));
+}
+
+.chipSafe {
+  fill: var(--pb-color-surface);
+  stroke: var(--pb-color-border-control);
+}
+
+.keyLoose {
+  color: var(--pb-color-status-danger-fg);
+}
+
+.keySafe {
+  color: var(--pb-color-brand);
+}
+
+.chipClient {
+  fill: var(--pb-color-text);
+  font-family: var(--pb-font-family-mono);
+  font-size: var(--pb-font-size-sm);
+  font-weight: var(--pb-font-weight-semibold);
+}
+
+.chipVendor {
+  fill: var(--pb-color-text-muted);
+  font-family: var(--pb-font-family-sans);
+  font-size: var(--pb-font-size-xs);
+}
+
+.tangle {
+  fill: none;
+  stroke: var(--pb-color-status-danger-fg);
+  stroke-width: calc(1.25 * var(--pb-space-px));
+  stroke-opacity: 0.55;
+}
+
+.broker {
+  fill: var(--pb-color-surface-subtle);
+  stroke: var(--pb-color-brand);
+  stroke-width: var(--pb-space-0-5);
+  stroke-dasharray: var(--pb-space-1-5) var(--pb-space-1);
+}
+
+.lock {
+  color: var(--pb-color-brand);
+}
+
+.brokerTitle {
+  fill: var(--pb-color-text);
+  font-family: var(--pb-font-family-sans);
+  font-size: var(--pb-font-size-md);
+  font-weight: var(--pb-font-weight-semibold);
+}
+
+.brokerNote {
+  fill: var(--pb-color-text-muted);
+  font-family: var(--pb-font-family-sans);
+  font-size: var(--pb-font-size-xs);
+}
+
+.flow {
+  fill: none;
+  stroke: var(--pb-color-accent);
+  stroke-width: var(--pb-space-0-5);
+}
+
+.arrowHead {
+  fill: var(--pb-color-accent);
+}

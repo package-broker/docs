@@ -1,35 +1,43 @@
 {
   "/": {
     "title": "Private Composer and npm registry",
-    "description": "Self-host private Composer and npm packages with project isolation, OIDC groups and one token policy. Deploy on Cloudflare Workers or Node under AGPL-3.0-only."
+    "description": "Private Composer and npm registry for Magento and PHP agencies: one token per developer, client keys in the broker, stored archives for deploys.",
+    "cardSupport": "Client keys stay in the broker, not on laptops."
   },
   "/agencies": {
     "title": "For agencies: one project per client",
-    "description": "Give each client a project, its own repo.magento.com source credentials and project-bound CI tokens. See how grants control who can install."
+    "description": "Give each client a project, its own repo.magento.com source credentials and project-bound CI tokens. See how grants control who can install.",
+    "cardSupport": "For agencies"
   },
   "/compare/private-packagist": {
     "title": "Package Broker and Private Packagist, compared",
-    "description": "Compare Package Broker and Private Packagist on authentication, project isolation, npm, SSO, hosting and licence. Read sources and checked dates."
+    "description": "Compare Package Broker and Private Packagist on authentication, project isolation, npm, SSO, hosting and licence. Read sources and checked dates.",
+    "cardSupport": "Compare"
   },
   "/compare/satis": {
     "title": "Package Broker and Satis, compared",
-    "description": "Compare Package Broker and Satis on authentication, project isolation, npm, SSO, hosting and licence. Read sources and checked dates."
+    "description": "Compare Package Broker and Satis on authentication, project isolation, npm, SSO, hosting and licence. Read sources and checked dates.",
+    "cardSupport": "Compare"
   },
   "/compare/packeton": {
     "title": "Package Broker and Packeton, compared",
-    "description": "Compare Package Broker and Packeton on authentication, project isolation, npm, SSO, hosting and licence. Read sources and checked dates."
+    "description": "Compare Package Broker and Packeton on authentication, project isolation, npm, SSO, hosting and licence. Read sources and checked dates.",
+    "cardSupport": "Compare"
   },
   "/security": {
     "title": "Security at Package Broker",
-    "description": "Report a vulnerability, review token scopes and the audit log, and check data residency. You operate the registry and choose its deployment controls."
+    "description": "Report a vulnerability, review token scopes and the audit log, and check data residency. You operate the registry and choose its deployment controls.",
+    "cardSupport": "Security"
   },
   "/search": {
     "title": "Search the documentation",
-    "description": "Search Package Broker documentation for deployment instructions, registry architecture, token scopes and decisions about Composer and npm packages."
+    "description": "Search Package Broker documentation for deployment instructions, registry architecture, token scopes and decisions about Composer and npm packages.",
+    "cardSupport": "Search the documentation"
   },
   "/404.html": {
     "title": "Page not found",
-    "description": "This page does not exist. Search the Package Broker documentation or start with the deployment quickstart to find your next step."
+    "description": "This page does not exist. Search the Package Broker documentation or start with the deployment quickstart to find your next step.",
+    "cardSupport": "This page does not exist"
   },
   "/docs/CONTRIBUTING-DOCS": {
     "title": "Documentation",

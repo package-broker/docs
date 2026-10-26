@@ -1,5 +1,3 @@
-export const accessModel = '/docs/reference/access-model';
-export const vendorSources = '/docs/guides/mirror-vendor-repositories';
 export const sourceDecision = '/docs/decisions/registry-and-sources';
 export const identityDecision = '/docs/decisions/identity-and-sessions';
 export const tokenDecision = '/docs/decisions/secrets-and-tokens';

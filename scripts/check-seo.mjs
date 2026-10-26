@@ -64,7 +64,7 @@ export function inspectPage(html, route) {
   for (const type of ['FAQPage', 'HowTo']) assert.equal(ofType(type).length, 0, `${route}: forbidden ${type}`);
   const expectedType = route === '/' ? 'SoftwareApplication' : route.startsWith('/docs/') ? 'TechArticle' : 'WebPage';
   assert.equal(ofType(expectedType).length, 1, `${route}: expected one ${expectedType}`);
-  const expectedTypes = route === '/' ? ['Organization', 'SoftwareApplication'] : route.startsWith('/docs/')
+  const expectedTypes = route === '/' ? ['Organization', 'Person', 'SoftwareApplication'] : route.startsWith('/docs/')
     ? ['BreadcrumbList', 'ListItem', 'TechArticle'] : ['WebPage'];
   const actualTypes = objects.flatMap(object => object['@type'] ?? []);
   assert.deepEqual([...new Set(actualTypes)].sort(), expectedTypes.sort(), `${route}: unexpected JSON-LD type set`);
@@ -75,6 +75,7 @@ export function inspectPage(html, route) {
       assert.ok(!Object.hasOwn(object, field), `Landing page JSON-LD must omit ${field}`);
     }
     assert.equal(ofType('Organization').length, 1, 'Organization belongs on the landing page');
+    assert.deepEqual(app.maintainer, {'@type': 'Person', name: 'lbajsarowicz', url: 'https://github.com/lbajsarowicz'}, 'SoftwareApplication names its maintainer');
   } else {
     assert.equal(ofType('Organization').length, 0, `${route}: Organization belongs only on /`);
     assert.equal(ofType('SoftwareApplication').length, 0, `${route}: SoftwareApplication belongs only on /`);

@@ -73,6 +73,7 @@ export function LandingFooter() {
       <div className="pb-wrap">
         <nav aria-label="Footer"><ul>{footerLinks.map(({label, ...destination}) => <li key={label}><Link className="pb-link" {...destination}>{label}</Link></li>)}</ul></nav>
         <p className="pb-site-footer__contact">Contact: <a className="pb-link" href={`mailto:${contacts.support}`}>{contacts.support}</a></p>
+        <p>Maintained by <a className="pb-link" href="https://github.com/lbajsarowicz">lbajsarowicz</a>.</p>
         <p>Package Broker is licensed under AGPL-3.0-only.</p>
       </div>
     </footer>
