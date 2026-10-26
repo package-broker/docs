@@ -1,0 +1,5 @@
+.benefits { display: grid; gap: var(--pb-space-3); margin: var(--pb-space-5) 0 0; padding: 0; list-style: none; }
+.benefits li { display: flex; gap: var(--pb-space-3); align-items: flex-start; }
+.actions { margin-top: var(--pb-space-6); }
+.legend { margin-top: var(--pb-space-3); }
+.seats { display: flex; gap: var(--pb-space-4); align-items: flex-start; }

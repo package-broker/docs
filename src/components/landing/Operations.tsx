@@ -1,10 +1,12 @@
 import type {ReactNode} from 'react';
 import {repository} from '../../data/landing';
 
+const adminKeyAccess = 'Organization admins and the master key holder can use every client’s keys; rotate them when an admin leaves.';
+
 const rows: {label: string; workers: ReactNode; docker: ReactNode}[] = [
   {label: 'Prerequisites', workers: 'Workers Paid plan, Node 24 and pnpm.', docker: 'Docker, Node 24 and pnpm to build; a host with persistent storage. Container image publishing (GHCR) is planned; build the image from the repository.'},
   {label: 'Resources you run', workers: 'Workers, D1, R2, Queues and Cron Triggers.', docker: 'The Node bundle, SQLite and a filesystem blob store, or an S3-compatible bucket.'},
-  {label: 'You own', workers: 'Backups, master key recovery, upgrades and the identity provider.', docker: 'Backups, master key recovery, upgrades, the host and the identity provider.'},
+  {label: 'You own', workers: `Backups, master key recovery, upgrades and the identity provider. ${adminKeyAccess}`, docker: `Backups, master key recovery, upgrades, the host and the identity provider. ${adminKeyAccess}`},
   {label: 'Cost floor', workers: <>From USD 5 per month (Workers Paid account minimum) plus usage beyond the included requests and CPU time; D1, R2 and Queues are billed by usage. <a className="pb-link" href="https://developers.cloudflare.com/workers/platform/pricing/">Workers pricing</a> (checked 2026-10-25).</>, docker: 'Your host, storage and operations.'},
   {label: 'Support', workers: <>Community issues and Discussions; one maintainer during pre-release. <a className="pb-link" href={`${repository}/blob/main/GOVERNANCE.md`}>Governance</a>.</>, docker: <>Community issues and Discussions; one maintainer during pre-release. <a className="pb-link" href={`${repository}/blob/main/GOVERNANCE.md`}>Governance</a>.</>},
   {label: 'Licence', workers: 'AGPL-3.0-only.', docker: 'AGPL-3.0-only.'},
