@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { contrastRatio, inSrgbGamut, formatOklch, serialisedComponents } from './lib/color.mjs';
 import { derivePairs, AMBIENT } from './lib/css-pairs.mjs';
+import { checkP3Themes } from './lib/p3-theme-check.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const tokens = JSON.parse(readFileSync(join(root, 'tokens.json'), 'utf8'));
@@ -44,7 +45,9 @@ const hexRatio = (a, b) => {
   return (x + 0.05) / (y + 0.05);
 };
 
-const errors = [];
+const p3File = process.argv[2] ?? join(root, 'tokens.css');
+const p3 = checkP3Themes(readFileSync(p3File, 'utf8'), tokens);
+const errors = [...p3.errors];
 const gamutErrors = [];
 for (const [path, node] of colorLeaves) {
   for (const mode of MODES) {
@@ -110,6 +113,7 @@ for (const r of rows) console.log(`| \`${r[0]}\` | \`${r[1]}\` | ${r[2]} | ${r[3
 console.log('');
 for (const g of gamutErrors) console.log(`OUT OF sRGB GAMUT: ${g}`);
 for (const e of errors) console.log(e);
+console.log(`P3 theme scope: ${p3.checked} declarations checked, ${p3.errors.length} errors (${p3File})`);
 const failing = errors.filter((e) => e.startsWith('FAIL')).length;
 console.log(`${pairs.length} unique declared pairs x ${MODES.length} themes = ${pairs.length * MODES.length} checks, ${failing} failing, ${needs.size} stylesheet pairs derived (${missing.length} undeclared), ${gamutErrors.length} out-of-gamut tokens, ${errors.length} errors`);
 process.exit(errors.length || gamutErrors.length ? 1 : 0);

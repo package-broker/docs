@@ -147,7 +147,7 @@
 
 .chipLoose,
 .chipSafe {
-  fill: color-mix(in oklch, var(--pb-color-status-danger-fg) 12%, var(--pb-color-surface));
+  fill: var(--pb-color-status-danger-bg);
   stroke: var(--pb-color-status-danger-border);
   stroke-width: calc(1.5 * var(--pb-space-px));
 }

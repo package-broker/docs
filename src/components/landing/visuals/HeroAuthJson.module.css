@@ -41,13 +41,7 @@
 }
 
 .before .code {
-  max-height: calc(var(--pb-space-12) * 6.5);
   color: var(--pb-color-text-muted);
-  mask-image: linear-gradient(to bottom, var(--pb-color-text) 70%, transparent);
-}
-
-:global([data-theme='dark']) .before .code {
-  mask-image: none;
 }
 
 .before .key,
@@ -126,7 +120,7 @@
 
 .badgeDanger {
   border-color: var(--pb-color-status-danger-border);
-  background: color-mix(in oklch, var(--pb-color-status-danger-fg) 12%, var(--pb-color-surface));
+  background: var(--pb-color-status-danger-bg);
   color: var(--pb-color-status-danger-fg);
 }
 
@@ -165,8 +159,8 @@
 }
 
 .text {
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .i0 { padding-inline-start: 0; }

@@ -57,7 +57,7 @@
 }
 
 .nodeDown {
-  fill: color-mix(in oklch, var(--pb-color-status-danger-fg) 12%, var(--pb-color-surface));
+  fill: var(--pb-color-status-danger-bg);
   stroke: var(--pb-color-status-danger-border);
   stroke-width: calc(1.5 * var(--pb-space-px));
   stroke-dasharray: var(--pb-space-1-5) var(--pb-space-1);
@@ -111,7 +111,7 @@
 .termBody code { padding: 0; background: none; border: 0; font-size: inherit; color: inherit; }
 .termBody:focus-visible { outline: var(--pb-size-focus-width) solid var(--pb-color-focus); outline-offset: calc(-1 * var(--pb-size-focus-width)); }
 
-.termHead .downBadge { background: color-mix(in oklch, var(--pb-color-status-danger-fg) 12%, var(--pb-color-surface)); }
+.termHead .downBadge { background: var(--pb-color-status-danger-bg); }
 
 .termBadges { display: inline-flex; flex-wrap: wrap; gap: var(--pb-space-2); }
 

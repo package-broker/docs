@@ -105,7 +105,7 @@
   --pb-color-accent: oklch(49% 0.17 258);
   --pb-color-accent-solid: oklch(51% 0.17 258);
   --pb-color-accent-solid-hover: oklch(45% 0.16 258);
-  --pb-color-accent-solid-active: oklch(40% 0.1491 258);
+  --pb-color-accent-solid-active: #004396;
   --pb-color-on-accent: oklch(100% 0 0);
   --pb-color-accent-subtle: oklch(95% 0.0225 255); /* Selection only: selected nav item, selected row, pressed filter chip, current page. */
   --pb-color-accent-subtle-hover: oklch(92% 0.035 255);
@@ -120,11 +120,11 @@
   --pb-color-status-success-fg: oklch(45% 0.12 150);
   --pb-color-status-success-bg: oklch(96% 0.035 150);
   --pb-color-status-success-border: oklch(62% 0.13 150);
-  --pb-color-status-warning-fg: oklch(45% 0.0953 75);
-  --pb-color-status-warning-bg: oklch(96% 0.0323 75);
+  --pb-color-status-warning-fg: #744c00;
+  --pb-color-status-warning-bg: #ffefda;
   --pb-color-status-warning-border: oklch(62% 0.13 75);
   --pb-color-status-danger-fg: oklch(45% 0.12 27);
-  --pb-color-status-danger-bg: oklch(96% 0.0198 27);
+  --pb-color-status-danger-bg: #ffedeb;
   --pb-color-status-danger-border: oklch(62% 0.13 27);
   --pb-color-status-danger-solid: oklch(53% 0.19 27);
   --pb-color-status-danger-solid-hover: oklch(47% 0.18 27);
@@ -139,7 +139,7 @@
   --pb-color-chart-series-1: oklch(66% 0.16 255); /* Categorical slot 1 (blue); fixed slot per entity, at least 3:1 against surface and surface-raised, never the only signal. */
   --pb-color-chart-series-2: oklch(67.75% 0.175 40); /* Categorical slot 2 (orange); fixed slot per entity, at least 3:1 against surface and surface-raised, never the only signal. */
   --pb-color-chart-series-3: oklch(64.25% 0.14 162); /* Categorical slot 3 (green); fixed slot per entity, at least 3:1 against surface and surface-raised, never the only signal. */
-  --pb-color-chart-series-4: oklch(66.5% 0.1404 75); /* Categorical slot 4 (amber); fixed slot per entity, at least 3:1 against surface and surface-raised, never the only signal. */
+  --pb-color-chart-series-4: #c58500; /* Categorical slot 4 (amber); fixed slot per entity, at least 3:1 against surface and surface-raised, never the only signal. */
   --pb-color-chart-series-5: oklch(67.75% 0.14 357); /* Categorical slot 5 (pink); fixed slot per entity, at least 3:1 against surface and surface-raised, never the only signal. */
   --pb-color-chart-series-6: oklch(65% 0.11 215); /* Categorical slot 6 (cyan); fixed slot per entity, at least 3:1 against surface and surface-raised, never the only signal. */
   --pb-color-chart-series-7: oklch(67.25% 0.1792 283); /* Categorical slot 7 (violet); fixed slot per entity, at least 3:1 against surface and surface-raised, never the only signal. */
@@ -193,7 +193,7 @@
     --pb-color-status-danger-border: oklch(60% 0.11 27);
     --pb-color-status-danger-solid: oklch(70% 0.16 27);
     --pb-color-status-danger-solid-hover: oklch(76% 0.14 27);
-    --pb-color-status-danger-solid-active: oklch(82% 0.101 27);
+    --pb-color-status-danger-solid-active: #ffaba1;
     --pb-color-status-danger-on-solid: oklch(18% 0.025 255);
     --pb-color-status-info-fg: oklch(84% 0.0825 250);
     --pb-color-status-info-bg: oklch(29% 0.055 250);
@@ -203,12 +203,12 @@
     --pb-color-status-neutral-border: oklch(60% 0.02 255);
     --pb-color-chart-series-1: oklch(60.75% 0.16 255);
     --pb-color-chart-series-2: oklch(62.25% 0.175 40);
-    --pb-color-chart-series-3: oklch(59% 0.1295 162);
-    --pb-color-chart-series-4: oklch(61% 0.1289 75);
+    --pb-color-chart-series-3: #009465;
+    --pb-color-chart-series-4: #af7600;
     --pb-color-chart-series-5: oklch(62.25% 0.14 357);
-    --pb-color-chart-series-6: oklch(59.5% 0.1052 215);
+    --pb-color-chart-series-6: #008ea6;
     --pb-color-chart-series-7: oklch(62% 0.19 283);
-    --pb-color-chart-series-8: oklch(59.5% 0.1498 125);
+    --pb-color-chart-series-8: #6a8d00;
     --pb-color-chart-grid: oklch(30% 0.015 255);
     --pb-color-chart-no-data: oklch(58% 0.015 255);
     --pb-shadow-sm: 0px 1px 2px 0px var(--pb-color-shadow-color);
@@ -257,7 +257,7 @@
   --pb-color-status-danger-border: oklch(60% 0.11 27);
   --pb-color-status-danger-solid: oklch(70% 0.16 27);
   --pb-color-status-danger-solid-hover: oklch(76% 0.14 27);
-  --pb-color-status-danger-solid-active: oklch(82% 0.101 27);
+  --pb-color-status-danger-solid-active: #ffaba1;
   --pb-color-status-danger-on-solid: oklch(18% 0.025 255);
   --pb-color-status-info-fg: oklch(84% 0.0825 250);
   --pb-color-status-info-bg: oklch(29% 0.055 250);
@@ -267,12 +267,12 @@
   --pb-color-status-neutral-border: oklch(60% 0.02 255);
   --pb-color-chart-series-1: oklch(60.75% 0.16 255);
   --pb-color-chart-series-2: oklch(62.25% 0.175 40);
-  --pb-color-chart-series-3: oklch(59% 0.1295 162);
-  --pb-color-chart-series-4: oklch(61% 0.1289 75);
+  --pb-color-chart-series-3: #009465;
+  --pb-color-chart-series-4: #af7600;
   --pb-color-chart-series-5: oklch(62.25% 0.14 357);
-  --pb-color-chart-series-6: oklch(59.5% 0.1052 215);
+  --pb-color-chart-series-6: #008ea6;
   --pb-color-chart-series-7: oklch(62% 0.19 283);
-  --pb-color-chart-series-8: oklch(59.5% 0.1498 125);
+  --pb-color-chart-series-8: #6a8d00;
   --pb-color-chart-grid: oklch(30% 0.015 255);
   --pb-color-chart-no-data: oklch(58% 0.015 255);
   --pb-shadow-sm: 0px 1px 2px 0px var(--pb-color-shadow-color);
@@ -300,7 +300,7 @@
     --pb-color-accent: oklch(49% 0.17 258);
     --pb-color-accent-solid: oklch(51% 0.17 258);
     --pb-color-accent-solid-hover: oklch(45% 0.16 258);
-    --pb-color-accent-solid-active: oklch(40% 0.1491 258);
+    --pb-color-accent-solid-active: #004396;
     --pb-color-on-accent: oklch(100% 0 0);
     --pb-color-accent-subtle: oklch(95% 0.0225 255); /* Selection only: selected nav item, selected row, pressed filter chip, current page. */
     --pb-color-accent-subtle-hover: oklch(92% 0.035 255);
@@ -315,11 +315,11 @@
     --pb-color-status-success-fg: oklch(45% 0.12 150);
     --pb-color-status-success-bg: oklch(96% 0.035 150);
     --pb-color-status-success-border: oklch(62% 0.13 150);
-    --pb-color-status-warning-fg: oklch(45% 0.0953 75);
-    --pb-color-status-warning-bg: oklch(96% 0.0323 75);
+    --pb-color-status-warning-fg: #744c00;
+    --pb-color-status-warning-bg: #ffefda;
     --pb-color-status-warning-border: oklch(62% 0.13 75);
     --pb-color-status-danger-fg: oklch(45% 0.12 27);
-    --pb-color-status-danger-bg: oklch(96% 0.0198 27);
+    --pb-color-status-danger-bg: #ffedeb;
     --pb-color-status-danger-border: oklch(62% 0.13 27);
     --pb-color-status-danger-solid: oklch(53% 0.19 27);
     --pb-color-status-danger-solid-hover: oklch(47% 0.18 27);
@@ -334,7 +334,7 @@
     --pb-color-chart-series-1: oklch(66% 0.16 255); /* Categorical slot 1 (blue); fixed slot per entity, at least 3:1 against surface and surface-raised, never the only signal. */
     --pb-color-chart-series-2: oklch(67.75% 0.175 40); /* Categorical slot 2 (orange); fixed slot per entity, at least 3:1 against surface and surface-raised, never the only signal. */
     --pb-color-chart-series-3: oklch(64.25% 0.14 162); /* Categorical slot 3 (green); fixed slot per entity, at least 3:1 against surface and surface-raised, never the only signal. */
-    --pb-color-chart-series-4: oklch(66.5% 0.1404 75); /* Categorical slot 4 (amber); fixed slot per entity, at least 3:1 against surface and surface-raised, never the only signal. */
+    --pb-color-chart-series-4: #c58500; /* Categorical slot 4 (amber); fixed slot per entity, at least 3:1 against surface and surface-raised, never the only signal. */
     --pb-color-chart-series-5: oklch(67.75% 0.14 357); /* Categorical slot 5 (pink); fixed slot per entity, at least 3:1 against surface and surface-raised, never the only signal. */
     --pb-color-chart-series-6: oklch(65% 0.11 215); /* Categorical slot 6 (cyan); fixed slot per entity, at least 3:1 against surface and surface-raised, never the only signal. */
     --pb-color-chart-series-7: oklch(67.25% 0.1792 283); /* Categorical slot 7 (violet); fixed slot per entity, at least 3:1 against surface and surface-raised, never the only signal. */
@@ -352,5 +352,64 @@
     --pb-duration-fast: 0ms;
     --pb-duration-base: 0ms;
     --pb-duration-slow: 0ms;
+  }
+}
+
+/* Explicit P3 fallbacks keep every enhancement inside its theme scope. */
+@supports (color: color(display-p3 0 0 0)) {
+  @media (color-gamut: p3) {
+    :root,
+    [data-theme="light"] {
+      --pb-color-accent-solid-active: color(display-p3 0.097251 0.256684 0.565741);
+      --pb-color-status-warning-fg: color(display-p3 0.430772 0.305235 0.086009);
+      --pb-color-status-warning-bg: color(display-p3 0.989531 0.940536 0.865732);
+      --pb-color-status-danger-bg: color(display-p3 0.988131 0.932334 0.922333);
+      --pb-color-status-danger-solid-active: color(display-p3 0.530661 0.102419 0.091884);
+      --pb-color-chart-series-3: color(display-p3 0.292131 0.642761 0.462997);
+      --pb-color-chart-series-4: color(display-p3 0.736031 0.532158 0.176885);
+      --pb-color-chart-series-6: color(display-p3 0.294981 0.616566 0.712801);
+      --pb-color-chart-series-8: color(display-p3 0.508418 0.615753 0.230472);
+    }
+
+    [data-theme="dark"] {
+      --pb-color-accent-solid-active: color(display-p3 0.754065 0.856349 0.98679);
+      --pb-color-status-warning-fg: color(display-p3 0.915596 0.765777 0.53418);
+      --pb-color-status-warning-bg: color(display-p3 0.219953 0.155488 0.048848);
+      --pb-color-status-danger-bg: color(display-p3 0.243738 0.131135 0.115486);
+      --pb-color-status-danger-solid-active: color(display-p3 0.952197 0.684392 0.64203);
+      --pb-color-chart-series-3: color(display-p3 0.254498 0.572756 0.410026);
+      --pb-color-chart-series-4: color(display-p3 0.655231 0.472042 0.152626);
+      --pb-color-chart-series-6: color(display-p3 0.242291 0.548077 0.638451);
+      --pb-color-chart-series-8: color(display-p3 0.44539 0.548897 0.158064);
+    }
+  }
+
+  @media (prefers-color-scheme: dark) and (color-gamut: p3) {
+    :root:not([data-theme="light"], [data-theme="dark"]) {
+      --pb-color-accent-solid-active: color(display-p3 0.754065 0.856349 0.98679);
+      --pb-color-status-warning-fg: color(display-p3 0.915596 0.765777 0.53418);
+      --pb-color-status-warning-bg: color(display-p3 0.219953 0.155488 0.048848);
+      --pb-color-status-danger-bg: color(display-p3 0.243738 0.131135 0.115486);
+      --pb-color-status-danger-solid-active: color(display-p3 0.952197 0.684392 0.64203);
+      --pb-color-chart-series-3: color(display-p3 0.254498 0.572756 0.410026);
+      --pb-color-chart-series-4: color(display-p3 0.655231 0.472042 0.152626);
+      --pb-color-chart-series-6: color(display-p3 0.242291 0.548077 0.638451);
+      --pb-color-chart-series-8: color(display-p3 0.44539 0.548897 0.158064);
+    }
+  }
+
+  @media print and (color-gamut: p3) {
+    :root,
+    [data-theme] {
+      --pb-color-accent-solid-active: color(display-p3 0.097251 0.256684 0.565741);
+      --pb-color-status-warning-fg: color(display-p3 0.430772 0.305235 0.086009);
+      --pb-color-status-warning-bg: color(display-p3 0.989531 0.940536 0.865732);
+      --pb-color-status-danger-bg: color(display-p3 0.988131 0.932334 0.922333);
+      --pb-color-status-danger-solid-active: color(display-p3 0.530661 0.102419 0.091884);
+      --pb-color-chart-series-3: color(display-p3 0.292131 0.642761 0.462997);
+      --pb-color-chart-series-4: color(display-p3 0.736031 0.532158 0.176885);
+      --pb-color-chart-series-6: color(display-p3 0.294981 0.616566 0.712801);
+      --pb-color-chart-series-8: color(display-p3 0.508418 0.615753 0.230472);
+    }
   }
 }

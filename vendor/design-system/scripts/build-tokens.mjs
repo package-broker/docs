@@ -2,7 +2,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { formatOklch, contrastRatio, serialisedComponents } from './lib/color.mjs';
+import { formatOklch, contrastRatio, serialisedComponents, needsP3Fallback, formatDisplayP3, oklchToHex } from './lib/color.mjs';
 import { INFIMA_VERSION, INFIMA_COLOR_VARS, INFIMA_EXCUSED, INFIMA_MAP, INFIMA_NON_COLOUR } from './lib/infima-map.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -29,8 +29,13 @@ const isRef = (v) => typeof v === 'string' && /^\{[^{}]+\}$/.test(v);
 function css(type, value, token) {
   if (isRef(value)) return alias(value);
   switch (type) {
-    case 'color':
-      return formatOklch(value.components, value.alpha);
+    case 'color': {
+      // Emit edge colours as sRGB here; implicit P3 fallbacks can escape their
+      // print/theme scope during downstream media-query optimization.
+      if (!needsP3Fallback(value)) return formatOklch(value.components, value.alpha);
+      const alpha = value.alpha === undefined || value.alpha === 1 ? '' : Math.round(value.alpha * 255).toString(16).padStart(2, '0');
+      return oklchToHex(serialisedComponents(value.components)) + alpha;
+    }
     case 'dimension':
       return dim(value);
     case 'duration':
@@ -87,6 +92,24 @@ const lightBlock = (indent) => [...modal.map((l) => decl(l, l.token.$value, true
 const darkBlock = (indent) => [...modal.map((l) => decl(l, l.token.$extensions[MODES_KEY].dark, false, indent)), ...composite.map((l) => decl(l, l.token.$value, false, indent))].join('\n');
 const zeroed = fixed.filter((l) => l.type === 'duration' && l.token.$value.value > 0 && !l.token.$extensions?.['broker.package.loop']);
 
+const p3Colors = modal.filter((l) => l.type === 'color' &&
+  [l.token.$value, l.token.$extensions[MODES_KEY].dark].some(needsP3Fallback));
+const p3Block = (mode, indent) => p3Colors.map((l) =>
+  `${indent}${varName(l.path)}: ${formatDisplayP3(mode === 'light' ? l.token.$value : l.token.$extensions[MODES_KEY].dark)};`).join('\n');
+// Both themes override the union of edge colours: a light fallback must never
+// win just because the corresponding dark value is wholly inside sRGB.
+const p3Css = p3Colors.length ?
+  '\n/* Explicit P3 fallbacks keep every enhancement inside its theme scope. */\n' +
+  '@supports (color: color(display-p3 0 0 0)) {\n' +
+  '  @media (color-gamut: p3) {\n    :root,\n    [data-theme="light"] {\n' +
+  p3Block('light', '      ') + '\n    }\n\n' +
+  '    [data-theme="dark"] {\n' + p3Block('dark', '      ') + '\n    }\n  }\n\n' +
+  // Keep media conditions together: optimizers can lift nested media rules.
+  '  @media (prefers-color-scheme: dark) and (color-gamut: p3) {\n    :root:not([data-theme="light"], [data-theme="dark"]) {\n' +
+  p3Block('dark', '      ') + '\n    }\n  }\n\n' +
+  '  @media print and (color-gamut: p3) {\n    :root,\n    [data-theme] {\n' +
+  p3Block('light', '      ') + '\n    }\n  }\n}\n' : '';
+
 const tokensCss =
   HEADER +
   ':root {\n' +
@@ -107,7 +130,7 @@ const tokensCss =
   '\n  }\n}\n\n' +
   '@media (prefers-reduced-motion: reduce) {\n  :root {\n' +
   zeroed.map((l) => `    ${varName(l.path)}: 0ms;`).join('\n') +
-  '\n  }\n}\n';
+  '\n  }\n}\n' + p3Css;
 
 const TW_COLOR_ALIAS = { bg: 'canvas', text: 'fg', 'text-muted': 'muted', 'text-disabled': 'disabled', border: 'line', 'border-control': 'control' };
 const twColor = (path) => {
