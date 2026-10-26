@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {checkSeo, inspectPage, htmlPages} from '../scripts/check-seo.mjs';
+import {checkSeo, inspectPage, htmlPages, decode} from '../scripts/check-seo.mjs';
 import {checkLlms} from '../scripts/check-llms.mjs';
 import {checkCards} from '../scripts/og/check.mjs';
 import {curateLlms} from '../scripts/curate-llms.mjs';
@@ -167,4 +167,39 @@ test('social card gate rejects missing, stale, oversized and malformed PNGs', ()
     writeFileSync(manifestPath, JSON.stringify(manifest));
     assert.throws(() => checkCards(outDir), /cover every card/);
   });
+});
+
+test('comparison hub and footer expose every comparison and migration guide with checked dates', () => {
+  const pages = htmlPages('build');
+  const hub = pages.find(page => page.route === '/compare').html;
+  const data = require('../src/data/comparison.json');
+  for (const product of data.products.filter(product => product.id !== 'package-broker')) {
+    assert.ok(hub.includes(`href="/compare/${product.id}"`));
+    assert.ok(hub.includes(`href="${product.migration.href}"`));
+    assert.ok(hub.includes(`datetime="${product.fit.lastVerified}"`));
+    const agencyFooter = pages.find(page => page.route === '/agencies').html.split('<footer')[1];
+    assert.ok(agencyFooter.includes(`href="/compare/${product.id}"`));
+    const comparison = pages.find(page => page.route === `/compare/${product.id}`).html;
+    assert.ok(comparison.includes(`Package Broker and ${product.name}, compared</h1>`));
+    const body = decode(comparison.split('</head>')[1]).replace(/<[^>]+>/g, '');
+    assert.ok(body.toLowerCase().includes(curated[`/compare/${product.id}`].title.toLowerCase()));
+  }
+  assert.match(hub, /aria-current="page" href="\/compare"/);
+});
+
+test('pricing explains hosting and agencies provide six native answers, follow and help routes', () => {
+  const pages = htmlPages('build');
+  const pricing = pages.find(page => page.route === '/pricing').html;
+  assert.match(pricing, /<h1>What it costs<\/h1>/);
+  assert.match(pricing, /No licence fee and no per-user, per-project or per-client charge/);
+  assert.match(pricing, /From USD 5 a month on Workers Paid/);
+  assert.match(pricing, /href="https:\/\/developers.cloudflare.com\/workers\/platform\/pricing\/"/);
+  const agencies = pages.find(page => page.route === '/agencies').html;
+  assert.equal((agencies.match(/<details\b/g) ?? []).length, 6);
+  assert.equal((agencies.match(/<summary\b/g) ?? []).length, 6);
+  for (const destination of ['/pricing', '/compare/satis', '/compare/packeton', '/docs/guides/mirror-vendor-repositories', 'https://github.com/package-broker/broker/releases.atom', 'https://github.com/package-broker/broker/issues', 'https://github.com/package-broker/broker/discussions', 'mailto:hi@package.broker']) {
+    assert.ok(agencies.includes(`href="${destination}"`), destination);
+  }
+  assert.match(decode(agencies), /Watch → Custom → Releases/);
+  assert.doesNotMatch(pricing + agencies, /"offers"|"FAQPage"|"HowTo"/);
 });

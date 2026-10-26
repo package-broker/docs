@@ -10,17 +10,17 @@
     "cardSupport": "For agencies"
   },
   "/compare/private-packagist": {
-    "title": "Package Broker and Private Packagist, compared",
+    "title": "Self-hosted Private Packagist alternative compared",
     "description": "Compare Package Broker and Private Packagist on authentication, project isolation, npm, SSO, hosting and licence. Read sources and checked dates.",
     "cardSupport": "Compare"
   },
   "/compare/satis": {
-    "title": "Package Broker and Satis, compared",
+    "title": "Satis alternative for private Composer packages",
     "description": "Compare Package Broker and Satis on authentication, project isolation, npm, SSO, hosting and licence. Read sources and checked dates.",
     "cardSupport": "Compare"
   },
   "/compare/packeton": {
-    "title": "Package Broker and Packeton, compared",
+    "title": "Packeton alternative for Composer and npm",
     "description": "Compare Package Broker and Packeton on authentication, project isolation, npm, SSO, hosting and licence. Read sources and checked dates.",
     "cardSupport": "Compare"
   },
@@ -181,5 +181,15 @@
   "/docs/operations/observability": {
     "title": "Observability",
     "description": "Send broker telemetry through OpenTelemetry Collector to an OTLP backend."
+  },
+  "/compare": {
+    "title": "Private Composer registry alternatives",
+    "description": "Compare Package Broker with Private Packagist, Satis and Packeton using sourced comparisons, checked dates and migration guides for each registry.",
+    "cardSupport": "Compare"
+  },
+  "/pricing": {
+    "title": "What it costs",
+    "description": "Plan Package Broker hosting and operations: no licence fee or per-user, per-project or per-client charge. Review Workers costs and your responsibilities.",
+    "cardSupport": "Hosting and operations"
   }
 }
