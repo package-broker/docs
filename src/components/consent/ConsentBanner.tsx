@@ -27,6 +27,10 @@ export default function ConsentBanner() {
 
   function choose(next: ConsentChoice) {
     setConsent(next);
+    if (pathname.replace(/\/$/, '') === '/privacy') {
+      document.querySelector<HTMLElement>('[role="switch"]')?.focus();
+      return;
+    }
     setMessage(messages[next]);
   }
 

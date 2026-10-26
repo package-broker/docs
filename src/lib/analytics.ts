@@ -1,7 +1,7 @@
 import {repositoryUrl} from '../data/entity';
 
 export type ConsentChoice = 'accepted' | 'refused';
-export type PageType = 'landing' | 'docs' | 'agencies' | 'compare' | 'security' | 'privacy' | 'other';
+export type PageType = 'landing' | 'docs' | 'search' | 'agencies' | 'compare' | 'security' | 'privacy' | 'other';
 
 export const consentStorageKey = 'pb-analytics-consent';
 
@@ -63,6 +63,7 @@ export function pageType(pathname = window.location.pathname): PageType {
   const route = pathname.replace(/\/$/, '') || '/';
   if (route === '/') return 'landing';
   if (route === '/docs' || route.startsWith('/docs/')) return 'docs';
+  if (route === '/search') return 'search';
   if (route === '/agencies') return 'agencies';
   if (route.startsWith('/compare/')) return 'compare';
   if (route === '/security') return 'security';
@@ -91,6 +92,18 @@ function cleanLocation(href: string): string {
   }
 }
 
+function pageTitle(): string {
+  return pageType() === 'search' ? 'Search results' : document.title;
+}
+
+function pageContext() {
+  return {
+    page_location: cleanLocation(window.location.href),
+    page_referrer: previousLocation || cleanLocation(document.referrer),
+    page_title: pageTitle(),
+  };
+}
+
 function disableFlag(disabled: boolean) {
   win()[`ga-disable-${measurementId}`] = disabled;
 }
@@ -103,11 +116,7 @@ function sendPageView() {
   if (!active() || !configured) return;
   const location = cleanLocation(window.location.href);
   if (location === previousLocation) return;
-  ensureGtag()('event', 'page_view', {
-    page_location: location,
-    page_referrer: previousLocation || cleanLocation(document.referrer),
-    page_title: document.title,
-  });
+  ensureGtag()('event', 'page_view', pageContext());
   previousLocation = location;
 }
 
@@ -136,6 +145,7 @@ function grant() {
   disableFlag(false);
   ensureGtag()('consent', 'update', {analytics_storage: 'granted'});
   loadTag();
+  attachListeners();
   sendPageView();
 }
 
@@ -156,6 +166,7 @@ function revoke() {
   ensureGtag()('consent', 'update', {analytics_storage: 'denied'});
   expireAnalyticsCookies();
   window.clearTimeout(searchTimer);
+  detachListeners();
 }
 
 export function setConsent(choice: ConsentChoice) {
@@ -168,11 +179,13 @@ export function setConsent(choice: ConsentChoice) {
 
 export function trackEvent(name: string, params: Record<string, string | number>) {
   if (!active() || !configured) return;
-  ensureGtag()('event', name, params);
+  ensureGtag()('event', name, {...pageContext(), ...params});
 }
 
 export function notePageView() {
-  if (started) sendPageView();
+  if (!started) return;
+  // Helmet applies the new document title after the route renders.
+  window.requestAnimationFrame(() => window.setTimeout(sendPageView, 0));
 }
 
 function codeBlockKind(text: string): (typeof quickstartBlocks)[number] | null {
@@ -234,12 +247,24 @@ function checkEmptySearch() {
   trackEvent('search_zero_results', {result_count: 0, page_type: pageType()});
 }
 
-function watchSearch() {
-  const observer = new MutationObserver(() => {
-    window.clearTimeout(searchTimer);
-    searchTimer = window.setTimeout(checkEmptySearch, zeroResultDelayMs);
-  });
-  observer.observe(document.body, {childList: true, subtree: true});
+const searchObserver = typeof MutationObserver === 'undefined' ? null : new MutationObserver(() => {
+  window.clearTimeout(searchTimer);
+  searchTimer = window.setTimeout(checkEmptySearch, zeroResultDelayMs);
+});
+let listening = false;
+
+function attachListeners() {
+  if (listening) return;
+  listening = true;
+  document.addEventListener('click', onClick, true);
+  searchObserver?.observe(document.body, {childList: true, subtree: true});
+}
+
+function detachListeners() {
+  if (!listening) return;
+  listening = false;
+  document.removeEventListener('click', onClick, true);
+  searchObserver?.disconnect();
 }
 
 export function startAnalytics(id: string) {
@@ -254,8 +279,6 @@ export function startAnalytics(id: string) {
     analytics_storage: 'denied',
   });
   disableFlag(true);
-  document.addEventListener('click', onClick, true);
-  watchSearch();
   sessionChoice = readConsent();
   if (sessionChoice === 'accepted') grant();
   notify();

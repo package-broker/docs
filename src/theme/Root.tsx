@@ -13,7 +13,7 @@ export default function Root({children}: {children: ReactNode}) {
   useEffect(() => notePageView(), [pathname]);
 
   return <>
-    {children}
     <ConsentBanner/>
+    {children}
   </>;
 }

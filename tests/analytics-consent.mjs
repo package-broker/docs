@@ -28,7 +28,7 @@ const gtagStub = `(function () {
   function send(name, params) {
     if (window['ga-disable-' + id]) return;
     var query = new URLSearchParams({v: '2', tid: id, en: name, gcs: gcs()});
-    Object.keys(params || {}).forEach(function (key) { query.set(key === 'page_location' ? 'dl' : key === 'page_referrer' ? 'dr' : 'ep.' + key, String(params[key])); });
+    Object.keys(params || {}).forEach(function (key) { query.set(key === 'page_location' ? 'dl' : key === 'page_referrer' ? 'dr' : key === 'page_title' ? 'dt' : 'ep.' + key, String(params[key])); });
     fetch('https://www.google-analytics.com/g/collect?' + query, {method: 'POST', mode: 'no-cors'}).catch(function () {});
   }
   function handle(entry) {
@@ -42,8 +42,9 @@ const gtagStub = `(function () {
   window.dataLayer.push = function (entry) { handle(entry); return push(entry); };
 })();`;
 
-async function newSession(ctx, viewport = {width: 1280, height: 900}) {
+async function newSession(ctx, viewport = {width: 1280, height: 900}, init = null) {
   const context = await ctx.browser.newContext({viewport, permissions: ['clipboard-read', 'clipboard-write']});
+  if (init) await context.addInitScript(init);
   const page = await context.newPage();
   const requests = [];
   const record = request => {
@@ -117,13 +118,12 @@ export const checks = [
     name: 'banner adds no layout shift and leaves the hero call to action reachable at 390 px',
     async run(ctx) {
       const measure = async choice => {
-        const s = await newSession(ctx, {width: 390, height: 844});
+        const s = await newSession(ctx, {width: 390, height: 844}, `
+          ${choice ? `window.localStorage.setItem(${JSON.stringify(storageKey)}, ${JSON.stringify(choice)});` : ''}
+          window.__shift = 0;
+          new PerformanceObserver(list => { for (const entry of list.getEntries()) if (!entry.hadRecentInput) window.__shift += entry.value; }).observe({type: 'layout-shift', buffered: true});
+        `);
         try {
-          if (choice) await s.context.addInitScript(([key, value]) => window.localStorage.setItem(key, value), [storageKey, choice]);
-          await s.page.addInitScript(() => {
-            window.__shift = 0;
-            new PerformanceObserver(list => { for (const entry of list.getEntries()) if (!entry.hadRecentInput) window.__shift += entry.value; }).observe({type: 'layout-shift', buffered: true});
-          });
           await s.open('/');
           await settle(s.page);
           const shift = await s.page.evaluate(() => window.__shift);
@@ -146,6 +146,47 @@ export const checks = [
       const withBanner = await measure(null);
       const withoutBanner = await measure('refused');
       assert.ok(withBanner.shift <= withoutBanner.shift + 0.001, `layout shift ${withBanner.shift} with the banner against ${withoutBanner.shift} without it`);
+    },
+  },
+  {
+    name: 'keyboard: Tab from page load reaches the banner before the header links',
+    async run(ctx) {
+      const s = await newSession(ctx);
+      try {
+        await s.open('/');
+        await banner(s.page).waitFor();
+        const order = [];
+        for (let index = 0; index < 4; index += 1) {
+          await s.page.keyboard.press('Tab');
+          order.push(await s.page.evaluate(() => document.activeElement?.textContent?.trim()));
+        }
+        assert.ok(order.indexOf('Accept analytics') !== -1 && order.indexOf('Accept analytics') < 2, `tab order: ${order.join(' | ')}`);
+        assert.ok(!order.slice(0, order.indexOf('Accept analytics')).some(label => /Package Broker|Docs|Security/.test(label ?? '')), 'no header link before the banner');
+      } finally { await s.context.close(); }
+    },
+  },
+  {
+    name: 'search page: neither dl, dt nor any parameter carries the query; page_type is search',
+    async run(ctx) {
+      const s = await newSession(ctx);
+      try {
+        await s.open('/');
+        await banner(s.page).getByRole('button', {name: 'Accept analytics'}).click();
+        await s.page.waitForTimeout(500);
+        await s.open('/search?q=topsecretterm');
+        await s.page.waitForTimeout(1500);
+        const views = s.events('page_view');
+        assert.ok(views.length >= 2, 'page views were sent');
+        for (const item of s.collects()) assert.ok(!/topsecretterm/.test(decodeURIComponent(item.url.href + item.body)), 'query text appears nowhere');
+        assert.equal(s.params(views.at(-1)).get('dt'), 'Search results');
+        await s.page.evaluate(() => document.addEventListener('click', event => { if (event.target.closest('a')) event.preventDefault(); }));
+        await s.page.locator('footer a[href="https://github.com/package-broker/broker"]').first().click();
+        await s.page.waitForTimeout(500);
+        const github = s.events('github_click').at(-1);
+        assert.equal(s.params(github).get('ep.page_type'), 'search');
+        assert.equal(s.params(github).get('dt'), 'Search results');
+        assert.ok(!s.params(github).get('dl').includes('?'));
+      } finally { await s.context.close(); }
     },
   },
   {

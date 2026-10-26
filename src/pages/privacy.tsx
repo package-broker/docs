@@ -28,12 +28,12 @@ export default function Privacy() {
       <p>With your consent, this site uses Google Analytics 4 to count page views and three interactions, so the maintainer can see which pages and commands readers use. Before you choose, the site loads no Google script and sends no request to Google.</p>
       <p>After you accept, the site sends these to Google Analytics:</p>
       <ul>
-        <li>Page views, with the page address and the previous page address, both without query strings.</li>
+        <li>Page views, with the page title, the page address and the previous page address. Addresses carry no query string, and the search page sends a fixed title instead of your search.</li>
         <li><code>copy_command</code>: you copied a quickstart or install command. It names the command group (<code>workers</code>, <code>docker</code>, <code>composer</code> or <code>npm</code>) and the page type.</li>
         <li><code>github_click</code>: you followed a link to the <a className="pb-link" href={repository}>Package Broker repository on GitHub</a>. It names where the link sits (<code>hero</code>, <code>footer</code>, <code>docs</code> or <code>other</code>) and the page type.</li>
         <li><code>search_zero_results</code>: a documentation search found nothing. It carries a result count of zero and the page type. It never carries what you typed.</li>
       </ul>
-      <p>Google also receives the technical data any web request carries, such as your IP address and browser details. Google Signals and ad personalization are switched off for the property, and the site grants Google analytics storage only, never advertising storage.</p>
+      <p>Google also receives the technical data any web request carries, such as your IP address and browser details. The site configures the tag with Google Signals and ad personalization signals disabled, and grants analytics storage only, never advertising storage.</p>
     </PageSection>
     <PageSection id="choice" title="Your choice">
       <Choice/>
@@ -42,10 +42,7 @@ export default function Privacy() {
       <p>The site relies on your consent for Google Analytics. It does not treat Google Analytics as exempt from consent, so it asks first and keeps asking only if you have not chosen. You can refuse without losing access to anything on the site.</p>
     </PageSection>
     <PageSection id="retention" title="Retention">
-      <p>The Google Analytics property uses the shortest data retention option that Google offers for it. Your consent choice stays in your browser until you change it or clear site data.</p>
-    </PageSection>
-    <PageSection id="cloudflare" title="Cloudflare Web Analytics">
-      <p>The site also uses Cloudflare Web Analytics to measure Core Web Vitals, which describe page speed. Cloudflare states that it does not use client-side state such as cookies or <code>localStorage</code> for analytics purposes. This measurement is separate from the choice on this page, and the switch above does not control it.</p>
+      <p>Retention follows the shortest option Google Analytics offers; ask <a className="pb-link" href={`mailto:${privacyAddress}`}>{privacyAddress}</a> for the current setting. Your consent choice stays in your browser until you change it or clear site data.</p>
     </PageSection>
   </MarketingLayout>;
 }

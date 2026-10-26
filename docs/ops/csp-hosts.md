@@ -8,7 +8,7 @@
 | `connect-src` | `https://*.google-analytics.com` | `g/collect` measurement requests, including regional endpoints |
 | `connect-src` | `https://*.analytics.google.com` | `g/collect` measurement requests on the Google Analytics domain |
 | `connect-src` | `https://*.googletagmanager.com` | tag configuration requests |
-| `img-src` | `https://www.google-analytics.com`, `https://*.google-analytics.com`, `https://*.googletagmanager.com` | image-beacon fallback for measurement requests |
+| `img-src` | `https://*.google-analytics.com`, `https://*.googletagmanager.com` | image-beacon fallback for measurement requests |
 
 `script-src` keeps `'unsafe-inline'` because Docusaurus emits inline bootstrap scripts; the tag is injected as an external script, so no extra inline allowance was added.
 
@@ -21,3 +21,13 @@ ANALYTICS_TEST_URL=<preview-url> node tests/analytics-consent.mjs --live
 ```
 
 The script prints every Google host it observes after accepting. Remove any host in the table that does not appear, and add any host that does and is missing.
+
+## Upgrade checks
+
+`src/lib/analytics.ts` reads markup it does not own. After upgrading Docusaurus or `@easyops-cn/docusaurus-search-local`, confirm these selectors still match and the consent suite passes:
+
+- `.theme-code-block` (Docusaurus code blocks, for `copy_command`)
+- `[class*="noResults"]` (search empty state, for `search_zero_results`)
+- `.navbar__search-input` (search field, read only to avoid repeat events)
+
+Live check against a preview with a real or fake ID: `node tests/analytics-consent.mjs <preview-url> --live`

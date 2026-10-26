@@ -41,11 +41,11 @@ test('CSP in static/_headers lists the Google Analytics hosts and nothing else t
   const hosts = csp.match(/https:\/\/[^\s;]+/g);
   assert.deepEqual([...new Set(hosts)].sort(), [
     'https://*.analytics.google.com', 'https://*.google-analytics.com', 'https://*.googletagmanager.com',
-    'https://www.google-analytics.com', 'https://www.googletagmanager.com',
+    'https://www.googletagmanager.com',
   ]);
 });
 
-test('the footer links to /privacy', () => {
+test('the footer links to /privacy', {skip: !existsSync(path.join(siteDir, 'build/index.html')) ? 'no build/' : false}, () => {
   const html = readFileSync(path.join(siteDir, 'build/index.html'), 'utf8');
   assert.match(html, /<a[^>]+href="\/privacy"[^>]*>Privacy<\/a>/);
 });
