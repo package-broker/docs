@@ -19,15 +19,17 @@ import contacts from '../data/contacts.json';
 const marketplaceStatus = 'Marketplace sources: built, in final verification.';
 
 function ReleaseNotification() {
-  return <details className={styles.releaseNotification}>
+  return <div className="pb-faq"><details id="get-notified">
     <summary>Get notified of the first release</summary>
+    <div className="pb-faq__answer">
     <ol>
       <li>Open the <a className="pb-link" href={repository}>Package Broker repository on GitHub</a> and select <strong>Watch</strong>.</li>
       <li>Select <strong>Custom</strong>.</li>
       <li>Select <strong>Releases</strong> and apply your choices.</li>
     </ol>
     <p>Or subscribe to the <a className="pb-link" href={releasesFeed}>Atom release feed</a>.</p>
-  </details>;
+    </div>
+  </details></div>;
 }
 
 function Section({id, title, description, children}: {id: string; title: string; description?: string; children: ReactNode}) {
@@ -39,7 +41,7 @@ function Section({id, title, description, children}: {id: string; title: string;
 
 export default function Home() {
   const {collectAnchor} = useBrokenLinks();
-  for (const id of ['hero', 'before-after', 'outages', 'offboarding', 'how-it-works', 'cost', 'what-you-run', 'status', 'quickstart', 'footer']) collectAnchor(id);
+  for (const id of ['hero', 'get-notified', 'before-after', 'outages', 'offboarding', 'how-it-works', 'cost', 'what-you-run', 'status', 'quickstart', 'footer']) collectAnchor(id);
   return (
     <Layout title="Self-hosted private Composer and npm registry" description="A self-hosted private Composer and npm registry with role-based access per project: one token per developer, vendor keys kept in the broker." noFooter>
       <div className="pb-site">
@@ -96,7 +98,7 @@ export default function Home() {
             <p>To evaluate alone you do not need an identity provider: setup creates a local administrator protected by a password and an authenticator app.</p>
             <p>Removing someone from a group ends their access after the revalidation window; service tokens they created for CI stay valid until you revoke them. <Link className="pb-link" to="/docs/decisions/identity-and-sessions">Session and membership revalidation</Link>.</p>
             <p>Package Broker 1.x is no longer maintained (<a className="pb-link" href="https://github.com/package-broker/server">package-broker/server</a>).</p>
-            <ReleaseNotification/>
+            <p><Link className="pb-link" to="#get-notified">Get notified of the first release</Link></p>
           </Section>
 
           <div className="pb-wrap"><div className="pb-section"><Quickstart/></div></div>

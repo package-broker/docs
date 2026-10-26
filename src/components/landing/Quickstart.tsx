@@ -51,9 +51,18 @@ export default function Quickstart() {
         {runtimes.map((runtime, index) => (
           <div key={runtime.id} role="tabpanel" id={`panel-${runtime.id}`} aria-labelledby={`tab-${runtime.id}`}
             tabIndex={0} hidden={selected !== index}>
-            <p><strong>Before you start:</strong> Git, Node 24 or later, pnpm 12.5.1, PHP compatible with your package and Composer 2, a private Composer package and its vendor credentials, an administrator email, an authenticator app and secure master key storage; {runtime.id === 'workers' ? <>Workers Paid, Queues, R2 and Analytics Engine enabled, a registered <code>workers.dev</code> subdomain, and an account-scoped API token with Workers Scripts Edit, D1 Edit, Workers R2 Storage Edit, Queues Edit and Account Analytics Read permissions.</> : <>Docker Engine or Desktop with a running daemon and Linux container support.</>} <Link className="pb-link" to={`${runtime.href}#what-you-need`}>{runtime.label} prerequisites</Link>.</p>
+            <p><strong>Before you start:</strong></p>
+            <ul>
+              <li>Git, Node 24 or later, pnpm, PHP compatible with your package and Composer 2.</li>
+              <li>A private Composer package and its vendor credentials.</li>
+              {runtime.id === 'workers' ? <>
+                <li>Workers Paid, Queues, R2 and Analytics Engine enabled; an account Workers subdomain registered in the dashboard.</li>
+                <li>An account API token with Workers Scripts Edit, D1 Edit, Workers R2 Storage Edit, Queues Edit and Account Analytics Read permissions.</li>
+              </> : <li>Docker Engine or Desktop with a running daemon and Linux container support.</li>}
+            </ul>
+            <p><Link className="pb-link" to={`${runtime.href}#what-you-need`}>{runtime.label} prerequisites</Link></p>
             {runtime.id === 'workers' ? (
-              <p>Needs the Workers Paid plan, with <code>CLOUDFLARE_ACCOUNT_ID</code> and <code>CLOUDFLARE_API_TOKEN</code> set in your environment. Use paths outside the checkout for the master key and setup token files; setup creates them for a new deployment.</p>
+              <p>Set <code>CLOUDFLARE_ACCOUNT_ID</code> and <code>CLOUDFLARE_API_TOKEN</code> in your environment. Use paths outside the checkout for the master key and setup token files; setup creates them for a new deployment.</p>
             ) : (
               <p>Container image publishing (GHCR) is planned; build the image from the repository. Generate a master key with <code>pnpm pb secrets generate-master-key</code> and store it for recovery before starting.</p>
             )}
