@@ -8,7 +8,7 @@ description: Security model and data residency of Package Broker.
 
 Package Broker periodically checks eligible public Composer and npm package versions against OSV's known vulnerability advisories. The API and the packages page show the result, source and last successful check time. Results can be incomplete or out of date and do not establish that a package is safe. These are version-level advisory checks: they do not scan source code or artifacts, analyze malware, audit a transitive dependency tree, review lock files, enforce installation policy, send alerts or guarantee that every vulnerability will be found. This feature does not establish a security certification or SOC 2 compatibility.
 
-Checks are enabled by default (owner decision Q29(a)). The OSV job uses one allowlisted host, `api.osv.dev`, and never forwards source credentials to OSV. The browser reads stored results from the broker; opening the packages page does not call OSV or start a check. See the [API reference](reference/api.md) for the response contract.
+Checks are enabled by default. The OSV job uses one allowlisted host, `api.osv.dev`, and never forwards source credentials to OSV. The browser reads stored results from the broker; opening the packages page does not call OSV or start a check. See the [API reference](reference/api.md) for the response contract.
 
 ## Which names may be sent to OSV
 
@@ -28,7 +28,7 @@ These OSV checks send eligible public package names, ecosystems and exact versio
 
 The broker takes a fresh primary database snapshot immediately before every outbound request, including each retry, continuation page and advisory-detail request after pacing. It sends the authorized tuples immediately; queued references and previously cached eligibility are not dispatch authorization. Writes recheck eligibility, and API reads mask old findings when public provenance no longer holds.
 
-Owner decision Q37 accepts the snapshot-to-send privatization window: a private claim committed before the authorization snapshot prevents dispatch; one committed after that snapshot, even before the physical send, can miss that request. Later privatization cannot recall an authorized or in-flight disclosure. This policy does not promise perpetual privacy for a formerly public name.
+The policy accepts the snapshot-to-send privatization window: a private claim committed before the authorization snapshot prevents dispatch; one committed after that snapshot, even before the physical send, can miss that request. Later privatization cannot recall an authorized or in-flight disclosure. This policy does not promise perpetual privacy for a formerly public name.
 
 Masked results use only `Not checked` and `Only verified public proxy packages are checked.` for a visible proxy. Hidden holders, registrations, malformed evidence and evidence-budget overflow have identical presentation, without a hidden-holder hint. A visibly non-proxy source may instead say `Not checked: private package` using already-authorized source context. Masking still exposes an eligibility bit: a transition from a visible assessment to `Not checked` reveals that eligibility changed, even though the reason and any hidden holder remain concealed.
 
@@ -53,8 +53,20 @@ export default {
 
 This is a build-time setting. Rebuild and restart Node deployments; rebuild and redeploy Workers deployments. There is no live environment toggle. A disabled deployment registers no OSV vulnerability job, sends no OSV requests for old queued deliveries and suppresses cached findings in API reads. Otherwise-public versions show `Vulnerability checks disabled`; private or unverified provenance keeps the generic mask.
 
-## Independent npm audit and follow-up work
+## Independent npm audit
 
-The legacy npm audit forwarder is independent of these OSV checks and their off switch. It forwards filtered audit requests to `registry.npmjs.org`; it does not serve results from the PB-97 advisory cache. Its project-winner filter is weaker than the organization-wide provenance rule described above. T866 is the separate hardening work for that path. Until that hardening is verified, do not interpret this OSV policy as an unqualified promise that private names never leave through any advisory request.
+Both runtimes forward bulk npm audit requests to `https://registry.npmjs.org/-/npm/v1/security/advisories/bulk`. This is independent of OSV checks and `vulnerability.enabled`; it does not use the OSV advisory cache. Set `registry.npmAudit.enabled` to `false` at build time to disable forwarding; disabled requests return 501 `npm_audit_disabled`. Rebuild and restart or redeploy to apply the setting.
+<!-- source: packages/runtime-node/src/index.ts -->
+<!-- source: packages/runtime-cloudflare/src/index.ts -->
+<!-- source: packages/core/src/registry/module.ts -->
 
-Cache-backed npm audit and advisory monitoring/notifications (PB-87) and lock-file review (PB-118) are separate work. A version's known-advisory result does not implement those features.
+A project must have an attached npmjs proxy; otherwise audit returns 501 with an explicit message requiring an npmjs.org proxy source. Only exact valid versions whose project winner is an npmjs proxy and whose organization-wide public provenance is freshly verified may leave the deployment. Registered names, configured private claims and non-proxy holders anywhere in the organization veto disclosure, including hidden or paused holders. Verification failure or evidence overflow returns a safe 502 without forwarding. An empty eligible set returns `{}` without an upstream request. The snapshot-to-send window described above applies here too.
+<!-- source: packages/core/src/registry/npm/audit.ts -->
+<!-- source: packages/db-sqlite/src/repositories/vulnerability.ts -->
+
+Audit discloses the eligible public names and exact versions, timing and egress IP to the npm registry outside the deployment's storage residency. Requests use the configured default user agent without source credentials, client authorization, cookies or request tracing headers. Responses contain only sanitized advisory fields for names actually sent. Audit accepts at most 1 MiB of decompressed JSON, 1,000 distinct names and 2,000 distinct name/version pairs; exceeding a cap returns 413 without a partial audit. Legacy quick-audit endpoints return 501 rather than forwarding lockfiles.
+<!-- source: packages/core/src/registry/npm/audit.ts -->
+<!-- source: packages/core/src/registry/npm/audit-response.ts -->
+<!-- source: packages/core/src/registry/npm/routes.ts -->
+
+Cache-backed npm audit and advisory monitoring/notifications and lock-file review are separate work. A version's known-advisory result does not implement those features.
