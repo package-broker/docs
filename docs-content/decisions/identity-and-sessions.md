@@ -28,6 +28,14 @@ The single-tenant build is deployed once per customer on Cloudflare, so the appl
 - Negative: the column is decoration unless the discipline above holds (one to two days in the database port and migration runner, then minutes per table); one deployment per customer multiplies operations when one operator serves many customers ([ADR-003](platform-ports-and-adapters.md#adr-003-two-runtimes-cloudflare-workers-and-docker-on-node-behind-ports-and-adapters)).
 - Follow-ups: the two-organization fixture is part of the database port contract tests; isolation tests between projects replace cross-organization tests.
 
+### Amendment, 2026-10-27: single sign-on policy is set per deployment
+
+The domain policy of a single sign-on provider (`verifiedDomains`, `autoJoin`, `emailAuthoritativeDomains`) is part of that provider's definition, not an organization setting stored in the database. It is set per deployment, either in `broker.config.ts` or in the `PB_IDP_PROVIDERS` environment variable, and a change takes effect with a new deployment on Workers or a restart on Node. The database holds no copy of it and keeps no history of its changes. See [Runtime SSO providers](../reference/runtime-sso-providers.md).
+
+<!-- source: packages/core/src/auth/identity-login.ts:221 -->
+<!-- source: packages/plugin-sso-oidc/src/index.ts:117 -->
+<!-- source: packages/runtime-node/src/startup.ts:781 -->
+
 ## ADR-009: Identity and access through OIDC single sign-on, grants to SSO groups or emails, configurable roles
 
 Status: Accepted, 2026-10-15
@@ -98,6 +106,14 @@ The audit log could live inside the application or in an external system; it sta
 - Positive: complete events with tamper evidence; plain indexed queries by project, package, token and actor; the external head hash lets an auditor detect a rewritten chain.
 - Negative: an administrator with database access can rewrite the chain unless head hashes are stored outside; about 500 bytes per event, so one million events take about 0.5 GB of D1's 10 GB.
 - Follow-ups: export and sink in P1; audit events for source credential and subscription changes ([ADR-007](registry-and-sources.md#adr-007-sources-at-organization-and-project-level-with-project-precedence-digest-dedup-and-live-subscription)).
+
+### Amendment, 2026-11-05: audit plugins in GA
+
+This amendment supersedes ADR-014's MVP-only trail, P1 export, observability-sink and estimated-size statements above. The GA implementation composes the audit trail, OTLP and webhook as API 4 plugins. Core still owns sanitization, atomic pending-event staging with mutations, sealing/hash chaining, sink state/custody, retention, the disposition ledger, status and health. The trail plugin supplies browsing and verification access; exports are core services even without a trail. Failed-login and denial capture is rate-limited best effort, not an atomic guarantee for every failed request. <!-- source: packages/core/src/plugin.ts:165 --> <!-- source: packages/core/src/audit/failure-events.ts:89 --> <!-- source: packages/core/src/api/routes/audit-export.ts:1 -->
+
+The default policy is availability: capacity pressure may evict sealed history with explicit gaps even when a trail is active. Required needs a durable path, alert route and budget; it refuses ordinary mutations at the capacity threshold while preserving the finite security/control reserve. `PB_AUDIT_POLICY=required` raises persisted policy; only explicit policy administration lowers stored required. Initial organization creation uses the schema's availability default; the empty-chain initializer can write the first effective policy/mode (including required) without a ledger row or event. None requires explicit acceptance and remains degraded; core access controls, staging, sealing and ledger machinery remain, but mode none means accepting the absence of durable future history. Hash chaining and unsigned exports do not provide non-repudiation. Operators protect independent archives. <!-- source: packages/core/src/audit/effective.ts:121 --> <!-- source: packages/core/src/audit/none.ts:77 --> <!-- source: packages/db-sqlite/src/repositories/audit-pending.ts:6 --> <!-- source: packages/db-sqlite/migrations/0011_audit.sql:1 --> <!-- source: packages/db-sqlite/src/repositories/audit-effective.ts:16 -->
+
+See [audit operations](../operations/audit.md), [measured sizing](../operations/audit.md#measured-sizing) and the [compliance profile](../operations/audit-compliance.md). The earlier 500-byte estimate is superseded by the repository-written measurement; indexes and shared control state must be budgeted too.
 
 ## ADR-016: Project in the URL path, one Composer `http-basic` entry per host
 

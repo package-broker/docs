@@ -92,7 +92,7 @@ package sync reads the manifests again. With 250 KB manifests one step applies
 about 33 versions, so a full sync of N such refs takes about
 `ceil(N / 33) × (N / 5 + N / 50 + 3)` API requests: about 480 for 256 refs
 (64 MB). The 1,000-request Workers ceiling assumes the Workers Paid limit of
-1,000 subrequests per invocation; verify it on hosted Workers (T855) before
+1,000 subrequests per invocation; verify it on hosted Workers before
 changing it.
 
 Run the GitHub fill measurement without building:
@@ -131,6 +131,16 @@ budget on Workers instead of these ceilings; repositories whose manifests and
 packs exceed it fail with `too_large`. As with npm, these are process figures
 from a local simulator, not hosted isolate memory or billed CPU.
 
+## Custom domains with `pb cloudflare`
+
+For `pb cloudflare setup` or `pb cloudflare deploy` with a custom domain, the hostname's Cloudflare zone must be active in the same account as the Worker. In addition to the account permissions listed in the [Cloudflare quickstart](../getting-started/quickstart-cloudflare.md#what-you-need), the API token needs **Zone Read**, **Workers Routes Edit** and **DNS Edit**, scoped to that zone.
+
+Pass `--domain packages.example.com --public-url https://packages.example.com` to bind the hostname and set the broker's canonical HTTPS origin, replacing both example hostnames with yours. The hostname in `--public-url` must match `--domain`.
+
+`domain_zone_not_found` means no matching active zone was found in the selected account. Check the hostname and account, activate the zone and grant the token access to that zone with the permissions above, then retry.
+
+`domain_zone_ambiguous` means more than one matching active zone was found in the selected account. Resolve the duplicate matching zones so exactly one active zone matches the hostname, then retry.
+
 ## Deny every hostname serving the broker
 
 The outbound policy automatically denies the origin of `PB_PUBLIC_URL`. When a
@@ -162,3 +172,19 @@ deployed setting. Rebuild and redeploy after changing registry configuration.
 Sources: [D1 limits](https://developers.cloudflare.com/d1/platform/limits/),
 [Workers limits](https://developers.cloudflare.com/workers/platform/limits/), and
 [workers.dev routing](https://developers.cloudflare.com/workers/configuration/routing/workers-dev/).
+
+## Worker CPU budget
+
+`pb cloudflare deploy` and `pb cloudflare setup` set upload metadata
+`limits.cpu_ms` to **120000** (120 seconds) by default. Use `--cpu-ms 60000`
+on either command to override it with a positive integer number of milliseconds.
+The Cloudflare deployment requires Workers Paid; the provider's plan limits still
+apply. This setting provides headroom for large npm publishes and registry fills.
+It does not change package size caps or bound concurrent request memory use.
+
+For a Node CPU proxy of npm publish stages, run `pnpm typecheck` followed by
+`node scripts/benchmark-npm-publish.mjs`. The script generates a roughly 48 MB
+publish body with 48,000 tar entries and reports wall and process CPU times for
+base64 decode, the three production digests, gunzip, and the tar walk separately.
+Fixture generation is excluded. There is no timing assertion; these Node numbers
+do not establish hosted Workers CPU usage.

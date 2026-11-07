@@ -17,7 +17,7 @@ Run a single broker container on your workstation, then install one private Comp
 
   <!-- source: Dockerfile:1 -->
 
-- PHP compatible with your package and Composer 2 on your workstation. Composer 1 is refused.
+- curl for the readiness check, plus PHP compatible with your package and Composer 2 on your workstation. Composer 1 is refused.
 
   <!-- source: packages/core/src/registry/composer/routes.ts:81 -->
 
@@ -65,12 +65,12 @@ docker run --rm \
 <!-- source: Dockerfile:90 -->
 <!-- source: Dockerfile:99 -->
 <!-- source: packages/cli/src/commands/admin.ts:68 -->
-<!-- source: packages/runtime-node/src/startup.ts:171 -->
+<!-- source: packages/runtime-node/src/startup.ts:173 -->
 
 Keep the same volume and key when recreating the container. Store a backup copy of the key in your secret manager or an encrypted backup outside this volume and host before adding vendor credentials. The [backup and upgrades guide](../operations/backup-and-upgrades.md#back-up-docker) copies the whole volume, including this key; protect that backup as secret material. Losing the key prevents recovery of encrypted credentials.
 
 <!-- source: docs/operations/backup-and-upgrades.md:56 -->
-<!-- source: packages/runtime-node/src/startup.ts:192 -->
+<!-- source: packages/runtime-node/src/startup.ts:193 -->
 
 Create a private directory outside the checkout for the runtime settings. Replace `<private-directory>` with its absolute path and keep this shell open for the remaining commands:
 
@@ -86,7 +86,7 @@ PB_ORG_NAME=Agency evaluation
 ENV
 ```
 
-<!-- source: packages/runtime-node/src/startup.ts:192 -->
+<!-- source: packages/runtime-node/src/startup.ts:193 -->
 <!-- source: packages/runtime-node/src/startup.ts:737 -->
 <!-- source: packages/runtime-node/src/startup.ts:759 -->
 
@@ -116,8 +116,27 @@ Use `http://localhost:8787` in the browser, matching `PB_PUBLIC_URL` exactly. Th
 
 <!-- source: packages/core/src/auth/cookies.ts:36 -->
 <!-- source: packages/core/src/kernel/public-origin.ts:15 -->
-<!-- source: packages/runtime-node/src/startup.ts:240 -->
+<!-- source: packages/runtime-node/src/startup.ts:241 -->
 <!-- source: Dockerfile:111 -->
+
+## Verify the deployment
+
+From your workstation, use curl to check the readiness route:
+
+```sh
+curl --silent --show-error --fail http://localhost:8787/health/ready
+```
+
+Expected output with HTTP 200:
+
+```json
+{ "status": "ready" }
+```
+
+A 503 means the broker is not ready; wait and repeat the check before continuing. The private package install below verifies authenticated Composer access.
+
+<!-- source: packages/core/src/kernel/health.ts:45 -->
+<!-- source: packages/core/src/kernel/health.ts:83 -->
 
 ## First administrator
 
@@ -216,6 +235,7 @@ Add `auth.json` to your application's `.gitignore`. With a private local editor,
 Add the package, then verify an install from the resulting lock file:
 
 ```sh
+chmod 600 auth.json
 composer require '<vendor>/<package>:<version>' --no-plugins --no-scripts
 composer install --no-plugins --no-scripts
 ```
@@ -227,6 +247,10 @@ Check that `composer.lock` contains the private package and a distribution URL o
 
 <!-- source: packages/core/src/registry/composer/render.ts:94 -->
 
+If an initial metadata fill returns 503, wait for the response's `Retry-After` interval and repeat the failed Composer command. Keep the broker repository configured so the private package still comes through it.
+
+<!-- source: packages/core/src/registry/composer/routes.ts:63 -->
+
 ## Sign-in for a team
 
 Team sign-in uses Cloudflare Access or an OpenID Connect provider such as Dex; grants to the provider's groups give users project access. Evaluating alone needs no identity provider: use the local administrator login. See the [access model](../reference/access-model.md) for group grants and token boundaries.
@@ -234,6 +258,68 @@ Team sign-in uses Cloudflare Access or an OpenID Connect provider such as Dex; g
 <!-- source: packages/core/src/identity/port.ts:131 -->
 <!-- source: packages/core/src/identity/providers.test.ts:26 -->
 <!-- source: docs/reference/access-model.md:31 -->
+
+## Add single sign-on
+
+The image built from the default `broker.config.ts` reads OpenID Connect and Cloudflare Access providers from the `PB_IDP_PROVIDERS` environment variable at startup, so adding single sign-on needs no rebuild. This example adds one OpenID Connect provider with the `id` `corp`.
+
+<!-- source: broker.config.ts:7 -->
+<!-- source: packages/runtime-node/src/startup.ts:781 -->
+
+1. At your identity provider, register a client for the broker with the redirect URI `http://localhost:8787/_pb/auth/sso/corp/callback`, that is `<PB_PUBLIC_URL>/_pb/auth/sso/<id>/callback`. The provider must report the e-mail address as verified. Note the client ID and client secret.
+
+   <!-- source: packages/core/src/auth/routes-sso.ts:299 -->
+   <!-- source: packages/plugin-sso-oidc/src/oidc.ts:649 -->
+
+2. In the private directory, create `providers.json` with the same content as the [Cloudflare quickstart example](quickstart-cloudflare.md#add-single-sign-on), replacing the issuer, client ID and domain with yours. Keep it under version control or in your own backup; the volume backup does not contain it.
+
+3. In the same shell as before, add the file as one line of compact JSON to the environment file. The `--env-file` format has no quoting and no line continuation, so the value must stay on one line. Compact JSON also saves room under the broker's 5120-byte limit. Run this once:
+
+   ```sh
+   node -e 'process.stdout.write("PB_IDP_PROVIDERS=" + JSON.stringify(JSON.parse(require("node:fs").readFileSync(process.argv[1], "utf8"))) + "\n")' \
+     "$broker_private/providers.json" >> "$broker_private/broker.env"
+   ```
+
+   <!-- source: packages/plugin-sso-oidc/src/runtime.ts:6 -->
+
+4. Load the client secret at a hidden prompt into `PB_IDP_CORP_CLIENT_SECRET`: `PB_IDP_`, the provider `id` in uppercase with `-` replaced by `_`, then `_CLIENT_SECRET`. Then replace the container. A container keeps the environment it was created with, so `docker restart` does not apply a changed environment file; remove the container and run it again with the same volume:
+
+   ```sh
+   read -rs -p 'Client secret: ' PB_IDP_CORP_CLIENT_SECRET
+   printf '\n'
+   export PB_IDP_CORP_CLIENT_SECRET
+   docker rm --force broker
+   docker run --detach --name broker \
+     --publish 127.0.0.1:8787:8787 \
+     --mount type=volume,source=broker-data,target=/data \
+     --env-file "$broker_private/broker.env" \
+     --env PB_IDP_CORP_CLIENT_SECRET \
+     package-broker:local
+   unset PB_IDP_CORP_CLIENT_SECRET
+   ```
+
+   `--env` with a name only copies the value from your shell, so it stays out of the command line and shell history. Anyone who can run `docker inspect` on this host can still read it. Repeat this step with the secret every time you replace the container.
+
+   <!-- source: packages/core/src/identity/secret-name.ts:16 -->
+   <!-- source: packages/runtime-node/src/startup.ts:268 -->
+
+5. Wait until `docker inspect --format '{{.State.Health.Status}}' broker` prints `healthy`. Run `docker logs broker` and look for `sso.runtime_providers` lines: each names a skipped entry or a problem with the whole value by provider `id` and rejection codes, without the values. An invalid entry is skipped, not fatal, so the broker starts without that provider.
+
+   <!-- source: packages/plugin-sso-oidc/src/index.ts:50 -->
+   <!-- source: packages/plugin-sso-oidc/src/index.ts:124 -->
+
+6. Open `http://localhost:8787/_pb/ui` in a private browser window and choose **Sign in with Corporate SSO**.
+
+   <!-- source: packages/ui/src/auth.tsx:603 -->
+
+To change a provider later, edit `providers.json`, replace the `PB_IDP_PROVIDERS` line in the environment file and replace the container as in step 4. To remove every run-time provider, delete that line. For limits, precedence, removing a provider, moving it to a new issuer with `pb admin rebind-provider` and recovery, see [Runtime SSO providers](../reference/runtime-sso-providers.md).
+
+## What you operate
+
+You own the Docker host, image builds and upgrades, storage capacity, data volume, matching master key, configuration, backups and restore checks. Preserve UID/GID `1000:1000` ownership when restoring the volume. Keep the database, archive store and master key in your recovery plan, and follow [Restore rehearsal](../operations/restore-rehearsal.md) to check recovery.
+
+<!-- source: Dockerfile:98 -->
+<!-- source: docs/operations/restore-rehearsal.md:1 -->
 
 ## Next steps
 

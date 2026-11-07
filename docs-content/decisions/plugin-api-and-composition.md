@@ -30,6 +30,28 @@ The module set must be decided when the artifact is built, on Cloudflare and on 
 - Negative: changing the module set needs a rebuild and redeploy; plugin authors cannot add permissive logic and must express grants through core roles.
 - Follow-ups: a CI step reads the bundler metafile and fails when an excluded module is present; the plugin API compatibility contract (peer range plus integer `apiVersion`) is part of [ADR-023](release-and-versioning.md#adr-023-repository-strategy-versioning-and-release-process).
 
+### Amendment, 2026-10-27: provider definitions read at run time
+
+- The env reader an identity factory receives also covers provider definitions: the single sign-on plugin reads the `PB_IDP_PROVIDERS` variable through it, besides its `PB_IDP_<ID>_CLIENT_SECRET` secrets. Plugin code is still composed at build time; only provider definitions, which are data, come from the environment.
+- Reading definitions at run time is opt-in per bundle: `ssoOidc({ runtimeProviders: true })`. Without it the plugin uses only the providers compiled into the build. The release `broker.config.ts` turns it on.
+- When a run-time definition has the same `id` or trust anchor as a compiled one, the run-time definition wins. An invalid run-time entry for a compiled `id` switches that provider off rather than falling back to the compiled definition.
+- `pb build` records whether the bundle reads run-time definitions, and the `id`, kind and trust anchor of each compiled provider, in the build manifest. `pb cloudflare deploy` uses this to refuse definitions the bundle would ignore. See [Runtime SSO providers](../reference/runtime-sso-providers.md).
+
+<!-- source: packages/runtime-node/src/startup.ts:265 -->
+<!-- source: packages/plugin-sso-oidc/src/index.ts:86 -->
+<!-- source: packages/plugin-sso-oidc/src/index.ts:100 -->
+<!-- source: packages/cli/src/manifest.ts:176 -->
+<!-- source: packages/plugin-sso-oidc/src/index.ts:117 -->
+<!-- source: broker.config.ts:7 -->
+<!-- source: packages/plugin-sso-oidc/src/planner.ts:28 -->
+<!-- source: packages/cli/src/commands/cloudflare/deploy.ts:102 -->
+
+### Amendment, 2026-11-05: audit contracts on API 4
+
+API 4 adds the plugin-bindable `audit-trail` port and static `auditSinks` declarations. This extends the earlier identity/source-only port list. A trail binding requires `auditTrail`; sink declarations do not bind a port. API 3 remains supported for plugins without API 4 features. Duplicate trail bindings or sink ids fail validation. All three first-party audit plugins are composed at build time; environment settings select data/destinations/activation, never load code. <!-- source: packages/core/src/plugin.ts:93 --> <!-- source: packages/core/src/plugin.ts:165 --> <!-- source: packages/core/src/kernel/plugin-ports.ts:1 -->
+
+Core gives a trail an organization-bound sanitized journal and verification request capability. It gives sinks frozen records/markers, a clock, a destination-bound transport and only declared non-destination environment data. Plugins do not own sequencing, SQL, custody advancement or retention. Hook decisions remain deny-only. The supported plugin test entry is `@package-broker/core/plugin/testing`, in addition to the root and `/plugin` API entries; it exports the audit vectors and sink conformance runner. The trail contract includes the explicit `verification` range and body/withheld counts. See [plugin authoring](../reference/plugin-authoring.md#audit-trail-and-sinks-api-4). <!-- source: packages/core/src/audit/plugin-api.ts:115 --> <!-- source: packages/core/src/audit/plugin-api.ts:139 --> <!-- source: packages/core/src/audit/plugin-api.ts:251 --> <!-- source: packages/core/package.json:17 -->
+
 ## ADR-025: Plugins run in-process; an execution boundary for untrusted plugins is Nice to have
 
 Status: Accepted, 2026-10-15

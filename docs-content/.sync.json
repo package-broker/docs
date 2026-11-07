@@ -1,11 +1,11 @@
 {
-  "sha": "5b30c58d04f85294206f372dfcb3440c0a63df05",
+  "sha": "ef30526d460c978f58650dac2ab41b8d2145ee5d",
   "files": {
     "CONTRIBUTING-DOCS.md": {
-      "lastCommitDate": "2026-10-26T04:43:04Z"
+      "lastCommitDate": "2026-11-05T23:15:06Z"
     },
     "architecture.md": {
-      "lastCommitDate": "2026-10-26T15:19:31Z"
+      "lastCommitDate": "2026-11-01T09:09:56Z"
     },
     "ci/_category_.json": {
       "lastCommitDate": "2026-10-17T00:17:17+02:00"
@@ -23,34 +23,40 @@
       "lastCommitDate": "2026-10-25T23:52:51Z"
     },
     "clients/npm-pnpm-yarn.md": {
-      "lastCommitDate": "2026-10-25T23:52:51Z"
+      "lastCommitDate": "2026-11-03T20:11:55Z"
+    },
+    "contributing/_category_.json": {
+      "lastCommitDate": "2026-10-28T11:28:46Z"
+    },
+    "contributing/ui-guidelines.md": {
+      "lastCommitDate": "2026-10-28T11:28:46Z"
     },
     "decisions/2026-10-17-composite-org-foreign-keys.md": {
-      "lastCommitDate": "2026-10-22T00:32:59Z"
+      "lastCommitDate": "2026-10-26T19:30:21Z"
     },
     "decisions/README.md": {
-      "lastCommitDate": "2026-10-17T11:11:24+02:00"
+      "lastCommitDate": "2026-10-31T23:18:18Z"
     },
     "decisions/deployment-and-runtimes.md": {
-      "lastCommitDate": "2026-10-17T11:11:24+02:00"
+      "lastCommitDate": "2026-10-27T21:53:16Z"
     },
     "decisions/identity-and-sessions.md": {
-      "lastCommitDate": "2026-10-17T11:11:24+02:00"
+      "lastCommitDate": "2026-11-05T23:15:06Z"
     },
     "decisions/licensing-and-contribution-terms.md": {
       "lastCommitDate": "2026-10-17T11:11:24+02:00"
     },
     "decisions/platform-ports-and-adapters.md": {
-      "lastCommitDate": "2026-10-18T08:52:53+02:00"
+      "lastCommitDate": "2026-11-05T23:15:06Z"
     },
     "decisions/plugin-api-and-composition.md": {
-      "lastCommitDate": "2026-10-18T08:52:53+02:00"
+      "lastCommitDate": "2026-11-05T23:15:06Z"
     },
     "decisions/registry-and-sources.md": {
       "lastCommitDate": "2026-10-17T11:11:24+02:00"
     },
     "decisions/release-and-versioning.md": {
-      "lastCommitDate": "2026-10-17T11:11:24+02:00"
+      "lastCommitDate": "2026-10-31T23:18:18Z"
     },
     "decisions/secrets-and-tokens.md": {
       "lastCommitDate": "2026-10-17T11:11:24+02:00"
@@ -59,16 +65,37 @@
       "lastCommitDate": "2026-10-17T00:17:17+02:00"
     },
     "getting-started/quickstart-cloudflare.md": {
-      "lastCommitDate": "2026-10-26T15:19:33Z"
+      "lastCommitDate": "2026-10-30T19:10:30Z"
     },
     "getting-started/quickstart-docker.md": {
-      "lastCommitDate": "2026-10-26T15:19:33Z"
+      "lastCommitDate": "2026-10-27T23:30:37Z"
     },
     "guides/_category_.json": {
       "lastCommitDate": "2026-10-17T00:17:17+02:00"
     },
     "guides/mirror-vendor-repositories.md": {
-      "lastCommitDate": "2026-10-26T03:51:54Z"
+      "lastCommitDate": "2026-11-04T16:39:43Z"
+    },
+    "guides/npm-repository-ingest.md": {
+      "lastCommitDate": "2026-11-04T16:39:43Z"
+    },
+    "guides/npm-trusted-publishing.md": {
+      "lastCommitDate": "2026-11-01T09:09:56Z"
+    },
+    "guides/package-access-requests.md": {
+      "lastCommitDate": "2026-11-01T09:09:56Z"
+    },
+    "guides/public-registry-proxy.md": {
+      "lastCommitDate": "2026-10-27T15:32:25Z"
+    },
+    "index.md": {
+      "lastCommitDate": "2026-10-30T19:27:41Z"
+    },
+    "integrations/_category_.json": {
+      "lastCommitDate": "2026-11-03T20:11:55Z"
+    },
+    "integrations/notification-receiver.md": {
+      "lastCommitDate": "2026-11-03T20:11:55Z"
     },
     "migration/_category_.json": {
       "lastCommitDate": "2026-10-17T00:17:17+02:00"
@@ -85,11 +112,26 @@
     "operations/_category_.json": {
       "lastCommitDate": "2026-10-17T00:17:17+02:00"
     },
+    "operations/audit-compliance.md": {
+      "lastCommitDate": "2026-11-05T23:15:06Z"
+    },
+    "operations/audit-export.md": {
+      "lastCommitDate": "2026-11-05T23:15:06Z"
+    },
+    "operations/audit.md": {
+      "lastCommitDate": "2026-11-05T23:15:06Z"
+    },
     "operations/backup-and-upgrades.md": {
-      "lastCommitDate": "2026-10-26T04:43:04Z"
+      "lastCommitDate": "2026-11-02T07:08:27Z"
+    },
+    "operations/blob-staging.md": {
+      "lastCommitDate": "2026-11-01T09:09:56Z"
+    },
+    "operations/notifications.md": {
+      "lastCommitDate": "2026-11-03T20:11:55Z"
     },
     "operations/observability.md": {
-      "lastCommitDate": "2026-10-26T00:45:13Z"
+      "lastCommitDate": "2026-11-05T23:15:06Z"
     },
     "operations/otel-collector/elasticsearch.yaml": {
       "lastCommitDate": "2026-10-25T23:27:10Z"
@@ -112,35 +154,56 @@
     "operations/otel-collector/tempo.yaml": {
       "lastCommitDate": "2026-10-25T23:27:10Z"
     },
+    "operations/registry-policy.md": {
+      "lastCommitDate": "2026-11-02T12:38:15Z"
+    },
     "operations/restore-rehearsal.md": {
-      "lastCommitDate": "2026-10-20T18:30:59Z"
+      "lastCommitDate": "2026-11-01T19:48:57Z"
+    },
+    "operations/sqlite-restore.md": {
+      "lastCommitDate": "2026-11-05T23:15:06Z"
     },
     "reference/_category_.json": {
       "lastCommitDate": "2026-10-17T00:17:17+02:00"
     },
     "reference/access-model.md": {
-      "lastCommitDate": "2026-10-26T03:51:54Z"
+      "lastCommitDate": "2026-11-02T07:08:27Z"
     },
     "reference/api.md": {
       "lastCommitDate": "2026-10-22T10:36:40Z"
+    },
+    "reference/authentication.md": {
+      "lastCommitDate": "2026-10-30T19:10:30Z"
+    },
+    "reference/cli.md": {
+      "lastCommitDate": "2026-10-30T19:10:30Z"
+    },
+    "reference/configuration.md": {
+      "lastCommitDate": "2026-11-02T12:38:15Z"
     },
     "reference/install-speed.md": {
       "lastCommitDate": "2026-10-25T23:57:40Z"
     },
     "reference/plugin-authoring.md": {
-      "lastCommitDate": "2026-10-18T21:54:03Z"
+      "lastCommitDate": "2026-11-05T23:15:06Z"
+    },
+    "reference/runtime-sso-providers.md": {
+      "lastCommitDate": "2026-10-27T21:53:16Z"
     },
     "reference/workers-fill-limits.md": {
-      "lastCommitDate": "2026-10-25T13:03:34Z"
+      "lastCommitDate": "2026-11-01T17:33:30Z"
     },
     "security-and-residency.md": {
-      "lastCommitDate": "2026-10-24T06:36:20Z"
+      "lastCommitDate": "2026-10-30T16:58:56Z"
     },
     "troubleshooting/_category_.json": {
       "lastCommitDate": "2026-10-26T04:43:04Z"
     },
+    "troubleshooting/index.md": {
+      "lastCommitDate": "2026-10-27T15:32:25Z"
+    },
     "troubleshooting/invalid-auth-json.md": {
-      "lastCommitDate": "2026-10-26T04:43:04Z"
+      "lastCommitDate": "2026-10-27T15:32:25Z"
     },
     "troubleshooting/magento-http-401.md": {
       "lastCommitDate": "2026-10-26T04:43:04Z"
@@ -149,7 +212,7 @@
       "lastCommitDate": "2026-10-26T04:43:04Z"
     },
     "workers-install.md": {
-      "lastCommitDate": "2026-10-26T04:43:04Z"
+      "lastCommitDate": "2026-11-01T17:33:30Z"
     }
   }
 }
