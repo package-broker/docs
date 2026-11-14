@@ -1,10 +1,12 @@
 ---
-title: Vendor repositories as sources
+title: Magento Marketplace keys per client project (repo.magento.com)
 sidebar_position: 1
-description: Add vendor repositories as project sources with separate credentials.
+description: Add Magento Marketplace and other vendor repositories as project sources with separate credentials per client project.
 ---
 
 Connect a vendor Composer repository to a project, store that project's vendor credentials, then check installs and access from a second project. Project-owned sources serve only their owner project. <!-- source: packages/core/src/catalogue/visibility.ts:71 -->
+
+Magento Marketplace sources are built, in final verification.
 
 ## Prerequisites
 
@@ -135,13 +137,13 @@ A 401 means authentication failed and does not prove project isolation. A 403 ca
 
 Configure source type, package selection, archive retention and removal policy. Archive fetching and cache reuse follow the behavior below. <!-- source: packages/core/src/api/routes/sources-schemas.ts:19 --> <!-- source: packages/core/src/db/source.ts:33 -->
 
-| Choice or behavior         | Effect                                                                                                                                                                                                                                                                                                                                            |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Composer repository source | Sync reads selected package metadata from the vendor. An archive request first checks visible stored bytes; missing bytes for a current version can trigger a fetch and storage through the source. <!-- source: packages/core/src/ingest/composer/composer-repository.ts:131 --> <!-- source: packages/core/src/registry/dist-service.ts:272 --> |
-| Public proxy               | Admits public names on demand, subject to private-name reservations; it is a separate source type. <!-- source: packages/core/src/catalogue/package-access.ts:124 --> <!-- source: packages/core/src/catalogue/visibility.ts:123 -->                                                                                                              |
-| Removal policy `flag`      | A package marked removed at the vendor can remain eligible. This does not guarantee that an archive never fetched can still be downloaded from the vendor. <!-- source: packages/core/src/catalogue/visibility.ts:170 --> <!-- source: packages/core/src/registry/dist-service.ts:229 -->                                                         |
-| Removal policy `exclude`   | A removed package becomes ineligible; possession of cached bytes does not bypass resolution. <!-- source: packages/core/src/catalogue/visibility.ts:170 --> <!-- source: packages/core/src/registry/dist-service.ts:272 -->                                                                                                                       |
-| Archive retention override | Can lengthen organization retention. It does not widen project visibility or promise permanent retention. <!-- source: packages/ui/src/pages/sources/source-form.tsx:119 -->                                                                                                                                                                      |
+| Choice or behavior                       | Effect                                                                                                                                                                                                                                                                                                                                            |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Composer repository source               | Sync reads selected package metadata from the vendor. An archive request first checks visible stored bytes; missing bytes for a current version can trigger a fetch and storage through the source. <!-- source: packages/core/src/ingest/composer/composer-repository.ts:131 --> <!-- source: packages/core/src/registry/dist-service.ts:272 --> |
+| [Public proxy](public-registry-proxy.md) | Admits public names on demand, subject to private-name reservations; it is a separate source type. <!-- source: packages/core/src/catalogue/package-access.ts:124 --> <!-- source: packages/core/src/catalogue/visibility.ts:123 -->                                                                                                              |
+| Removal policy `flag`                    | A package marked removed at the vendor can remain eligible. This does not guarantee that an archive never fetched can still be downloaded from the vendor. <!-- source: packages/core/src/catalogue/visibility.ts:170 --> <!-- source: packages/core/src/registry/dist-service.ts:229 -->                                                         |
+| Removal policy `exclude`                 | A removed package becomes ineligible; possession of cached bytes does not bypass resolution. <!-- source: packages/core/src/catalogue/visibility.ts:170 --> <!-- source: packages/core/src/registry/dist-service.ts:272 -->                                                                                                                       |
+| Archive retention override               | Can lengthen organization retention. It does not widen project visibility or promise permanent retention. <!-- source: packages/ui/src/pages/sources/source-form.tsx:119 -->                                                                                                                                                                      |
 
 ## Troubleshoot credentials
 
@@ -154,6 +156,28 @@ If sync or install fails, check the source's last error and whether it has a cre
 | Metadata works, archive fails                | Check whether the archive host differs from the repository host.                        | Add only a vendor-confirmed hostname to Additional archive hosts; the source credential is sent there too. <!-- source: packages/core/src/sources/credential-origins.ts:62 --> <!-- source: packages/core/src/ingest/composer/composer-repository.ts:208 --> <!-- source: packages/core/src/sources/policy-fetch.ts:309 -->                                                                         |
 | No packages after sync                       | Check the package selection, attachment, source state and **Visible to new projects**.  | Select the exact package name, attach to the owner project, register names, enable and sync. With the empty attachment body above, discovered packages need **Visible to new projects** selected; an explicit project package selection can also grant visibility. <!-- source: packages/ui/src/pages/sources/source-form.tsx:123 --> <!-- source: packages/core/src/catalogue/visibility.ts:86 --> |
 
+## Alternative: choose Composer repositories from GitHub
+
+For Composer packages hosted on GitHub rather than a vendor Composer registry, organization source managers can open **Packages → Add package**, choose **Composer**, then choose **Choose GitHub repositories** under **From a connected GitHub organization**. This creates shared organization sources; projects attach the sources to use their packages. Members without `org:sources:write` see a prompt to ask a source manager.
+
+Choose a connection by its existing source names and installation number. If none is available, follow **Add a GitHub source** and create an organization GitHub source with GitHub App authentication first. Set an optional repository name pattern (default `*`) and optionally enable **Include forks**, then choose **Preview repositories**. Review **Will be added**, **Already added** and **Skipped**; each skipped repository explains what prevents import. **Load more** follows the plan cursor and replaces the current preview page.
+
+Select up to 20 repositories per import, individually or with **Select all on page**, then choose **Import selected**. The UI follows `remainingRepositories` automatically, shows progress, and retains each repository's result. Use **Retry failed repositories** for failures; if the upstream cannot make progress, the UI stops and offers retry rather than looping. Changing connection or discovery settings clears only the preview and requires another review; import results and failed retries stay visible. **Start over** clears the preview, results and progress. If GitHub rate limits imports, choose **Continue import** when it is available again. **Back** returns to the add-package choices.
+
+API callers first use `GET /_pb/sources/discovery/connections` with an organization session holding `org:sources:write`. It returns up to 100 connection `items` containing an opaque `credentialId`, numeric `installationId`, up to five `sourceNames`, and the full `sourceCount`. Only organization-owned, organization-level GitHub App credentials referenced by organization GitHub sources appear. Credential material is never decrypted by this read. Pass the selected credential and installation to `POST /_pb/sources/discovery/plan`, then import the reviewed repositories with `POST /_pb/sources/discovery/apply`. Set `ecosystem` to `composer` in both calls. <!-- source: packages/core/src/api/routes/source-discovery-schemas.ts --> <!-- source: packages/db-sqlite/src/repositories/discovery-connections.ts --> <!-- source: packages/ui/src/pages/packages/discovery-picker.ts -->
+
+## Manage saved discovery rules in the admin UI
+
+Open **Sources** at organization scope and find **Discovery rules**. Source managers can choose **Create discovery rule**, enter a name, select a named GitHub connection, choose the ecosystem and repository pattern, include forks if needed, and set the interval and enabled state. The interval ranges from one hour to 30 days. Saving a new rule or changing its GitHub connection may ask you to sign in again; review and explicitly confirm the held action afterward.
+
+From the GitHub repository picker, **Keep this selection up to date** opens a new rule with the selected connection, ecosystem, pattern and forks. A rule covers every matching repository, including future matches; the picker's individual checkboxes do not limit it. Rules create shared organization sources. Attach those sources to projects to use their packages.
+
+The list shows the schedule, last completed counts and skipped repositories with explanations. Source managers also see current-run counts, repositories remaining in the current page, whether more pages remain, and GitHub rate-limit deadlines. Members with source-read permission see a summary without connection or progress details and cannot change rules. **Run now** requests a scan on a scheduler tick; it does not mean the scan finished and does not bypass GitHub backoff. Reload the list to check progress.
+
+Use **More** to edit, enable, disable or delete a rule. Changing the connection, ecosystem, pattern or forks restarts its scan; changing its name or interval preserves progress. Disabling stops an active scan. Deletion asks for confirmation and leaves imported sources in place. If someone changes the rule while you edit, your draft stays visible beside the newer rule; choose **Use latest settings and review** before saving again. Duplicate names require another name.
+
+Last-run details retain up to 50 skip explanations. The saved-rule API retains failure counts and a run-level failure reason, but no completed per-repository failure list. Per-repository failures are not retained.
+
 ## Next
 
-Use [Access model](../reference/access-model.md) to check roles and token scopes, [Composer](../clients/composer.md) for client setup, or return to [Troubleshoot credentials](#troubleshoot-credentials) for vendor credential failures. A separate troubleshooting page is planned.
+Use [Access model](../reference/access-model.md) to check roles and token scopes, [Composer](../clients/composer.md) for client setup, or return to [Troubleshoot credentials](#troubleshoot-credentials) for vendor credential failures. See [Troubleshooting Composer and npm installs](../troubleshooting/index.md) for error-specific checks.
