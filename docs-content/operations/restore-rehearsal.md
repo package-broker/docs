@@ -1,6 +1,6 @@
 # Restore rehearsal
 
-Run only against disposable deployment resources. The helpers preserve authentication in an isolated deployment; T858's deployed-account cache epoch rotation and session/PAT invalidation are separate work. Never set `PB_KEYRING_RESEED` during a restore.
+Run only against disposable deployment resources. The helpers preserve authentication in an isolated deployment; deployed-account cache epoch rotation and session/PAT invalidation are separate work. Never set `PB_KEYRING_RESEED` during a restore.
 
 The Node rehearsal directory exports `seedDeployment`, `backupDeployment`, `destroyDeployment`, `restoreDeployment`, `inventory`, `checkInventory`, `startDeployment`, and `verifyDeployment`. The Cloudflare directory exports equivalent operations over Miniflare D1/R2. `exportDatabase` produces a logical snapshot of bound statements, including byte-preserving TEXT and BLOB parameters, schema, migration ledger, indexes and triggers. Inserts are chunked to at most 100 bound parameters per statement, with SQL kept below 100,000 bytes. The JSON backup retains complete byte values; `bindSnapshot` decodes them before restore. Callers must quiesce writes before the database/object snapshot boundary. Node uses SQLite's online backup API, including committed WAL pages; it does not copy a live SQLite main file. Filesystem media sidecars and R2 content type metadata are part of the object backup. Node restore refuses an existing main database or any `-wal`, `-shm`, or `-journal` sidecar before writing the target.
 
@@ -51,11 +51,11 @@ pnpm smoke:cloudflare
 pnpm smoke:node
 ```
 
-For final acceptance, use the immutable RC artifact selected by T447, and record its artifact SHA-256 in both reports. Run both native commands from that same successfully built candidate. Set `PB_REHEARSAL_CANDIDATE` to the identity printed by `identity`; the helpers refuse an identity mismatch before restoring. The identity of compiled modules is not interchangeable with a source revision or a bundle hash. Also record the bundle hashes and non-secret runtime configuration. Development evidence against another candidate does not establish RC equivalence.
+For final acceptance, use the immutable RC artifact selected for release, and record its artifact SHA-256 in both reports. Run both native commands from that same successfully built candidate. Set `PB_REHEARSAL_CANDIDATE` to the identity printed by `identity`; the helpers refuse an identity mismatch before restoring. The identity of compiled modules is not interchangeable with a source revision or a bundle hash. Also record the bundle hashes and non-secret runtime configuration. Development evidence against another candidate does not establish RC equivalence.
 
-## Real Cloudflare manual procedure — not executed by the worker
+## Real Cloudflare manual procedure — not yet executed
 
-All commands below are MANUAL and need real Cloudflare/R2 credentials. The worker inspected installed Wrangler 4.151.0 help for D1 create/list/export/execute, R2 create/get, queues create/consumer removal, secret bulk/list, deploy/delete and tail. AWS CLI 2.38.1 supplies the S3-compatible object operations. No deployed-account command was run. Have the selected candidate's prebuilt Worker bundle, installed Wrangler/AWS CLI, a Workers Paid account, and scoped Cloudflare and R2 credentials available on the operator host. Do not run dependency installation in the worker.
+All commands below are MANUAL and need real Cloudflare/R2 credentials. The procedure was checked against installed Wrangler 4.151.0 help for D1 create/list/export/execute, R2 create/get, queues create/consumer removal, secret bulk/list, deploy/delete and tail. AWS CLI 2.38.1 supplies the S3-compatible object operations. No deployed-account command was run. Have the selected candidate's prebuilt Worker bundle, installed Wrangler/AWS CLI, a Workers Paid account, and scoped Cloudflare and R2 credentials available on the operator host. Use the preinstalled dependencies.
 
 Use a dedicated test account or reserve the unique resource names below. Do not point this procedure at an existing production Worker, database, queue or bucket. Keep shell tracing disabled. Supply `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN`, AWS credentials (or `AWS_PROFILE`) and `PB_WORKERS_SUBDOMAIN` through the protected operator environment; never paste their values into a report.
 
@@ -75,7 +75,7 @@ export CANDIDATE_WORKER="$PWD/.pb/cloudflare/worker.js"
 export CANDIDATE_ASSETS="$PWD/.pb/cloudflare/assets"
 export PB_REHEARSAL_R2_ENDPOINT="https://${CLOUDFLARE_ACCOUNT_ID}.eu.r2.cloudflarestorage.com"
 node -e 'const fs=require("node:fs"),c=require("node:crypto"); fs.writeFileSync(process.env.LAB+"/worker.sha256",c.createHash("sha256").update(fs.readFileSync(process.env.CANDIDATE_WORKER)).digest("hex")+"\n")'
-# Compare worker.sha256 with T447's pinned artifact before provisioning anything.
+# Compare worker.sha256 with the pinned RC artifact before provisioning anything.
 wrangler whoami
 ```
 
@@ -191,7 +191,7 @@ for MODE in happy wrong-key missing-keys missing-blobs corrupt-blobs; do
 done
 ```
 
-The wrong-key and missing-key cases must return 503 even for authenticated dist requests. To observe the T707 error, run `wrangler tail "$RUN-wrong-key" --config "$LAB/wrong-key.jsonc" --format json --search "Master key version 1 does not match"` in a second terminal, trigger the `verify ... wrong-key` command again, and retain only the fixed KernelConfigError name and master-key mismatch/version diagnostic, not raw invocation records. Stop the tail with Ctrl-C. Happy verification requires real password/TOTP login, original PAT acceptance, excluded-project and foreign-organization denial, unauthenticated refusal, exact archive length and the original SHA-256. Missing/corrupt objects must fail that same byte oracle. An error from inventory transport is not evidence of byte corruption; confirm the assertion shows a length/digest mismatch.
+The wrong-key and missing-key cases must return 503 even for authenticated dist requests. To observe the master-key mismatch error, run `wrangler tail "$RUN-wrong-key" --config "$LAB/wrong-key.jsonc" --format json --search "Master key version 1 does not match"` in a second terminal, trigger the `verify ... wrong-key` command again, and retain only the fixed KernelConfigError name and master-key mismatch/version diagnostic, not raw invocation records. Stop the tail with Ctrl-C. Happy verification requires real password/TOTP login, original PAT acceptance, excluded-project and foreign-organization denial, unauthenticated refusal, exact archive length and the original SHA-256. Missing/corrupt objects must fail that same byte oracle. An error from inventory transport is not evidence of byte corruption; confirm the assertion shows a length/digest mismatch.
 
 The Miniflare wrappers cover missing/truncated/same-length corruption independently, all three non-empty target refusals with preservation checks, stripped keys and mutation proofs. Run those host gates as well; remote success does not replace them. Do not retry a restore over the same target: discard it and reserve new empty resources.
 
@@ -210,3 +210,27 @@ case "$LAB" in */pb-rehearsal-manual-*) rm -rf -- "$LAB" ;; *) exit 1 ;; esac
 ```
 
 The disposable Analytics Engine dataset has no per-dataset delete operation in the inspected Wrangler CLI; it receives no application traffic after Worker deletion and expires under account retention. Record its generated name in the report; records remain subject to account retention. For production backups include separately retained filesystem/S3/R2 bytes, all external secrets and referenced master-key versions, consistent DB state and exact deployment configuration/artifact identity; derived caches and in-process execution state are excluded. A bucket binding, secret name, or database path is not a backup of its contents.
+
+## npm publish and repository-build restore (DEC-NPM-24)
+
+On the Linux gate host, with Node 24, npm and the installed workspace dependencies:
+
+```sh
+pnpm build
+node --test scripts/npm-restore-rehearsal.test.mjs
+node scripts/npm-restore-rehearsal.mjs
+```
+
+For an offline storage check without a listener or client invocation, use `node scripts/npm-restore-rehearsal.mjs --storage-only` after building. It exercises the repository archive/packlist build and restores its database, key file and blob into fresh storage. Its result explicitly excludes publish/install acceptance.
+
+The script uses a disposable `.pb/npm-restore-*` directory. It migrates a file-backed SQLite database, writes a fixture keyring secret, seeds an isolated organization/project and boots the Node runtime. It creates a repository fixture through the shipped Git archive builder and npm packlist builder (no remote repository or lifecycle scripts), then publishes a second package using the real npm client. It closes the broker before the backup boundary, backs up SQLite with the online backup API, and copies all referenced filesystem blob bytes, media sidecars and key files. The existing backup helper checks hashes and records candidate identity.
+
+It removes the source deployment directory, restores the three backup sets into a fresh directory, verifies the inventory, and boots a new runtime with empty derived caches and the restored keyring file. A new npm home/cache installs both exact versions through the broker. Acceptance checks both installed manifests and `index.js` bytes. Upstream proxy sources are detached and the repository fixture has no refetch URL; missing restored bytes cannot be replaced by a remote fetch. The script cleans up on success or failure and prints only a fixed result, never client output or credentials. Exit zero and the `npm restore rehearsal: PASS` line establish acceptance; guard tests alone do not.
+
+For a deployment restore, pause writers and job consumers before taking the coordinated backup. Preserve the database, every referenced object with metadata, and **all current and previous keyring versions** outside the lost deployment. Preserve runtime configuration, source/plugin composition and the matching release as well. Restore into empty storage with the same organization identity; never bootstrap a replacement organization or enable keyring reseeding. Start with the saved keyring, check readiness, sign in and verify scoped tokens, then install both a directly published package and a repository-built package with empty client caches. Compare their expected versions and file digests recorded before backup. Resume writers only after those checks pass. If moving the public origin, update client registry configuration and regenerate/review locks that embed the old archive URL.
+
+Result for NPM20b: the storage-only rehearsal passed in the sandbox, including repository build and restore of the recorded promoted blob path. Guard tests and validation are recorded in `NPM20b-report.md`; the listener/client rehearsal is **NOT RUN in the sandbox**. Run the command above on the Linux gate host and retain its exit status and fixed PASS line with the release candidate identity. Until then, npm restore acceptance remains pending.
+
+### Cloudflare owner step
+
+A live Cloudflare restore requires owner credentials and disposable D1/R2 resources. It is separate from the Node script and from Miniflare evidence. Quiesce Worker writes and queue consumers, export the deployment's D1 database and migration ledger, copy every referenced R2 object including content type metadata, and securely save all Worker keyring secret versions and configuration. Restore to fresh D1/R2 bindings using the same candidate and organization identity; provision the saved secrets without reseeding. Check readiness, sign-in and scoped tokens, then install a pre-backup directly published package and a GitHub repository-built package with empty caches and compare the recorded bytes. Exercise missing-object and wrong-key refusal before accepting the restore. Record deployment/candidate identifiers, backup/restore timing, package versions/digests and pass/fail without recording credentials. This live rehearsal is **NOT RUN** by NPM20b and remains an owner action.
